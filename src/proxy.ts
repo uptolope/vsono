@@ -24,7 +24,7 @@ const PROTECTED_PATHS = ["/account"];
 function buildCsp(nonce: string): string {
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}' https://js.stripe.com`,
+    `script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https://js.stripe.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "img-src 'self' data: https://*.stripe.com",
     "font-src 'self' https://fonts.gstatic.com",
