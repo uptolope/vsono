@@ -14,13 +14,18 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
   const [showResults, setShowResults] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
 
+  // Guard: if no questions, show loading state
+  if (!questions || questions.length === 0) {
+    return <div className="text-center text-white p-8">Loading questions...</div>;
+  }
+
   const question = questions[currentIndex];
   const isAnswered = selected !== null;
   const isCorrect = selected === question?.correctAnswer;
   const total = questions.length;
-
+  
   const handleSelect = (optionIndex: number) => {
-    if (isAnswered) return;
+    if (isAnswered || !question) return;  // ← Add this check
     setSelected(optionIndex);
     setAnswers((prev) => ({ ...prev, [question.id]: optionIndex }));
   };
@@ -82,7 +87,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
-                      width: `${pct}%`,
+                      width: `\${pct}%`,
                       backgroundColor: pct >= 75 ? "#4ade80" : pct >= 50 ? "#c85b3a" : "#ef4444",
                     }}
                   />
@@ -115,23 +120,23 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
         <span className="meta text-[10px] text-[#4a453f]">
           QUESTION {currentIndex + 1} OF {total}
         </span>
-        <span className="meta text-[9px] text-[#4a453f]">{question.domain}</span>
+        <span className="meta text-[9px] text-[#4a453f]">{question?.domain}</span>
       </div>
       <div className="h-1 bg-white/5 rounded-full mb-8 overflow-hidden">
         <div
           className="h-full bg-[#c85b3a] rounded-full transition-all duration-300"
-          style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
+          style={{ width: `\${((currentIndex + 1) / total) * 100}%` }}
         />
       </div>
 
       {/* Question */}
       <h3 className="display-serif text-lg font-semibold text-white mb-6 leading-relaxed">
-        {question.question}
+        {question?.question}
       </h3>
 
       {/* Options */}
       <div className="space-y-3 mb-6">
-        {question.options.map((option, i) => {
+        {question?.options.map((option, i) => {
           let borderColor = "border-white/[0.06]";
           let bg = "bg-transparent";
           if (isAnswered) {
@@ -152,7 +157,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
               key={i}
               onClick={() => handleSelect(i)}
               disabled={isAnswered}
-              className={`w-full text-left px-5 py-4 border ${borderColor} ${bg} rounded transition-colors text-sm text-[#c2bab0] hover:border-[#c85b3a]/30 disabled:cursor-default`}
+              className={`w-full text-left px-5 py-4 border \${borderColor} \${bg} rounded transition-colors text-sm text-[#c2bab0] hover:border-[#c85b3a]/30 disabled:cursor-default`}
             >
               <span className="text-[#4a453f] mr-3 meta text-[10px]">
                 {String.fromCharCode(65 + i)}
@@ -177,7 +182,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
             <div className="border border-white/[0.06] bg-white/[0.02] p-5 rounded">
               <p className="meta text-[9px] text-[#4a453f] mb-2">EXPLANATION</p>
               <p className="body-small text-[#c2bab0] text-sm leading-relaxed">
-                {question.explanation}
+                {question?.explanation}
               </p>
             </div>
           )}
