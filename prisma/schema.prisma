@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// NextAuth required models (adapter contract — do not rename)
+// ─────────────────────────────────────────────────────────────
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Application models
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String? // null for OAuth-only accounts
+
+  // Account lockout (brute-force defense)
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+
+  // Single active session enforcement.
+  // Holds the current session token; a login sets this and any
+  // request bearing a JWT with a different value is rejected.
+  activeSessionId String?
+
+  // GDPR soft delete. When set, this account is treated as gone:
+  // auth, content, and account routes must all check this field.
+  deletedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts  Account[]
+  sessions  Session[]
+  purchases Purchase[]
+
+  @@index([email])
+}
+
+enum ProductType {
+  FLASHCARDS
+  EXAM_SIMULATOR
+  PHYSICS_PEARLS
+  STUDY_NOTES
+  PREMIUM_BUNDLE
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  REFUNDED
+  FAILED
+}
+
+model Purchase {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  product ProductType
+  status  PurchaseStatus @default(PENDING)
+
+  // Stripe identifiers — source of truth for reconciliation.
+  stripeCheckoutSessionId String  @unique
+  stripePaymentIntentId   String?
+  amountPaidCents         Int?
+
+  // Access window. Set server-side only, from the webhook handler,
+  // never from client input. Per current ToS (section 5): the clock
+  // starts at purchase (webhook confirmation time), not first login.
+  accessGrantedAt DateTime?
+  accessExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, status])
+  @@index([stripeCheckoutSessionId])
+}
