@@ -1,26 +1,23 @@
-// ═══════════════════════════════════════════════════════════════════
-// SonoPrep — Email via Resend (SERVER-SIDE ONLY)
-// All outbound email goes through this module. No email is ever sent
-// from a client component or from a route that doesn't import this.
-// ═══════════════════════════════════════════════════════════════════
-
+// lib/email.ts
 import { Resend } from "resend";
 
 if (!process.env.RESEND_API_KEY) {
-  throw new Error("RESEND_API_KEY is not set");
+  console.warn("⚠️  RESEND_API_KEY is not set — emails will not be sent");
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "");
 
-// Set this to your verified sending domain in Resend.
-// Until you verify a custom domain, Resend allows sending from
-// onboarding@resend.dev for testing.
 const FROM_ADDRESS = process.env.EMAIL_FROM ?? "SonoPrep <noreply@sonoprep.com>";
 
 export async function sendPasswordResetEmail(
   to: string,
   resetUrl: string
 ): Promise<{ success: boolean; error?: string }> {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("Cannot send email: RESEND_API_KEY not configured");
+    return { success: false, error: "Email service not configured" };
+  }
+
   try {
     const { error } = await resend.emails.send({
       from: FROM_ADDRESS,
@@ -32,13 +29,13 @@ export async function sendPasswordResetEmail(
           <p style="color: #555; line-height: 1.6;">
             Someone requested a password reset for your SonoPrep account. If this was you, click the link below. If not, ignore this email — your password won't change.
           </p>
-          <a href="${resetUrl}" style="display: inline-block; background: #c85b3a; color: #fff; padding: 12px 24px; border-radius: 4px; text-decoration: none; margin: 24px 0; font-weight: 500;">
+          <a href="\${resetUrl}" style="display: inline-block; background: #c85b3a; color: #fff; padding: 12px 24px; border-radius: 4px; text-decoration: none; margin: 24px 0; font-weight: 500;">
             Reset Password
           </a>
           <p style="color: #999; font-size: 13px; line-height: 1.5;">
             This link expires in 1 hour. If the button doesn't work, copy and paste this URL into your browser:
           </p>
-          <p style="color: #999; font-size: 12px; word-break: break-all;">${resetUrl}</p>
+          <p style="color: #999; font-size: 12px; word-break: break-all;">\${resetUrl}</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
           <p style="color: #bbb; font-size: 11px;">SonoPrep · ARDMS SPI Exam Prep</p>
         </div>
@@ -46,12 +43,12 @@ export async function sendPasswordResetEmail(
     });
 
     if (error) {
-      console.error("Resend error:", error);
+      console.error("Resend error (password reset):", error);
       return { success: false, error: error.message };
     }
     return { success: true };
   } catch (err) {
-    console.error("Email send failed:", err);
+    console.error("Email send failed (password reset):", err);
     return { success: false, error: "Failed to send email" };
   }
 }
@@ -60,6 +57,11 @@ export async function sendEmailVerification(
   to: string,
   verifyUrl: string
 ): Promise<{ success: boolean; error?: string }> {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn("Cannot send email: RESEND_API_KEY not configured");
+    return { success: false, error: "Email service not configured" };
+  }
+
   try {
     const { error } = await resend.emails.send({
       from: FROM_ADDRESS,
@@ -71,13 +73,13 @@ export async function sendEmailVerification(
           <p style="color: #555; line-height: 1.6;">
             Welcome to SonoPrep! Please verify your email address to complete your account setup.
           </p>
-          <a href="${verifyUrl}" style="display: inline-block; background: #c85b3a; color: #fff; padding: 12px 24px; border-radius: 4px; text-decoration: none; margin: 24px 0; font-weight: 500;">
+          <a href="\${verifyUrl}" style="display: inline-block; background: #c85b3a; color: #fff; padding: 12px 24px; border-radius: 4px; text-decoration: none; margin: 24px 0; font-weight: 500;">
             Verify Email
           </a>
           <p style="color: #999; font-size: 13px; line-height: 1.5;">
             This link expires in 24 hours. If the button doesn't work, copy and paste this URL:
           </p>
-          <p style="color: #999; font-size: 12px; word-break: break-all;">${verifyUrl}</p>
+          <p style="color: #999; font-size: 12px; word-break: break-all;">\${verifyUrl}</p>
           <hr style="border: none; border-top: 1px solid #eee; margin: 32px 0;" />
           <p style="color: #bbb; font-size: 11px;">SonoPrep · ARDMS SPI Exam Prep</p>
         </div>
@@ -85,12 +87,12 @@ export async function sendEmailVerification(
     });
 
     if (error) {
-      console.error("Resend error:", error);
+      console.error("Resend error (verification):", error);
       return { success: false, error: error.message };
     }
     return { success: true };
   } catch (err) {
-    console.error("Email send failed:", err);
+    console.error("Email send failed (verification):", err);
     return { success: false, error: "Failed to send email" };
   }
 }
