@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
-import { sendVerificationEmail } from "@/lib/email";
+import { sendEmailVerification } from "@/lib/email";
 import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { email, password, name } = body;
+    const { email, password, name } = await req.json();
 
+    // Validate inputs
     if (!email || !password || !name) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -16,16 +16,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
-
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
-      where: { email: normalizedEmail },
+      where: { email },
     });
 
     if (existingUser) {
       return NextResponse.json(
-        { error: "Email already registered" },
+        { error: "User already exists" },
         { status: 400 }
       );
     }
@@ -33,39 +31,43 @@ export async function POST(req: NextRequest) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
+    // Generate verification token (24-hour expiry)
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+    const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+    // Create user with verification token
     const user = await prisma.user.create({
       data: {
-        email: normalizedEmail,
-        name,
+        email,
         password: hashedPassword,
+        name,
+        verificationToken,
+        verificationTokenExpiry,
       },
     });
 
-    // Generate verification token
-    const token = crypto.randomBytes(32).toString("hex");
-    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-
-    // Store verification token
-    await prisma.verificationToken.create({
-      data: {
-        identifier: normalizedEmail,
-        token,
-        expires: expiresAt,
-      },
-    });
+    // Generate verification URL
+    const verifyUrl = `\${process.env.NEXT_PUBLIC_APP_URL}/auth/verify-email?token=\${verificationToken}&email=\${encodeURIComponent(email)}`;
 
     // Send verification email
-    await sendVerificationEmail(normalizedEmail, token);
+    const emailResult = await sendEmailVerification(email, verifyUrl);
+
+    if (!emailResult.success) {
+      console.warn("⚠️ User created but verification email failed to send:", emailResult.error);
+      // Still return success since user was created; they can request email resend later
+    }
 
     return NextResponse.json(
-      { message: "Sign up successful. Please check your email to verify." },
+      {
+        message: "User created successfully. Check your email to verify your account.",
+        userId: user.id,
+      },
       { status: 201 }
     );
-  } catch (err) {
-    console.error("Signup error:", err);
+  } catch (error) {
+    console.error("Signup error:", error);
     return NextResponse.json(
-      { error: "Failed to sign up. Please try again." },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
