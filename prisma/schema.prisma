@@ -220,3 +220,12 @@ enum Role {
   STUDENT
   ADMIN
 }
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  subscribedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("subscribers")
+}
