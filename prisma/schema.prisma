@@ -7,27 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─────────────────────────────────────────────────────────────
-// NextAuth required models (adapter contract — do not rename)
-// ─────────────────────────────────────────────────────────────
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -35,8 +31,9 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
 }
 
 model VerificationToken {
@@ -47,78 +44,179 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// ─────────────────────────────────────────────────────────────
-// Application models
-// ─────────────────────────────────────────────────────────────
-
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String    @unique
-  emailVerified DateTime?
-  image         String?
-  passwordHash  String? // null for OAuth-only accounts
-
-  // Account lockout (brute-force defense)
-  failedLoginAttempts Int       @default(0)
+  id                  String              @id @default(cuid())
+  name                String?
+  email               String?             @unique
+  emailVerified       DateTime?
+  image               String?
+  password            String?
+  role                Role                @default(STUDENT)
+  examDate            DateTime?
+  institution         String?
+  stripeCustomerId    String?             @unique
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  failedLoginAttempts Int                 @default(0)
   lockedUntil         DateTime?
-
-  // Single active session enforcement.
-  // Holds the current session token; a login sets this and any
-  // request bearing a JWT with a different value is rejected.
-  activeSessionId String?
-
-  // GDPR soft delete. When set, this account is treated as gone:
-  // auth, content, and account routes must all check this field.
-  deletedAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  accounts  Account[]
-  sessions  Session[]
-  purchases Purchase[]
+  lastLoginAt         DateTime?
+  deletedAt           DateTime?
+  activeSessionId     String?
+  passwordHash        String?
+  accounts            Account[]
+  ExamSession         ExamSession[]
+  FlashcardProgress   FlashcardProgress[]
+  purchases           Purchase[]
+  sessions            Session[]
+  StudyNoteProgress   StudyNoteProgress[]
 
   @@index([email])
+  @@index([stripeCustomerId])
+}
+
+model Purchase {
+  id                    String         @id @default(cuid())
+  userId                String
+  productId             String
+  status                PurchaseStatus @default(COMPLETED)
+  amountInCents         Int
+  currency              String         @default("usd")
+  stripeSessionId       String?        @unique
+  stripePaymentIntentId String?
+  accessGrantedAt       DateTime       @default(now())
+  accessExpiresAt       DateTime
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  Product               Product        @relation(fields: [productId], references: [id])
+  user                  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([stripePaymentIntentId])
+  @@index([stripeSessionId])
+  @@index([userId])
+  @@index([userId, productId])
+  @@index([userId, status, accessExpiresAt])
+}
+
+model AuditLog {
+  id        String   @id
+  userId    String?
+  action    String
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([action])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model DemoLead {
+  id        String   @id
+  email     String
+  source    String   @default("demo")
+  score     Int?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([email])
+}
+
+model ExamAnswer {
+  id            String      @id
+  sessionId     String
+  questionId    Int
+  selectedIndex Int
+  isCorrect     Boolean
+  timeSpentMs   Int         @default(0)
+  ExamSession   ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+}
+
+model ExamSession {
+  id                String       @id
+  userId            String
+  examType          String       @default("SPI")
+  totalQuestions    Int
+  correctAnswers    Int          @default(0)
+  score             Float?
+  timeSpentSecs     Int          @default(0)
+  completed         Boolean      @default(false)
+  categoryBreakdown Json?
+  startedAt         DateTime     @default(now())
+  completedAt       DateTime?
+  ExamAnswer        ExamAnswer[]
+  User              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, completed])
+  @@index([userId, examType])
+  @@index([userId])
+}
+
+model FlashcardProgress {
+  id             String   @id
+  userId         String
+  cardId         Int
+  box            Int      @default(1)
+  easeFactor     Float    @default(2.5)
+  interval       Int      @default(1)
+  repetitions    Int      @default(0)
+  nextReview     DateTime @default(now())
+  lastReviewed   DateTime @default(now())
+  isMastered     Boolean  @default(false)
+  reviewCount    Int      @default(0)
+  correctCount   Int      @default(0)
+  incorrectCount Int      @default(0)
+  User           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cardId])
+  @@index([userId])
+  @@index([userId, isMastered])
+  @@index([userId, nextReview])
+}
+
+model Product {
+  id            String      @id
+  type          ProductType @unique
+  name          String
+  description   String
+  priceInCents  Int
+  stripePriceId String?     @unique
+  active        Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime
+  Purchase      Purchase[]
+}
+
+model StudyNoteProgress {
+  id        String @id
+  userId    String
+  chapterId Int
+  progress  Float  @default(0)
+  bookmarks Json?
+  User      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, chapterId])
+  @@index([userId])
 }
 
 enum ProductType {
   FLASHCARDS
-  EXAM_SIMULATOR
   PHYSICS_PEARLS
+  EXAM_SIMULATOR
   STUDY_NOTES
   PREMIUM_BUNDLE
 }
 
 enum PurchaseStatus {
-  PENDING
   COMPLETED
   REFUNDED
-  FAILED
+  DISPUTED
+  PENDING
 }
 
-model Purchase {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  product ProductType
-  status  PurchaseStatus @default(PENDING)
-
-  // Stripe identifiers — source of truth for reconciliation.
-  stripeCheckoutSessionId String  @unique
-  stripePaymentIntentId   String?
-  amountPaidCents         Int?
-
-  // Access window. Set server-side only, from the webhook handler,
-  // never from client input. Per current ToS (section 5): the clock
-  // starts at purchase (webhook confirmation time), not first login.
-  accessGrantedAt DateTime?
-  accessExpiresAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([userId, status])
-  @@index([stripeCheckoutSessionId])
+enum Role {
+  STUDENT
+  ADMIN
 }

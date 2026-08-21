@@ -22,9 +22,9 @@ export async function GET() {
       createdAt: true,
       purchases: {
         select: {
-          product: true,
+          Product: true,
           status: true,
-          amountPaidCents: true,
+          amountInCents: true,  // Changed from amountPaidCents
           accessGrantedAt: true,
           accessExpiresAt: true,
           createdAt: true,

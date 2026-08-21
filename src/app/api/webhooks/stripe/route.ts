@@ -89,7 +89,7 @@ async function handleCheckoutCompleted(
   eventId: string
 ): Promise<void> {
   const existingPurchase = await prisma.purchase.findFirst({
-    where: { stripeCheckoutSessionId: checkoutSession.id },
+    where: { stripeSessionId: checkoutSession.id },
   });
 
   if (existingPurchase?.status === "COMPLETED") {
@@ -136,13 +136,13 @@ async function handleCheckoutCompleted(
   );
 
   await prisma.purchase.updateMany({
-    where: { stripeCheckoutSessionId: checkoutSession.id },
+    where: { stripeSessionId: checkoutSession.id },
     data: {
       status: "COMPLETED",
       stripePaymentIntentId: extractPaymentIntentId(
         checkoutSession.payment_intent
       ),
-      amountPaidCents: checkoutSession.amount_total ?? undefined,
+      amountInCents: checkoutSession.amount_total ?? undefined,
       accessGrantedAt,
       accessExpiresAt,
     },

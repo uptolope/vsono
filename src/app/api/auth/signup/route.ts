@@ -35,14 +35,21 @@ export async function POST(req: NextRequest) {
     const verificationToken = crypto.randomBytes(32).toString("hex");
     const verificationTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-    // Create user with verification token
+    // Create user
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
         name,
-        verificationToken,
-        verificationTokenExpiry,
+      },
+    });
+
+    // Create verification token record
+    await prisma.verificationToken.create({
+      data: {
+        identifier: email,
+        token: verificationToken,
+        expires: verificationTokenExpiry,
       },
     });
 
