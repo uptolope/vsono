@@ -222,18 +222,18 @@ function TheFork() {
         </div>
 
         <motion.div
-          className="text-center mt-14"
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.6 }}
-        >
-          <Link href="#demo" className="premium-cta px-10 py-5 text-sm">
-            START WITH THE FREE DEMO →
-          </Link>
-          <p className="t-caption text-[10px] mt-5 text-[#5a554f]">
-            No account · 2 minutes · instant domain feedback
-          </p>
-        </motion.div>
+  className="text-center mt-14"
+  initial={{ opacity: 0 }}
+  animate={inView ? { opacity: 1 } : {}}
+  transition={{ delay: 0.6 }}
+>
+<Link href="/demo" className="premium-cta px-10 py-5 text-sm">
+  START WITH THE FREE DEMO →
+</Link>
+  <p className="t-caption text-[10px] mt-5 text-[#5a554f]">
+    No account · 2 minutes · instant domain feedback
+  </p>
+</motion.div>
       </div>
     </section>
   );
@@ -385,7 +385,7 @@ function WhyMostFail() {
             The question isn't whether you studied enough. It's whether you know
             where you'd lose points today.
           </p>
-          <Link href="#demo" className="premium-cta px-10 py-5 text-sm">
+          <Link href="demo" className="premium-cta px-10 py-5 text-sm">
             FIND OUT WHERE YOU STAND — FREE →
           </Link>
         </motion.div>
@@ -404,25 +404,28 @@ function DemoSection() {
   const [demoFlashcards, setDemoFlashcards] = useState([]);
   const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const fetchDemoData = async () => {
-    try {
-      const [questionsRes, flashcardsRes] = await Promise.all([
-        fetch('/api/demo/questions'),
-        fetch('/api/demo/flashcards'),
-      ]);
-      const questions = await questionsRes.json();
-      const flashcards = await flashcardsRes.json();
-      setDemoQuestions(questions);
-      setDemoFlashcards(flashcards);
-    } catch (error) {
-      console.error('Failed to fetch demo data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  fetchDemoData();
-}, []);
+  useEffect(() => {
+    const fetchDemoData = async () => {
+      try {
+        const [questionsRes, flashcardsRes] = await Promise.all([
+          fetch('/api/demo/questions'),
+          fetch('/api/demo/flashcards'),
+        ]);
+        const questionsData = await questionsRes.json();
+        const flashcardsData = await flashcardsRes.json();
+        // Extract the arrays from the response objects
+        setDemoQuestions(questionsData.questions || []);
+        setDemoFlashcards(flashcardsData.flashcards || []);
+      } catch (error) {
+        console.error('Failed to fetch demo data:', error);
+        setDemoQuestions([]);
+        setDemoFlashcards([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDemoData();
+  }, []);
   const [activeTab, setActiveTab] = useState<"exam" | "flashcards">("exam");
   const [demoComplete, setDemoComplete] = useState(false);
   const [email, setEmail] = useState("");
