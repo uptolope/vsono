@@ -4,7 +4,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -220,6 +219,7 @@ enum Role {
   STUDENT
   ADMIN
 }
+
 model Subscriber {
   id        String   @id @default(cuid())
   email     String   @unique
