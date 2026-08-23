@@ -70,11 +70,11 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
 
       default:
-        console.info(`[webhook:\${eventId}] Unhandled event type: \${event.type}`);
+        console.info(`[webhook:${eventId}] Unhandled event type: ${event.type}`);
         break;
     }
   } catch (err) {
-    console.error(`[webhook:\${eventId}] Error processing event:`, err);
+    console.error(`[webhook:${eventId}] Error processing event:`, err);
     return NextResponse.json(
       { error: "Webhook processing failed" },
       { status: 500 }
@@ -94,7 +94,7 @@ async function handleCheckoutCompleted(
 
   if (existingPurchase?.status === "COMPLETED") {
     console.info(
-      `[webhook:\${eventId}] Checkout already processed, skipping: \${checkoutSession.id}`
+      `[webhook:${eventId}] Checkout already processed, skipping: ${checkoutSession.id}`
     );
     return;
   }
@@ -104,7 +104,7 @@ async function handleCheckoutCompleted(
   );
   if (!metadataResult.success) {
     console.error(
-      `[webhook:\${eventId}] Invalid metadata on session \${checkoutSession.id}:`,
+      `[webhook:${eventId}] Invalid metadata on session ${checkoutSession.id}:`,
       metadataResult.error.flatten()
     );
     return;
@@ -114,7 +114,7 @@ async function handleCheckoutCompleted(
 
   if (!(product in PRODUCT_PRICE_MAP)) {
     console.error(
-      `[webhook:\${eventId}] Unknown product in metadata: \${product}`
+      `[webhook:${eventId}] Unknown product in metadata: ${product}`
     );
     return;
   }
@@ -149,7 +149,7 @@ async function handleCheckoutCompleted(
   });
 
   console.info(
-    `[webhook:\${eventId}] Purchase completed: user \${userId}, product \${product}, expires \${accessExpiresAt.toISOString()}`
+    `[webhook:${eventId}] Purchase completed: user ${userId}, product ${product}, expires ${accessExpiresAt.toISOString()}`
   );
 }
 
@@ -161,7 +161,7 @@ async function handleRefund(
 
   if (!paymentIntentId) {
     console.error(
-      `[webhook:\${eventId}] Refund charge has no payment_intent: \${charge.id}`
+      `[webhook:${eventId}] Refund charge has no payment_intent: ${charge.id}`
     );
     return;
   }
@@ -172,7 +172,7 @@ async function handleRefund(
 
   if (!purchase) {
     console.error(
-      `[webhook:\${eventId}] CRITICAL: No purchase found for refunded payment_intent \${paymentIntentId}`
+      `[webhook:${eventId}] CRITICAL: No purchase found for refunded payment_intent ${paymentIntentId}`
     );
     return;
   }
@@ -183,7 +183,7 @@ async function handleRefund(
     );
     if (daysSincePurchase > REFUND_WINDOW_DAYS) {
       console.warn(
-        `[webhook:\${eventId}] Refund processed \${daysSincePurchase} days after purchase (policy: \${REFUND_WINDOW_DAYS} days), purchase: \${purchase.id}`
+        `[webhook:${eventId}] Refund processed ${daysSincePurchase} days after purchase (policy: ${REFUND_WINDOW_DAYS} days), purchase: ${purchase.id}`
       );
     }
   }
@@ -197,7 +197,7 @@ async function handleRefund(
   });
 
   console.info(
-    `[webhook:\${eventId}] Access revoked for refunded purchase: \${purchase.id}`
+    `[webhook:${eventId}] Access revoked for refunded purchase: ${purchase.id}`
   );
 }
 
@@ -209,7 +209,7 @@ async function handleDispute(
     typeof dispute.charge === "string" ? dispute.charge : dispute.charge?.id;
 
   if (!chargeId) {
-    console.error(`[webhook:\${eventId}] Dispute has no charge: \${dispute.id}`);
+    console.error(`[webhook:${eventId}] Dispute has no charge: ${dispute.id}`);
     return;
   }
 
@@ -219,7 +219,7 @@ async function handleDispute(
     paymentIntentId = extractPaymentIntentId(charge.payment_intent);
   } catch (err) {
     console.error(
-      `[webhook:\${eventId}] Failed to retrieve charge for dispute \${chargeId}:`,
+      `[webhook:${eventId}] Failed to retrieve charge for dispute ${chargeId}:`,
       err
     );
     throw err;
@@ -227,7 +227,7 @@ async function handleDispute(
 
   if (!paymentIntentId) {
     console.error(
-      `[webhook:\${eventId}] Disputed charge has no payment_intent: \${chargeId}`
+      `[webhook:${eventId}] Disputed charge has no payment_intent: ${chargeId}`
     );
     return;
   }
@@ -238,7 +238,7 @@ async function handleDispute(
 
   if (!purchase) {
     console.error(
-      `[webhook:\${eventId}] CRITICAL: No purchase found for disputed payment_intent \${paymentIntentId}`
+      `[webhook:${eventId}] CRITICAL: No purchase found for disputed payment_intent ${paymentIntentId}`
     );
     return;
   }
@@ -252,6 +252,6 @@ async function handleDispute(
   });
 
   console.info(
-    `[webhook:\${eventId}] Access revoked for disputed purchase: \${purchase.id}`
+    `[webhook:${eventId}] Access revoked for disputed purchase: ${purchase.id}`
   );
 }

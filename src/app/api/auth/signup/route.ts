@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     });
 
     // Generate verification URL
-    const verifyUrl = `\${process.env.NEXT_PUBLIC_APP_URL}/auth/verify-email?token=\${verificationToken}&email=\${encodeURIComponent(email)}`;
+    const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/auth/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
 
     // Send verification email
     const emailResult = await sendEmailVerification(email, verifyUrl);

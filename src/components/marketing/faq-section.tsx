@@ -8,8 +8,8 @@ import { FAQS } from "@/lib/faq-data";
 
 function FaqItem({ q, a, index }: { q: string; a: string; index: number }) {
   const [open, setOpen] = useState(false);
-  const answerId = `faq-answer-\${index}`;
-  const buttonId = `faq-button-\${index}`;
+  const answerId = `faq-answer-${index}`;
+  const buttonId = `faq-button-${index}`;
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}

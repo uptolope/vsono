@@ -110,11 +110,11 @@ export async function sendEmailVerification(
               <div class="content">
                 <h2>Verify your email</h2>
                 <p>Welcome to SonoPrep! Please verify your email address to complete your account setup and get started with your ARDMS SPI exam preparation.</p>
-                <a href="\${verifyUrl}" class="button">Verify Email Address</a>
+                <a href="${verifyUrl}" class="button">Verify Email Address</a>
                 <p style="color: #999; font-size: 13px;">
                   This link expires in 24 hours. If the button above doesn't work, copy and paste this URL into your browser:
                 </p>
-                <p class="url-text">\${verifyUrl}</p>
+                <p class="url-text">${verifyUrl}</p>
                 <div class="footer">
                   <p>SonoPrep · ARDMS SPI Exam Prep</p>
                   <p>If you didn't create this account, please ignore this email.</p>
@@ -131,7 +131,7 @@ export async function sendEmailVerification(
       console.error("❌ Resend API error:", result.error);
       return {
         success: false,
-        error: `Failed to send email: \${result.error.message}`,
+        error: `Failed to send email: ${result.error.message}`,
       };
     }
 
@@ -140,7 +140,7 @@ export async function sendEmailVerification(
   } catch (err) {
     console.error("❌ Exception while sending verification email:", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
-    return { success: false, error: `Email service error: \${errorMessage}` };
+    return { success: false, error: `Email service error: ${errorMessage}` };
   }
 }
 
@@ -240,11 +240,11 @@ export async function sendPasswordResetEmail(
               <div class="content">
                 <h2>Reset your password</h2>
                 <p>Someone requested a password reset for your SonoPrep account. If this was you, click the button below to reset your password. If you didn't request this, you can safely ignore this email — your password won't change.</p>
-                <a href="\${resetUrl}" class="button">Reset Password</a>
+                <a href="${resetUrl}" class="button">Reset Password</a>
                 <p style="color: #999; font-size: 13px;">
                   This link expires in 1 hour. If the button above doesn't work, copy and paste this URL:
                 </p>
-                <p class="url-text">\${resetUrl}</p>
+                <p class="url-text">${resetUrl}</p>
                 <div class="footer">
                   <p>SonoPrep · ARDMS SPI Exam Prep</p>
                   <p>For security reasons, never share this link with anyone.</p>
@@ -261,7 +261,7 @@ export async function sendPasswordResetEmail(
       console.error("❌ Resend API error:", result.error);
       return {
         success: false,
-        error: `Failed to send email: \${result.error.message}`,
+        error: `Failed to send email: ${result.error.message}`,
       };
     }
 
@@ -270,6 +270,6 @@ export async function sendPasswordResetEmail(
   } catch (err) {
     console.error("❌ Exception while sending password reset email:", err);
     const errorMessage = err instanceof Error ? err.message : String(err);
-    return { success: false, error: `Email service error: \${errorMessage}` };
+    return { success: false, error: `Email service error: ${errorMessage}` };
   }
 }

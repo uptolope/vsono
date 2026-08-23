@@ -87,7 +87,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
                   <div
                     className="h-full rounded-full transition-all duration-500"
                     style={{
-                      width: `\${pct}%`,
+                      width: `${pct}%`,
                       backgroundColor: pct >= 75 ? "#4ade80" : pct >= 50 ? "#c85b3a" : "#ef4444",
                     }}
                   />
@@ -125,7 +125,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
       <div className="h-1 bg-white/5 rounded-full mb-8 overflow-hidden">
         <div
           className="h-full bg-[#c85b3a] rounded-full transition-all duration-300"
-          style={{ width: `\${((currentIndex + 1) / total) * 100}%` }}
+          style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
         />
       </div>
 
@@ -157,7 +157,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
               key={i}
               onClick={() => handleSelect(i)}
               disabled={isAnswered}
-              className={`w-full text-left px-5 py-4 border \${borderColor} \${bg} rounded transition-colors text-sm text-[#c2bab0] hover:border-[#c85b3a]/30 disabled:cursor-default`}
+              className={`w-full text-left px-5 py-4 border ${borderColor} ${bg} rounded transition-colors text-sm text-[#c2bab0] hover:border-[#c85b3a]/30 disabled:cursor-default`}
             >
               <span className="text-[#4a453f] mr-3 meta text-[10px]">
                 {String.fromCharCode(65 + i)}

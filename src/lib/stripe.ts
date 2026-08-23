@@ -22,7 +22,7 @@ function validateStripeEnvVars(): void {
 
   if (missing.length > 0 && process.env.NODE_ENV === "production") {
     throw new Error(
-      `Missing required Stripe environment variables: \${missing.join(", ")}`
+      `Missing required Stripe environment variables: ${missing.join(", ")}`
     );
   }
 }

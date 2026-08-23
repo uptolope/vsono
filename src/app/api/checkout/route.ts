@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       const expiresAt = activeBundlePurchase.accessExpiresAt!;
       return NextResponse.json(
         {
-          error: `Your Premium Bundle already includes this product (access until \${expiresAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}). No need to purchase separately.`,
+          error: `Your Premium Bundle already includes this product (access until ${expiresAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}). No need to purchase separately.`,
           activeUntil: expiresAt.toISOString(),
         },
         { status: 409 }
@@ -88,8 +88,8 @@ export async function POST(req: NextRequest) {
     mode: "payment",
     line_items: [{ price: entry.priceId, quantity: 1 }],
     metadata: { userId, product, ...(stackAfter ? { stackAfter } : {}) },
-    success_url: `\${process.env.NEXTAUTH_URL}/account?purchase=success`,
-    cancel_url: `\${process.env.NEXTAUTH_URL}/products?purchase=cancelled`,
+    success_url: `${process.env.NEXTAUTH_URL}/account?purchase=success`,
+    cancel_url: `${process.env.NEXTAUTH_URL}/products?purchase=cancelled`,
   });
 
   // Use productRecord.id for the connect

@@ -65,7 +65,7 @@ export default function AccountPageClient() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `sonoprep-data-export-\${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `sonoprep-data-export-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -123,7 +123,7 @@ export default function AccountPageClient() {
           <span className="meta text-[#c85b3a] text-sm">ACCOUNT</span>
           <h1 className="display-serif text-3xl sm:text-4xl text-white mt-3 font-semibold">
             Welcome back
-            {session?.user?.name ? `, \${session.user.name}` : ""}.
+            {session?.user?.name ? `, ${session.user.name}` : ""}.
           </h1>
           <p className="body-readable text-[#8a8279] text-sm mt-2">
             {session?.user?.email}
@@ -174,11 +174,11 @@ export default function AccountPageClient() {
                         {PRODUCT_LABELS[p.product] ?? p.product}
                       </p>
                       <p className="meta text-[9px] text-[#4a453f] mt-1">
-                        {days > 0 ? `\${days} days remaining` : "Expired"}
+                        {days > 0 ? `${days} days remaining` : "Expired"}
                       </p>
                     </div>
                     <span
-                      className={`meta text-[9px] px-2 py-1 rounded \${
+                      className={`meta text-[9px] px-2 py-1 rounded ${
                         days > 14
                           ? "text-green-400 bg-green-500/10"
                           : days > 0

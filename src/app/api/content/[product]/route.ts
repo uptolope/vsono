@@ -40,13 +40,13 @@ export async function GET(
   const ip = getClientIp(req.headers);
 
   // Rate-limit: 100 content requests per user per minute
-  const limit = await rateLimit(`content:\${userId}`, {
+  const limit = await rateLimit(`content:${userId}`, {
     limit: 100,
     windowMs: 60_000,
   });
 
   if (!limit.allowed) {
-    console.warn(`[content] Rate limit exceeded for user \${userId}`);
+    console.warn(`[content] Rate limit exceeded for user ${userId}`);
     return NextResponse.json({ error: "Rate limited" }, { status: 429 });
   }
 
@@ -54,21 +54,21 @@ export async function GET(
 
   // Validate product parameter is a string
   if (typeof product !== "string") {
-    console.warn(`[content] Invalid product parameter type: \${typeof product}`);
+    console.warn(`[content] Invalid product parameter type: ${typeof product}`);
     return NextResponse.json({ error: "Invalid product" }, { status: 400 });
   }
 
   const productKey = product.toUpperCase() as ProductContentKey;
 
   if (!VALID_PRODUCTS.includes(productKey)) {
-    console.info(`[content] Unknown product requested: \${product}`);
+    console.info(`[content] Unknown product requested: ${product}`);
     return NextResponse.json({ error: "Unknown product" }, { status: 404 });
   }
 
   const access = await checkContentAccess(userId, productKey);
   if (!access.hasAccess) {
     console.warn(
-      `[content] Access denied for user \${userId}, product \${productKey}: \${access.reason}`
+      `[content] Access denied for user ${userId}, product ${productKey}: ${access.reason}`
     );
     return NextResponse.json(
       { error: "Access denied", reason: access.reason },
@@ -85,7 +85,7 @@ export async function GET(
           { status: 500 }
         );
       }
-      console.info(`[content] Serving FLASHCARDS to user \${userId}`);
+      console.info(`[content] Serving FLASHCARDS to user ${userId}`);
       return NextResponse.json({
         flashcards: FLASHCARDS,
         expiresAt: access.expiresAt,
@@ -95,7 +95,7 @@ export async function GET(
     case "EXAM_SIMULATOR": {
       if (!EXAM_QUESTIONS || EXAM_QUESTIONS.length < EXAM_QUESTION_COUNT) {
         console.error(
-          `[content] Only \${EXAM_QUESTIONS?.length ?? 0} exam questions available (expected \${EXAM_QUESTION_COUNT}+)`
+          `[content] Only ${EXAM_QUESTIONS?.length ?? 0} exam questions available (expected ${EXAM_QUESTION_COUNT}+)`
         );
         return NextResponse.json(
           { error: "Content not available" },
@@ -108,7 +108,7 @@ export async function GET(
       // this by returning EXAM_QUESTIONS directly.
       const shuffled = shuffleQuestions(EXAM_QUESTIONS);
       console.info(
-        `[content] Serving EXAM_SIMULATOR (\${EXAM_QUESTION_COUNT} questions) to user \${userId}`
+        `[content] Serving EXAM_SIMULATOR (${EXAM_QUESTION_COUNT} questions) to user ${userId}`
       );
       return NextResponse.json({
         questions: toClientQuestions(shuffled.slice(0, EXAM_QUESTION_COUNT)),
@@ -124,7 +124,7 @@ export async function GET(
           { status: 500 }
         );
       }
-      console.info(`[content] Serving PHYSICS_PEARLS to user \${userId}`);
+      console.info(`[content] Serving PHYSICS_PEARLS to user ${userId}`);
       return NextResponse.json({
         pearls: PHYSICS_PEARLS,
         expiresAt: access.expiresAt,
@@ -139,7 +139,7 @@ export async function GET(
           { status: 500 }
         );
       }
-      console.info(`[content] Serving STUDY_NOTES to user \${userId}`);
+      console.info(`[content] Serving STUDY_NOTES to user ${userId}`);
       return NextResponse.json({
         sections: STUDY_SECTIONS,
         expiresAt: access.expiresAt,
@@ -149,7 +149,7 @@ export async function GET(
     default:
       // This should never happen due to the VALID_PRODUCTS check above,
       // but this is defensive programming.
-      console.error(`[content] Unhandled product: \${productKey}`);
+      console.error(`[content] Unhandled product: ${productKey}`);
       return NextResponse.json(
         { error: "Content handler not implemented" },
         { status: 500 }
