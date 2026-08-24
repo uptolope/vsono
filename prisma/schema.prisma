@@ -4,6 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -37,10 +38,11 @@ model Session {
 
 model VerificationToken {
   identifier String
-  token      String   @unique
+  token      String
   expires    DateTime
 
   @@unique([identifier, token])
+  @@index([identifier])
 }
 
 model User {
@@ -49,7 +51,6 @@ model User {
   email               String?             @unique
   emailVerified       DateTime?
   image               String?
-  password            String?
   role                Role                @default(STUDENT)
   examDate            DateTime?
   institution         String?

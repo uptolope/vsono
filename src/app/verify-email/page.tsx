@@ -1,10 +1,6 @@
-import { Suspense } from 'react';
+import React from 'react';
 import VerifyEmailClient from './VerifyEmailClient';
 
-export default function VerifyEmailPage() {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <VerifyEmailClient />
-    </Suspense>
-  );
+export default function VerifyEmailPage(): React.ReactNode {
+  return <VerifyEmailClient />;
 }

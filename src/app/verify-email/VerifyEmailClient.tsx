@@ -1,9 +1,9 @@
 'use client';
-
+import React from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function VerifyEmailClient() {
+export default function VerifyEmailClient(): React.ReactNode {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -30,7 +30,7 @@ export default function VerifyEmailClient() {
         if (response.ok) {
           setStatus('success');
           setMessage('Email verified! Redirecting to login...');
-          setTimeout(() => router.push('/login'), 2000);
+          setTimeout(() => router.push('/auth/login'), 2000);
         } else {
           const data = await response.json();
           setStatus('error');
