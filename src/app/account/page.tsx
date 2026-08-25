@@ -1,6 +1,6 @@
-'use client';
-
 import dynamicImport from 'next/dynamic';
+
+export const dynamic = 'force-dynamic';
 
 const AccountPageClient = dynamicImport(() => import('./AccountPageClient'), {
   ssr: false,
