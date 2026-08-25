@@ -1,0 +1,1578 @@
+// ═══════════════════════════════════════════════════════════════════
+// SonoPrep — Exam Questions (SERVER-SIDE ONLY)
+// 111 ARDMS-weighted SPI exam questions
+// SECURITY: correctAnswer field must NEVER be sent to the client
+// DO NOT IMPORT THIS FILE IN CLIENT COMPONENTS
+// ═══════════════════════════════════════════════════════════════════
+
+import { randomInt } from "node:crypto";
+
+export interface ExamQuestion {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: number; // Index of correct option — NEVER expose to client
+  domain: string;
+  explanation: string; // Only shown AFTER answer submission
+}
+
+export type ExamDomain =
+  | "Domain 1: Physics Principles"
+  | "Domain 2: Transducer Technology"
+  | "Domain 3: Principles of Imaging"
+  | "Domain 4: Doppler & Hemodynamics"
+  | "Domain 5: Bioeffects & Safety";
+
+// Supported domains
+const DOMAINS: ExamDomain[] = [
+  "Domain 1: Physics Principles",
+  "Domain 2: Transducer Technology",
+  "Domain 3: Principles of Imaging",
+  "Domain 4: Doppler & Hemodynamics",
+  "Domain 5: Bioeffects & Safety",
+];
+
+/** All 111 exam questions — SERVER USE ONLY */
+export const EXAM_QUESTIONS: ExamQuestion[] = [
+  {
+    id: 1,
+    question: `When using spectral Doppler, what happens to the frequency shift when the angle of incidence increases from 0° to 60°?`,
+    options: [
+      `Frequency shift doubles`,
+      `Frequency shift decreases`,
+      `Frequency shift increases`,
+      `No change`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `The Doppler equation includes cosθ. When θ increases from 0° to 60°, cosθ decreases from 1 to 0.5, causing the frequency shift to decrease. Maximum velocity is detected when the beam is parallel to flow (θ = 0°).`,
+  },
+  {
+    id: 2,
+    question: `Which type of resolution is determined primarily by the transducer frequency?`,
+    options: [
+      `Lateral resolution`,
+      `Axial resolution`,
+      `Temporal resolution`,
+      `Contrast resolution`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Axial resolution is determined by spatial pulse length, which is inversely related to frequency. Higher frequency transducers produce shorter wavelengths and shorter pulses, resulting in better axial resolution.`,
+  },
+  {
+    id: 3,
+    question: `What happens to beam penetration when transducer frequency is increased?`,
+    options: [
+      `Penetration increases`,
+      `Penetration decreases`,
+      `Penetration stays the same`,
+      `Penetration doubles`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Higher frequency ultrasound has greater attenuation in tissue (approximately 0.5 dB/cm/MHz), providing less penetration. Lower frequencies are used for deeper structures at the cost of axial resolution.`,
+  },
+  {
+    id: 4,
+    question: `What are the two main biological effects of ultrasound?`,
+    options: [
+      `Thermal and cavitational`,
+      `Electrical and magnetic`,
+      `Ionizing and non-ionizing`,
+      `Mechanical and chemical`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 1: Physics Principles",
+    explanation: `The two main biological effects are thermal (tissue heating from absorbed ultrasound energy) and cavitational (bubble formation and collapse). These are monitored using the Thermal Index and Mechanical Index.`,
+  },
+  {
+    id: 5,
+    question: `What percentage of ultrasound energy is reflected at a soft tissue-to-bone interface?`,
+    options: [`Less than 1%`, `About 50%`, `Nearly 100%`, `About 25%`],
+    correctAnswer: 2,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Bone has a very different acoustic impedance compared to soft tissue, resulting in nearly total reflection (approximately 99%) of the ultrasound beam. This is why bone causes acoustic shadowing.`,
+  },
+  {
+    id: 6,
+    question: `The Mechanical Index (MI) on an ultrasound machine displays 0.8. What does this value indicate?`,
+    options: [
+      `Maximum frame rate`,
+      `Thermal dose delivered`,
+      `Likelihood of cavitation`,
+      `Transducer frequency`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 1: Physics Principles",
+    explanation: `The Mechanical Index estimates the likelihood of cavitational effects based on the peak negative pressure in the ultrasound beam. An MI of 0.8 indicates moderate cavitational potential.`,
+  },
+  {
+    id: 7,
+    question: `A mirror image artifact shows duplicate structures. What is the most common cause?`,
+    options: [
+      `Side lobe artifact`,
+      `Reverberation artifact`,
+      `Refraction at a curved interface`,
+      `Beam width artifact`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Refraction at a curved interface can cause beam deflection, creating duplicate structures. The most common example is hepatic vein duplication above the diaphragm.`,
+  },
+  {
+    id: 8,
+    question: `In color Doppler, aliasing occurs when blood velocity exceeds the Nyquist limit. How can you typically reduce aliasing?`,
+    options: [
+      `Increase the depth`,
+      `Decrease the scale/PRF`,
+      `Increase the baseline shift`,
+      `Use a lower frequency transducer`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Shifting the baseline effectively doubles the Nyquist limit, allowing higher velocities to be displayed without aliasing. Other methods include increasing PRF or using continuous wave Doppler.`,
+  },
+  {
+    id: 9,
+    question: `What is the typical attenuation coefficient of soft tissue in dB/cm/MHz?`,
+    options: [
+      `0.3 dB/cm/MHz`,
+      `0.5 dB/cm/MHz`,
+      `1.0 dB/cm/MHz`,
+      `2.0 dB/cm/MHz`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `The average attenuation coefficient of soft tissue is approximately 0.5 dB/cm/MHz. This means for every 1 MHz of frequency and every centimeter of depth, the signal loses about 0.5 dB.`,
+  },
+  {
+    id: 10,
+    question: `What is acoustic impedance (Z) and how is it calculated?`,
+    options: [
+      `Z = frequency × wavelength`,
+      `Z = ρ / c (density divided by speed)`,
+      `Z = ρ × c (density times speed)`,
+      `Z = c / λ (speed divided by wavelength)`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Acoustic impedance (Z) = density (ρ) × speed of sound (c). It represents the resistance to ultrasound wave propagation at an interface and determines how much sound is reflected.`,
+  },
+  {
+    id: 11,
+    question: `What is the pulse repetition period (PRP)?`,
+    options: [
+      `The time for one complete pulse cycle`,
+      `The time from the beginning of one pulse to the beginning of the next`,
+      `The duration of the ultrasound pulse`,
+      `The frequency of pulse transmission`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Pulse Repetition Period is the time from the beginning of one pulse to the beginning of the next. PRP = 1 / PRF. Longer PRP (lower PRF) is needed for deeper imaging.`,
+  },
+  {
+    id: 12,
+    question: `What is the relationship between frequency and wavelength in ultrasound?`,
+    options: [
+      `They are directly proportional`,
+      `They are inversely proportional`,
+      `They are independent of each other`,
+      `They are equal at 1 MHz`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Frequency and wavelength are inversely proportional: f = c / λ. Since the speed of sound in tissue is relatively constant (1540 m/s), higher frequencies produce shorter wavelengths and vice versa.`,
+  },
+  {
+    id: 13,
+    question: `What causes posterior acoustic enhancement behind fluid-filled structures?`,
+    options: [
+      `Increased attenuation by fluid`,
+      `Reduced attenuation by fluid compared to tissue`,
+      `Reflection at fluid-tissue interface`,
+      `Reverberation within the fluid`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Fluid attenuates sound much less than surrounding soft tissue, so more ultrasound energy passes through and reaches deeper structures. This appears as increased brightness (enhancement) behind cysts.`,
+  },
+  {
+    id: 14,
+    question: `What is spatial pulse length and how does it affect axial resolution?`,
+    options: [
+      `It determines lateral resolution`,
+      `It is the length of the ultrasound beam`,
+      `It is the number of cycles times wavelength, determining axial resolution`,
+      `It is unrelated to resolution`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Spatial pulse length = number of cycles in pulse × wavelength. Axial resolution is approximately half the spatial pulse length. Shorter SPL = better axial resolution.`,
+  },
+  {
+    id: 15,
+    question: `What is the speed of sound in soft tissue?`,
+    options: [`330 m/s`, `1540 m/s`, `3000 m/s`, `186,000 m/s`],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `The average speed of sound in soft tissue is approximately 1540 m/s. This value is used as a standard reference for ultrasound machine calculations and depth measurements.`,
+  },
+  {
+    id: 16,
+    question: `What causes side lobe artifact?`,
+    options: [
+      `Main beam reflection`,
+      `Energy in side lobes creating false echoes`,
+      `Deep tissue attenuation`,
+      `Transducer malfunction`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Side lobes are weaker beams that extend from the main beam at angles. When side lobe energy reflects off structures, it can create false echoes or fill in anechoic areas.`,
+  },
+  {
+    id: 17,
+    question: `What is the difference between specular and diffuse reflectors?`,
+    options: [
+      `Specular reflectors are larger`,
+      `Specular reflectors reflect at equal angles, diffuse scatter in many directions`,
+      `Diffuse reflectors only occur in bone`,
+      `There is no difference`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Specular reflectors (like smooth interfaces) reflect ultrasound at equal angles to incidence. Diffuse reflectors (like tissue parenchyma) scatter ultrasound in many directions, creating speckle pattern.`,
+  },
+  {
+    id: 18,
+    question: `What is the Doppler equation used to calculate flow velocity?`,
+    options: [
+      `fd = f0 / c`,
+      `fd = (2 × f0 × v × cosθ) / c`,
+      `fd = v / λ`,
+      `fd = c × λ`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `The Doppler equation is fd = (2 × f0 × v × cosθ) / c, where fd is the frequency shift, f0 is transmitted frequency, v is velocity, θ is the angle, and c is speed of sound.`,
+  },
+  {
+    id: 19,
+    question: `What causes reverberation artifact?`,
+    options: [
+      `Single reflection from a smooth interface`,
+      `Multiple reflections between two parallel surfaces`,
+      `Refraction at curved surfaces`,
+      `Side lobe interference`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Reverberation occurs when ultrasound pulses bounce repeatedly between two highly reflective parallel surfaces (like transducer face and a metal object), creating equally-spaced parallel lines.`,
+  },
+  {
+    id: 20,
+    question: `What is the main difference between linear and curved array transducers?`,
+    options: [
+      `Linear arrays have higher frequencies`,
+      `Linear arrays produce parallel beams, curved arrays produce diverging beams`,
+      `Curved arrays have better resolution`,
+      `Linear arrays are only used for cardiac imaging`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Linear array transducers produce parallel ultrasound beams, ideal for superficial structures. Curved array transducers produce diverging beams, providing wider fields of view for deeper abdominal imaging.`,
+  },
+  {
+    id: 21,
+    question: `What determines the axial resolution of a transducer?`,
+    options: [
+      `Beam width at focal zone`,
+      `Spatial pulse length`,
+      `Transducer diameter`,
+      `Array element count`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Axial resolution is determined by spatial pulse length, which depends on the number of cycles in the pulse and the wavelength. Shorter pulses (higher frequency, fewer cycles) provide better axial resolution.`,
+  },
+  {
+    id: 22,
+    question: `What is the purpose of the matching layer in a transducer?`,
+    options: [
+      `To focus the beam`,
+      `To reduce impedance mismatch between crystal and skin`,
+      `To increase frequency output`,
+      `To protect the crystal`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Matching layers reduce the large acoustic impedance difference between the piezoelectric element and skin, allowing more ultrasound energy to enter the patient and more echoes to return.`,
+  },
+  {
+    id: 23,
+    question: `How does electronic focusing work in array transducers?`,
+    options: [
+      `Using a physical lens`,
+      `By electronically delaying signals from different elements`,
+      `By increasing transducer frequency`,
+      `Using curved crystal surfaces`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Electronic focusing works by introducing time delays between the firing of different crystal elements. This causes the ultrasound waves to converge at a specific depth, creating the focal zone.`,
+  },
+  {
+    id: 24,
+    question: `What is the advantage of a phased array transducer?`,
+    options: [
+      `High frequency for superficial imaging`,
+      `Wide field of view for abdominal imaging`,
+      `Electronic beam steering without moving parts`,
+      `Better axial resolution`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Phased array transducers use electronic beam steering without mechanical movement. This allows rapid beam direction changes and is ideal for cardiac imaging through small acoustic windows.`,
+  },
+  {
+    id: 25,
+    question: `What determines lateral resolution?`,
+    options: [
+      `Spatial pulse length`,
+      `Beam width at the area of interest`,
+      `Transducer frequency`,
+      `Pulse repetition frequency`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Lateral resolution is determined by beam width. The beam is narrowest at the focal zone, so lateral resolution is best there. Beam width is affected by frequency, focusing, and aperture size.`,
+  },
+  {
+    id: 26,
+    question: `What is the effect of increasing aperture size on image quality?`,
+    options: [
+      `Wider beam, poorer lateral resolution`,
+      `Narrower beam, better lateral resolution`,
+      `No effect on resolution`,
+      `Only affects axial resolution`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Larger aperture size creates a narrower focused beam, improving lateral resolution. However, very large apertures may have limitations due to diffraction and practical considerations.`,
+  },
+  {
+    id: 27,
+    question: `What is the difference between mechanical and electronic scanning?`,
+    options: [
+      `Mechanical scanning is faster`,
+      `Mechanical scanning uses physical crystal movement, electronic uses element timing`,
+      `Electronic scanning has lower resolution`,
+      `Mechanical scanning is only for 2D imaging`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Mechanical scanning physically moves a crystal to sweep the beam. Electronic scanning (phased/linear arrays) uses precise timing of multiple elements to electronically steer and focus the beam.`,
+  },
+  {
+    id: 28,
+    question: `What is the purpose of the backing material in a transducer?`,
+    options: [
+      `To increase frequency output`,
+      `To dampen crystal vibrations and shorten pulse`,
+      `To focus the beam electronically`,
+      `To protect against damage`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Backing material absorbs energy from the piezoelectric element, damping its vibrations. This shortens the pulse duration, improving axial resolution but reducing sensitivity.`,
+  },
+  {
+    id: 29,
+    question: `What type of transducer is typically used for echocardiography?`,
+    options: [
+      `High frequency linear array`,
+      `Curved array for abdominal imaging`,
+      `Phased array sector scanner`,
+      `Mechanical sector scanner`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Phased array transducers are used for cardiac imaging because they can steer the beam rapidly through small intercostal acoustic windows to create a sector-shaped field of view.`,
+  },
+  {
+    id: 30,
+    question: `What is the relationship between the number of elements and image quality?`,
+    options: [
+      `More elements always mean better images`,
+      `More elements allow better beam forming and resolution`,
+      `More elements reduce frame rate`,
+      `More elements increase penetration`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `More array elements allow more precise electronic beam forming, including better focusing, steering, and resolution. However, more elements require more complex processing.`,
+  },
+  {
+    id: 31,
+    question: `What is the focal zone and why is it important?`,
+    options: [
+      `The point of maximum intensity`,
+      `The depth where beam is narrowest and resolution is best`,
+      `The beginning of the ultrasound beam`,
+      `The end of the ultrasound beam`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `The focal zone is where the ultrasound beam is narrowest, resulting in the best lateral resolution. Placing the structure of interest at the focal zone optimizes image quality for that area.`,
+  },
+  {
+    id: 32,
+    question: `What is the effect of using multiple focal zones?`,
+    options: [
+      `Improved resolution at all depths`,
+      `Reduced frame rate`,
+      `Increased penetration`,
+      `Better color Doppler sensitivity`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Each focal zone requires additional pulse emissions, reducing the frame rate. Using multiple focal zones improves resolution at those depths but slows down the image acquisition.`,
+  },
+  {
+    id: 33,
+    question: `What is the difference between time gain compensation (TGC) and overall gain?`,
+    options: [
+      `TGC affects only deep structures`,
+      `Overall gain amplifies all echoes equally, TGC varies by depth`,
+      `TGC is only for color Doppler`,
+      `There is no practical difference`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Overall gain uniformly amplifies all returning echoes. TGC (or STC) selectively amplifies deeper echoes more than shallow ones to compensate for tissue attenuation, using sliding controls for different depth zones.`,
+  },
+  {
+    id: 34,
+    question: `How does harmonic imaging improve image quality?`,
+    options: [
+      `By increasing frame rate`,
+      `By using tissue harmonics that reduce artifacts`,
+      `By increasing penetration depth`,
+      `By reducing transducer frequency`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Harmonic imaging uses the nonlinear propagation of ultrasound to generate harmonics (multiples of the fundamental frequency). These harmonics have less noise and clutter, improving contrast resolution and reducing artifacts.`,
+  },
+  {
+    id: 35,
+    question: `What is compound imaging and what are its benefits?`,
+    options: [
+      `Combining multiple imaging modalities`,
+      `Steering beams at multiple angles and averaging`,
+      `Increasing frequency for better resolution`,
+      `Using multiple focal zones`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Compound imaging steers the ultrasound beam at multiple angles from each position and averages the returning information. Benefits include reduced speckle, improved contrast resolution, and reduced angle-dependent artifacts.`,
+  },
+  {
+    id: 36,
+    question: `What is the effect of persistence on ultrasound images?`,
+    options: [
+      `Increases spatial resolution`,
+      `Averages consecutive frames to reduce noise`,
+      `Improves temporal resolution`,
+      `Increases penetration`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Persistence (frame averaging) combines multiple consecutive frames to create a smoother, less noisy image. Higher persistence reduces noise but can cause motion blurring. Lower persistence shows more detail but may appear grainy.`,
+  },
+  {
+    id: 37,
+    question: `What is the relationship between line density and image quality?`,
+    options: [
+      `Higher line density improves resolution but reduces frame rate`,
+      `Higher line density always improves quality`,
+      `Line density has no effect on image quality`,
+      `Lower line density improves all aspects of image quality`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Higher line density (more scan lines per image) improves spatial resolution but requires more time to acquire, reducing frame rate. Lower line density increases frame rate at the cost of spatial resolution.`,
+  },
+  {
+    id: 38,
+    question: `What causes speckle in ultrasound images?`,
+    options: [
+      `Electronic noise`,
+      `Interference from multiple tissue reflectors`,
+      `Transducer malfunction`,
+      `Patient movement`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Speckle is the granular appearance caused by constructive and destructive interference from many small tissue scatterers. It is a fundamental property of ultrasound imaging, not an artifact.`,
+  },
+  {
+    id: 39,
+    question: `What is the purpose of the reject/gain control?`,
+    options: [
+      `To remove low-level echoes and noise`,
+      `To increase penetration`,
+      `To improve temporal resolution`,
+      `To control frame rate`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `The reject (or lower threshold) control eliminates low-amplitude echoes below a certain level, cleaning up the image by removing noise and clutter. Setting it too high may remove diagnostically important information.`,
+  },
+  {
+    id: 40,
+    question: `What is the difference between B-mode and M-mode?`,
+    options: [
+      `B-mode is for color Doppler`,
+      `M-mode shows motion over time, B-mode shows anatomy`,
+      `B-mode has higher frame rate`,
+      `M-mode uses different frequencies`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `B-mode (brightness mode) displays a 2D cross-sectional image of anatomy. M-mode (motion mode) displays the motion of structures over time along a single scan line, with excellent temporal resolution.`,
+  },
+  {
+    id: 41,
+    question: `What is the purpose of frame averaging (persistence)?`,
+    options: [
+      `To increase spatial resolution`,
+      `To reduce image noise by averaging frames`,
+      `To improve penetration`,
+      `To increase frame rate`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Frame averaging combines multiple consecutive frames, reducing random noise and creating smoother images. However, it reduces temporal resolution and can cause blurring with moving structures.`,
+  },
+  {
+    id: 42,
+    question: `What causes edge shadowing and where is it commonly seen?`,
+    options: [
+      `Refraction at curved edges of round structures`,
+      `Strong reflection from smooth surfaces`,
+      `Side lobe artifact`,
+      `Reverberation`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Edge shadowing occurs due to refraction at the curved edges of round structures like cysts or organs. The beam is deflected away, creating dark streaks extending from the edges.`,
+  },
+  {
+    id: 43,
+    question: `What is the difference between spatial resolution and contrast resolution?`,
+    options: [
+      `Spatial resolution is about detail, contrast resolution is about distinguishing similar intensities`,
+      `They are the same thing`,
+      `Spatial resolution is for color Doppler only`,
+      `Contrast resolution is not important in ultrasound`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Spatial resolution is the ability to distinguish two small objects as separate. Contrast resolution is the ability to distinguish small differences in echogenicity between structures of similar size.`,
+  },
+  {
+    id: 44,
+    question: `What is the effect of increasing output power on the image?`,
+    options: [
+      `Increases signal-to-noise ratio`,
+      `May increase bioeffects risk`,
+      `Improves resolution`,
+      `Reduces penetration`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Higher output power increases the ultrasound signal strength, which can improve image quality, but also increases the potential for thermal and mechanical bioeffects. ALARA principles guide the use of lowest necessary power.`,
+  },
+  {
+    id: 45,
+    question: `What is aliasing in pulsed wave Doppler?`,
+    options: [
+      `Incorrect angle correction`,
+      `Wraparound of the waveform when velocity exceeds Nyquist limit`,
+      `Loss of Doppler signal`,
+      `Beam width artifact`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Aliasing occurs when blood velocity exceeds the Nyquist limit (PRF/2), causing the waveform to appear to wrap around and display in the opposite direction of flow. This is a fundamental limitation of pulsed wave Doppler.`,
+  },
+  {
+    id: 46,
+    question: `What is the difference between pulsed wave Doppler and continuous wave Doppler?`,
+    options: [
+      `Pulsed wave has better penetration`,
+      `Pulsed wave allows depth localization, continuous wave does not`,
+      `Continuous wave has higher frequency`,
+      `Pulsed wave cannot detect high velocities`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Pulsed wave Doppler uses the same crystals to transmit and receive, allowing depth localization but with velocity limitations (Nyquist limit). Continuous wave Doppler uses separate crystals, eliminating aliasing but without depth discrimination.`,
+  },
+  {
+    id: 47,
+    question: `What is the Nyquist limit and how is it calculated?`,
+    options: [
+      `Maximum detectable velocity = PRF / 2`,
+      `Maximum velocity = PRF × 2`,
+      `It is always 1 m/s`,
+      `It is the transducer frequency`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `The Nyquist limit is PRF / 2. Velocities exceeding this limit will appear aliased (wrapped around) on the spectral display. Higher PRF increases the Nyquist limit.`,
+  },
+  {
+    id: 48,
+    question: `What does the angle of incidence affect in Doppler examinations?`,
+    options: [
+      `Only color Doppler`,
+      `Velocity calculations (via cosθ)`,
+      `Only the brightness of the image`,
+      `Frame rate`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `The angle between the ultrasound beam and blood flow direction (θ) affects velocity calculations. The Doppler equation includes cosθ, meaning velocity is most accurate when θ = 0° (parallel to flow).`,
+  },
+  {
+    id: 49,
+    question: `What is power Doppler and what are its advantages?`,
+    options: [
+      `Power Doppler displays velocity`,
+      `Power Doppler displays signal amplitude, is angle-independent and more sensitive`,
+      `Power Doppler has better temporal resolution`,
+      `Power Doppler eliminates the need for angle correction`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Power Doppler displays the amplitude (strength) of the Doppler signal rather than velocity. Advantages include angle-independence, greater sensitivity to slow flow, and no aliasing. Disadvantages include no directional information.`,
+  },
+  {
+    id: 50,
+    question: `What causes spectral broadening in Doppler waveforms?`,
+    options: [
+      `Turbulent flow or sample volume size`,
+      `High velocity flow only`,
+      `Correct angle correction`,
+      `Low filter settings`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Spectral broadening (filling in under the waveform) occurs when there's a range of velocities within the sample volume, such as in turbulent flow, or when the sample volume is positioned where laminar flow is disturbed.`,
+  },
+  {
+    id: 51,
+    question: `What is the purpose of the wall filter in Doppler?`,
+    options: [
+      `To increase signal strength`,
+      `To remove low-frequency noise from tissue motion`,
+      `To improve color saturation`,
+      `To reduce aliasing`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Wall filters remove low-frequency, high-amplitude signals from tissue motion and vessel wall movement, allowing clearer display of blood flow velocities. However, very high filters may remove low-velocity flow signals.`,
+  },
+  {
+    id: 52,
+    question: `What is the difference between color Doppler and power Doppler?`,
+    options: [
+      `Color Doppler shows direction and velocity, power Doppler shows signal strength`,
+      `Power Doppler has better penetration`,
+      `Color Doppler is only for cardiac use`,
+      `They are the same technology`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Color Doppler encodes mean velocity and direction using color (red/blue scale). Power Doppler encodes signal amplitude (strength), showing presence and quantity of flow but no directional or velocity information.`,
+  },
+  {
+    id: 53,
+    question: `What causes angle dependence in Doppler measurements?`,
+    options: [
+      `The Doppler equation includes cosθ`,
+      `The transducer frequency changes with angle`,
+      `Only the beam width matters`,
+      `It is a machine limitation`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `The Doppler equation includes cosθ, making velocity accuracy dependent on the angle between the beam and flow direction. Velocities cannot be measured when θ = 90° (cos90° = 0).`,
+  },
+  {
+    id: 54,
+    question: `What is the difference between laminar and turbulent flow?`,
+    options: [
+      `Laminar flow has parallel layers, turbulent has chaotic motion`,
+      `Laminar flow only occurs in arteries`,
+      `Turbulent flow has higher velocities`,
+      `Laminar flow always sounds different on Doppler`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Laminar flow has blood moving in parallel layers with the fastest flow in the center. Turbulent flow has chaotic, multidirectional motion, often occurring distal to stenoses, and produces spectral broadening and audible bruit.`,
+  },
+  {
+    id: 55,
+    question: `What does ALARA stand for and what is its meaning?`,
+    options: [
+      `Always Leave At Rest Always`,
+      `As Low As Reasonably Achievable`,
+      `Advanced Low Amplitude Resolution Analysis`,
+      `American League of Radiologic Administrators`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `ALARA = As Low As Reasonably Achievable. This fundamental safety principle requires using the lowest possible ultrasound output and shortest examination time that still produces diagnostic-quality images.`,
+  },
+  {
+    id: 56,
+    question: `What is the Thermal Index (TI) and what does it indicate?`,
+    options: [
+      `Maximum frame rate`,
+      `Estimated maximum temperature rise in tissue`,
+      `Transducer input power`,
+      `Mechanical effects index`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `The Thermal Index estimates the maximum temperature rise (in °C) that could occur in tissue at the current output settings. It helps practitioners apply ALARA by showing relative thermal risk.`,
+  },
+  {
+    id: 57,
+    question: `What is the Mechanical Index (MI) and what does it indicate?`,
+    options: [
+      `Maximum intensity output`,
+      `Estimated likelihood of cavitational effects`,
+      `Frame rate limitation`,
+      `Transducer frequency`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `The Mechanical Index estimates the likelihood of cavitational effects based on the peak negative pressure in the ultrasound beam. It helps assess mechanical bioeffect risk.`,
+  },
+  {
+    id: 58,
+    question: `What are the two main mechanisms of ultrasound bioeffects?`,
+    options: [
+      `Thermal and electrical`,
+      `Mechanical and cavitational`,
+      `Thermal and mechanical`,
+      `Ionizing and non-ionizing`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `The two main biological effects of ultrasound are thermal (tissue heating from absorbed energy) and mechanical (cavitation, radiation force, and acoustic streaming). These are monitored using TI and MI.`,
+  },
+  {
+    id: 59,
+    question: `What factors affect the thermal effects of ultrasound?`,
+    options: [
+      `Output intensity, exposure time, and tissue attenuation`,
+      `Only the transducer frequency`,
+      `Only the examination time`,
+      `Only the patient's weight`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `Thermal effects depend on output intensity, exposure duration, beam characteristics (focused vs. unfocused), tissue attenuation properties, and the cooling effect of blood flow to the area.`,
+  },
+  {
+    id: 60,
+    question: `What is cavitation and what types exist?`,
+    options: [
+      `Tissue heating`,
+      `Bubble formation and collapse - stable and inertial`,
+      `Beam distortion`,
+      `Only occurs with contrast agents`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `Cavitation is the formation and oscillation or collapse of gas-filled bubbles in tissue due to ultrasound pressure changes. Stable cavitation involves gentle oscillation; inertial (transient) cavitation involves violent collapse.`,
+  },
+  {
+    id: 61,
+    question: `What is radiation force in ultrasound?`,
+    options: [
+      `Force from X-ray production`,
+      `The force exerted by ultrasound waves on tissue`,
+      `Pressure from the transducer`,
+      `Only affects bone`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `Radiation force is the mechanical force exerted by ultrasound waves as they transfer momentum to tissue or reflect from interfaces. It can cause tissue displacement, streaming in fluids, and contributes to bioeffects.`,
+  },
+  {
+    id: 62,
+    question: `What precautions should be taken for obstetric ultrasound?`,
+    options: [
+      `Use highest possible power`,
+      `Avoid using Doppler in first trimester`,
+      `Follow ALARA, limit exposure time, use lowest output`,
+      `Use continuous scanning`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `Obstetric ultrasound requires special caution. Follow ALARA principles, use lowest possible output, limit exposure time, avoid unnecessary Doppler in early pregnancy, and only perform medically necessary examinations.`,
+  },
+  {
+    id: 63,
+    question: `What is the relationship between output power and bioeffects?`,
+    options: [
+      `Higher output increases bioeffect risk`,
+      `Higher output decreases bioeffects`,
+      `No relationship exists`,
+      `Only affects color Doppler`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `Higher output power increases both the diagnostic signal strength and the potential for thermal and mechanical bioeffects. The TI and MI displays help practitioners balance image quality against safety.`,
+  },
+  {
+    id: 64,
+    question: `What is acoustic streaming?`,
+    options: [
+      `Sound wave propagation`,
+      `Fluid flow induced by ultrasound radiation force`,
+      `Blood flow in arteries`,
+      `Artifact in Doppler imaging`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 5: Bioeffects & Safety",
+    explanation: `Acoustic streaming is the steady fluid flow that can be induced by ultrasound radiation force. It occurs near vibrating structures and in standing wave fields, and is a mechanical bioeffect of ultrasound.`,
+  },
+  {
+    id: 65,
+    question: `What is the typical frequency range for a curved array transducer used for abdominal imaging?`,
+    options: [`1-2 MHz`, `2-5 MHz`, `5-10 MHz`, `10-15 MHz`],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Curved array transducers for abdominal imaging typically operate at 2-5 MHz, balancing penetration depth for abdominal structures with acceptable resolution.`,
+  },
+  {
+    id: 66,
+    question: `What causes range ambiguity artifact?`,
+    options: [
+      `Low PRF allowing echoes from beyond imaging depth`,
+      `High PRF causing aliasing`,
+      `Transducer frequency too high`,
+      `Incorrect TGC settings`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Range ambiguity occurs when the PRF is so high that echoes from structures deeper than the imaging depth are received and incorrectly displayed at shallower positions.`,
+  },
+  {
+    id: 67,
+    question: `What is the effect of increasing pulse repetition frequency (PRF)?`,
+    options: [
+      `Increases maximum detectable velocity (reduces aliasing)`,
+      `Decreases penetration depth`,
+      `Improves axial resolution`,
+      `Reduces frame rate`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Higher PRF increases the Nyquist limit (PRF/2), allowing higher velocities to be displayed without aliasing. However, higher PRF reduces maximum imaging depth.`,
+  },
+  {
+    id: 68,
+    question: `What is the difference between systolic and diastolic velocities in Doppler?`,
+    options: [
+      `Systolic velocities are always lower`,
+      `Systolic velocities are peak velocities during ventricular contraction`,
+      `Diastolic velocities are not measurable`,
+      `They are the same in all vessels`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Systolic velocities are the peak velocities during ventricular contraction. Diastolic velocities occur during ventricular relaxation. The systolic/diastolic ratio is used to assess downstream resistance.`,
+  },
+  {
+    id: 69,
+    question: `What causes increased resistive index (RI) in arterial Doppler?`,
+    options: [
+      `Normal flow patterns`,
+      `Downstream vascular resistance`,
+      `High cardiac output`,
+      `Low blood viscosity`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Resistive Index = (PSV - EDV) / PSV. Increased RI indicates higher downstream resistance, which can be caused by arterial stenosis, increased vascular tone, or distal arterial disease.`,
+  },
+  {
+    id: 70,
+    question: `What is the purpose of the Doppler sample volume?`,
+    options: [
+      `To increase frame rate`,
+      `To select the location for Doppler velocity measurement`,
+      `To improve B-mode image quality`,
+      `To reduce artifacts`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `The sample volume (gate) defines the spatial location and depth where Doppler signals are detected and analyzed. Proper placement is critical for accurate velocity measurements.`,
+  },
+  {
+    id: 71,
+    question: `What is the effect of hematocrit on Doppler measurements?`,
+    options: [
+      `No effect on blood scattering`,
+      `Higher hematocrit increases scattering and Doppler signal`,
+      `Lower hematocrit improves velocities`,
+      `Only affects color Doppler`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Red blood cells are the primary scatterers of ultrasound. Higher hematocrit increases the number of scatterers, improving Doppler signal strength. Very low hematocrit can reduce Doppler signal.`,
+  },
+  {
+    id: 72,
+    question: `What is duplex ultrasound?`,
+    options: [
+      `2D and 3D imaging combined`,
+      `Simultaneous B-mode imaging and Doppler evaluation`,
+      `Color and power Doppler combined`,
+      `Multiple frequency imaging`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Duplex ultrasound combines gray-scale B-mode imaging with spectral Doppler, allowing anatomical visualization with hemodynamic assessment at the same time.`,
+  },
+  {
+    id: 73,
+    question: `What is the effect of beam steering on Doppler angle?`,
+    options: [
+      `Beam steering eliminates angle dependence`,
+      `Beam steering can optimize the Doppler angle`,
+      `Beam steering increases aliasing`,
+      `Beam steering only affects B-mode`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Beam steering allows the sonographer to direct the beam to achieve a more favorable Doppler angle (closer to 0°), improving velocity accuracy and signal strength.`,
+  },
+  {
+    id: 74,
+    question: `What is the pulsatility index (PI) and how is it calculated?`,
+    options: [
+      `PI = PSV / EDV`,
+      `PI = (PSV - EDV) / PSV`,
+      `PI = (PSV - EDV) / TAMV`,
+      `PI = EDV / PSV`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Pulsatility Index = (PSV - EDV) / TAMV, where TAMV is time-averaged maximum velocity. It measures the amount of flow pulsatility and is affected by downstream resistance.`,
+  },
+  {
+    id: 75,
+    question: `What causes the Doppler shift to be positive or negative?`,
+    options: [
+      `The direction of blood flow relative to the transducer`,
+      `The transducer frequency`,
+      `The patient's blood pressure`,
+      `The sample volume size`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `The Doppler shift is positive when blood flows toward the transducer and negative when blood flows away. This is displayed as flow above or below the baseline in spectral Doppler.`,
+  },
+  {
+    id: 76,
+    question: `What is the purpose of baseline shift in Doppler?`,
+    options: [
+      `To improve color Doppler`,
+      `To increase the display range without aliasing`,
+      `To increase penetration`,
+      `To reduce noise`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Shifting the baseline effectively increases the velocity range that can be displayed without aliasing. By moving the baseline away from the direction of predominant flow, the Nyquist limit is doubled in that direction.`,
+  },
+  {
+    id: 77,
+    question: `What is the difference between color mean velocity and color variance displays?`,
+    options: [
+      `Mean velocity is always higher`,
+      `Variance display shows turbulence`,
+      `They are identical displays`,
+      `Variance only shows direction`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Color mean velocity displays the average velocity in shades of red and blue. Variance display adds green to indicate turbulent flow (velocity variance exceeding a threshold).`,
+  },
+  {
+    id: 78,
+    question: `What causes color bruit artifact?`,
+    options: [
+      `Vibrations from adjacent arteries causing false color signals`,
+      `Mirror artifact`,
+      `Side lobe artifact`,
+      `Range ambiguity`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Color bruit occurs when vibrations from adjacent high-velocity flow (like carotid stenosis) are transmitted to stationary tissues, creating false color signals outside the actual vessel.`,
+  },
+  {
+    id: 79,
+    question: `What is the effect of ensemble length on color Doppler?`,
+    options: [
+      `Increases frame rate`,
+      `Improves velocity accuracy and wall filter performance`,
+      `Decreases penetration`,
+      `Affects only spectral Doppler`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Ensemble length (number of pulses per scan line) affects velocity precision and wall filter performance. Longer ensemble improves accuracy but reduces frame rate.`,
+  },
+  {
+    id: 80,
+    question: `What is the relationship between packet size and color Doppler?`,
+    options: [
+      `Larger packets improve accuracy but reduce frame rate`,
+      `Packet size has no effect`,
+      `Larger packets increase frame rate`,
+      `Packet size only affects B-mode`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Packet size (number of pulses averaged per color pixel) affects velocity precision and statistical confidence. Larger packets improve accuracy but reduce frame rate due to increased acquisition time.`,
+  },
+  {
+    id: 81,
+    question: `What causes twinkling artifact on color Doppler?`,
+    options: [
+      `Turbulent flow`,
+      `Rapidly alternating color signals from rough calcified surfaces`,
+      `Aliasing`,
+      `Mirror artifact`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Twinkling artifact appears as rapid color changes behind rough, calcified surfaces like kidney stones or calcified plaques. It results from strong reflections and is useful for detecting calcifications.`,
+  },
+  {
+    id: 82,
+    question: `What is the difference between high-PRF and low-PRF Doppler modes?`,
+    options: [
+      `High-PRF allows deeper imaging`,
+      `High-PRF allows detection of higher velocities without aliasing`,
+      `Low-PRF has better resolution`,
+      `They are the same`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `High-PRF Doppler samples at rates higher than needed for the imaging depth, allowing detection of higher velocities without aliasing but without precise depth localization (range ambiguity).`,
+  },
+  {
+    id: 83,
+    question: `What is the effect of wall filter settings on low-velocity flow detection?`,
+    options: [
+      `Higher wall filters remove more low-frequency noise`,
+      `Higher wall filters may remove low-velocity flow signals`,
+      `Wall filters only affect spectral Doppler`,
+      `Wall filters improve low-velocity detection`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Wall filters remove low-frequency, high-amplitude signals from tissue motion. Higher filter settings provide cleaner spectra but may remove diagnostically important low-velocity flow signals.`,
+  },
+  {
+    id: 84,
+    question: `What is the purpose of Doppler gain adjustment?`,
+    options: [
+      `To increase output power`,
+      `To optimize signal-to-noise ratio without saturating the display`,
+      `To change the transducer frequency`,
+      `To affect frame rate`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Doppler gain adjusts the amplification of received Doppler signals. Optimal gain provides good signal-to-noise ratio without causing spectral broadening from signal overflow (wraparound at the top).`,
+  },
+  {
+    id: 85,
+    question: `What causes spectral broadening at the baseline in Doppler?`,
+    options: [
+      `Very high velocities`,
+      `Flow disturbance and turbulence`,
+      `Correct angle correction`,
+      `Low wall filter settings`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Spectral broadening at the baseline indicates turbulence or disturbed flow, where blood cells are moving in multiple directions and at various velocities within the sample volume.`,
+  },
+  {
+    id: 86,
+    question: `What is the difference between arterial and venous Doppler waveforms?`,
+    options: [
+      `Arteries have pulsatile flow, veins have continuous flow`,
+      `Veins have higher velocities`,
+      `Arteries always show aliasing`,
+      `They are identical`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Arterial waveforms are pulsatile, reflecting cardiac systole and diastole. Venous waveforms are more continuous with respiratory variation, reflecting central venous pressure changes.`,
+  },
+  {
+    id: 87,
+    question: `What is the effect of respiratory variation on venous Doppler?`,
+    options: [
+      `No effect`,
+      `Inspiratory decrease in central venous flow`,
+      `Expiratory increase in lower extremity venous flow`,
+      `Respiratory variation helps assess right heart function`,
+    ],
+    correctAnswer: 3,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Respiratory variation in venous flow patterns reflects changes in intrathoracic pressure and right atrial filling. Absent or reversed variation may indicate cardiac pathology like right heart failure.`,
+  },
+  {
+    id: 88,
+    question: `What is arterial compliance and how does it affect Doppler waveforms?`,
+    options: [
+      `Arterial compliance does not affect waveforms`,
+      `Higher compliance creates more rounded waveforms`,
+      `Lower compliance creates more pulsatile waveforms`,
+      `Compliance is not measurable`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Arterial compliance is the ability of arteries to expand and contract with pressure changes. Higher compliance creates more rounded, less pulsatile waveforms. Decreased compliance (as in aging or disease) creates more pulsatile flow.`,
+  },
+  {
+    id: 89,
+    question: `What is the effect of distal stenosis on proximal Doppler waveforms?`,
+    options: [
+      `No effect`,
+      `Increased velocities and turbulence proximal to stenosis`,
+      `Decreased velocities and pulsatility proximal to stenosis`,
+      `Only affects the stenosis itself`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Proximal to a stenosis, there is increased resistance to forward flow, resulting in decreased velocities, reduced diastolic flow, and increased pulsatility in the waveform.`,
+  },
+  {
+    id: 90,
+    question: `What is the tardus parvus waveform and what does it indicate?`,
+    options: [
+      `Normal waveform`,
+      `Delayed (tardus) and diminished (parvus) systolic rise proximal to stenosis`,
+      `High-velocity flow`,
+      `Venous flow pattern`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Tardus parvus (delayed and diminished) waveforms show slow-rising, low-amplitude systolic peaks proximal to a significant arterial stenosis, reflecting the hemodynamic effects of the downstream obstruction.`,
+  },
+  {
+    id: 91,
+    question: `What is spectral inversion in Doppler?`,
+    options: [
+      `Aliasing in the opposite direction`,
+      `Reversal of the expected flow direction`,
+      `The baseline appears at the top of the display`,
+      `Spectral broadening`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Spectral inversion displays flow below the baseline for flow toward the transducer and above for flow away, the opposite of the standard convention. This may be done for better visualization of flow patterns.`,
+  },
+  {
+    id: 92,
+    question: `What is the effect of increasing the Doppler sample volume size?`,
+    options: [
+      `Improves velocity accuracy`,
+      `May include more velocity range (more spectral broadening)`,
+      `Increases frame rate`,
+      `Affects only color Doppler`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Larger sample volumes include more of the vessel and may include areas of different flow velocities, potentially causing spectral broadening. Small sample volumes are preferred for precise measurements.`,
+  },
+  {
+    id: 93,
+    question: `What is the difference between HPRF and ordinary pulsed wave Doppler?`,
+    options: [
+      `HPRF is only for color Doppler`,
+      `HPRF uses multiple sample volumes along the beam`,
+      `HPRF has lower velocity limits`,
+      `HPRF requires continuous wave`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `High-PRF Doppler uses multiple sample volumes at different depths along the ultrasound beam, allowing higher velocity detection without complete loss of depth information.`,
+  },
+  {
+    id: 94,
+    question: `What causes the Doppler signal to be weak or absent?`,
+    options: [
+      `Low hematocrit`,
+      `Very high velocities causing aliasing`,
+      `Incorrect angle (>60°)`,
+      `Large vessel size`,
+    ],
+    correctAnswer: 2,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Doppler signal strength decreases significantly when the angle of incidence exceeds 60°, because cosθ becomes very small. Flow parallel to the beam (θ = 0°) provides maximum signal.`,
+  },
+  {
+    id: 95,
+    question: `What is the purpose of color Doppler gain adjustment?`,
+    options: [
+      `To increase frame rate`,
+      `To optimize color signal without noise`,
+      `To change the color scale`,
+      `To affect B-mode only`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Color Doppler gain should be set high enough to detect flow but low enough to avoid color noise (random color pixels not representing real flow).`,
+  },
+  {
+    id: 96,
+    question: `What causes flash artifact in color Doppler?`,
+    options: [
+      `Turbulent flow`,
+      `Tissue motion or transducer movement`,
+      `Aliasing`,
+      `Low frame rate`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Flash artifact appears as widespread color from tissue motion when the transducer or patient moves, or from cardiac motion in structures adjacent to the heart.`,
+  },
+  {
+    id: 97,
+    question: `What is the effect of the color write priority setting?`,
+    options: [
+      `Affects spectral Doppler only`,
+      `Determines when color is displayed over B-mode`,
+      `Controls velocity range`,
+      `Affects frame rate`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Color write priority determines the minimum signal strength required for color display over the gray-scale image. Higher priority reduces color noise but may miss weak flow signals.`,
+  },
+  {
+    id: 98,
+    question: `What causes color mirror artifact?`,
+    options: [
+      `Aliasing`,
+      `Beam steering creating false color opposite to true flow`,
+      `Low frame rate`,
+      `Incorrect color scale`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Color mirror artifact creates duplicate color signals, usually symmetric about a strong reflector, when the ultrasound beam reflects off an interface and picks up flow signals from both the direct and reflected paths.`,
+  },
+  {
+    id: 99,
+    question: `What is the effect of increasing the color box size?`,
+    options: [
+      `Increases frame rate`,
+      `Decreases frame rate`,
+      `Improves penetration`,
+      `Affects only spectral Doppler`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Larger color boxes require more time to scan, reducing the frame rate. Smaller color boxes allow higher frame rates and more accurate velocity measurements.`,
+  },
+  {
+    id: 100,
+    question: `What is the difference between vector flow and conventional color Doppler?`,
+    options: [
+      `Vector flow shows velocity direction and magnitude accurately`,
+      `Vector flow is only for research`,
+      `Conventional color Doppler is more accurate`,
+      `They are the same`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Vector flow imaging estimates velocity direction and magnitude from multiple angles, providing more accurate flow visualization, especially for complex flow patterns and turbulent regions.`,
+  },
+  {
+    id: 101,
+    question: `What is the effect of the pulse duration on axial resolution?`,
+    options: [
+      `No effect`,
+      `Longer pulses worsen axial resolution`,
+      `Longer pulses improve axial resolution`,
+      `Affects only lateral resolution`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Pulse duration = number of cycles * period. Axial resolution is approximately half the spatial pulse length. Longer pulses (more cycles) worsen axial resolution.`,
+  },
+  {
+    id: 102,
+    question: `What is the difference between period and frequency?`,
+    options: [
+      `Period and frequency are the same`,
+      `Period is time per cycle, frequency is cycles per second`,
+      `Frequency is measured in seconds`,
+      `Period is measured in Hertz`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Period is the time for one complete cycle. Frequency is the number of cycles per second. They are reciprocals: f = 1/T.`,
+  },
+  {
+    id: 103,
+    question: `What causes beam divergence in ultrasound?`,
+    options: [
+      `Increasing beam width with depth`,
+      `Focusing the beam`,
+      `Using higher frequencies`,
+      `Increasing aperture size`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Beam divergence occurs as the ultrasound beam spreads out with increasing distance from the transducer, especially beyond the focal zone. This worsens lateral resolution at depth.`,
+  },
+  {
+    id: 104,
+    question: `What is the effect of using harmonic frequencies on image quality?`,
+    options: [
+      `Reduced penetration`,
+      `Improved contrast resolution and reduced noise`,
+      `Increased artifacts`,
+      `Lower frame rate`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Harmonic frequencies are generated as ultrasound propagates through tissue. They have better signal-to-noise ratios and are less affected by near-field clutter and side lobes, improving contrast resolution.`,
+  },
+  {
+    id: 105,
+    question: `What is the difference between pulse inversion and amplitude modulation harmonic imaging?`,
+    options: [
+      `They are identical`,
+      `Pulse inversion uses paired pulses with opposite polarity`,
+      `Amplitude modulation uses different frequencies`,
+      `Only pulse inversion is used clinically`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Pulse inversion harmonic imaging transmits pairs of pulses with opposite polarity, canceling linear (fundamental) signals and preserving nonlinear (harmonic) signals. Amplitude modulation uses pulses of different amplitudes.`,
+  },
+  {
+    id: 106,
+    question: `What is the purpose of coded excitation in ultrasound?`,
+    options: [
+      `To increase frequency`,
+      `To improve penetration and signal-to-noise ratio`,
+      `To reduce artifacts`,
+      `To increase frame rate`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Coded excitation uses complex pulse sequences (like chirps or binary codes) that can be compressed on reception, providing longer pulse energy for better penetration and signal-to-noise ratio while maintaining axial resolution.`,
+  },
+  {
+    id: 107,
+    question: `What is the effect of beam elevation focusing?`,
+    options: [
+      `Improves lateral resolution in the elevation plane`,
+      `Only affects axial resolution`,
+      `Reduces penetration`,
+      `Increases frame rate`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Beam elevation focusing (using a cylindrical lens or curved face) narrows the beam in the elevation plane (slice thickness), improving resolution and reducing partial volume artifacts.`,
+  },
+  {
+    id: 108,
+    question: `What is slice thickness artifact?`,
+    options: [
+      `Caused by thick beam in elevation plane`,
+      `Caused by poor axial resolution`,
+      `Only affects Doppler`,
+      `Caused by reverberation`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 3: Principles of Imaging",
+    explanation: `Slice thickness artifact (or partial volume artifact) occurs when the beam thickness includes structures outside the intended imaging plane, creating false echoes in cysts or filling anechoic areas.`,
+  },
+  {
+    id: 109,
+    question: `What is the difference between synthetic aperture and conventional beamforming?`,
+    options: [
+      `They are identical`,
+      `Synthetic aperture uses single element transmission with complex reception`,
+      `Synthetic aperture is only for research`,
+      `Conventional beamforming is more efficient`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 2: Transducer Technology",
+    explanation: `Synthetic aperture imaging uses a single element (or small group) to transmit, with all elements receiving. Complex beamforming on reception creates the image, potentially simplifying hardware and improving frame rate.`,
+  },
+  {
+    id: 110,
+    question: `What is the effect of using contrast agents on Doppler signals?`,
+    options: [
+      `Contrast agents increase backscatter from blood`,
+      `Contrast agents decrease Doppler signals`,
+      `Contrast agents only affect B-mode`,
+      `Contrast agents have no effect on Doppler`,
+    ],
+    correctAnswer: 0,
+    domain: "Domain 4: Doppler & Hemodynamics",
+    explanation: `Ultrasound contrast agents contain microbubbles that strongly backscatter ultrasound, significantly increasing Doppler signals from small vessels that might otherwise be invisible.`,
+  },
+  {
+    id: 111,
+    question: `A patient with gallstones shows posterior acoustic shadowing. What is the primary cause of this artifact?`,
+    options: [
+      `Reflection at tissue interfaces`,
+      `Strong attenuation by the stones`,
+      `Refraction at curved surfaces`,
+      `Mirror imaging artifact`,
+    ],
+    correctAnswer: 1,
+    domain: "Domain 1: Physics Principles",
+    explanation: `Gallstones cause strong attenuation (both absorption and reflection), resulting in posterior acoustic shadowing. The ultrasound energy cannot pass through the highly attenuating stone, creating a dark (anechoic) area behind it.`,
+  },
+];
+
+// ── VALIDATION ──────────────────────────────────────────────────────
+// Validate all questions at module load time
+function validateExamQuestions(): void {
+  const EXPECTED_COUNT = 111;
+
+  if (EXAM_QUESTIONS.length !== EXPECTED_COUNT) {
+    throw new Error(
+      `EXAM_QUESTIONS: expected ${EXPECTED_COUNT} questions, found ${EXAM_QUESTIONS.length}`
+    );
+  }
+
+  EXAM_QUESTIONS.forEach((q) => {
+    // Validate ID is unique
+    const duplicateIds = EXAM_QUESTIONS.filter((x) => x.id === q.id);
+    if (duplicateIds.length > 1) {
+      throw new Error(
+        `EXAM_QUESTIONS: duplicate ID ${q.id} found ${duplicateIds.length} times`
+      );
+    }
+
+    // Validate correctAnswer is in bounds
+    if (q.correctAnswer < 0 || q.correctAnswer >= q.options.length) {
+      throw new Error(
+        `Question ${q.id}: correctAnswer ${q.correctAnswer} out of range [0, ${q.options.length - 1}]`
+      );
+    }
+
+    // Validate domain is valid
+    if (!DOMAINS.includes(q.domain as ExamDomain)) {
+      throw new Error(
+        `Question ${q.id}: invalid domain "${q.domain}". Must be one of: ${DOMAINS.join(", ")}`
+      );
+    }
+
+    // Validate required fields
+    if (!q.question || q.question.trim().length === 0) {
+      throw new Error(`Question ${q.id}: question text is empty`);
+    }
+
+    if (!Array.isArray(q.options) || q.options.length < 2) {
+      throw new Error(`Question ${q.id}: must have at least 2 options`);
+    }
+
+    if (!q.explanation || q.explanation.trim().length === 0) {
+      throw new Error(`Question ${q.id}: explanation is empty`);
+    }
+  });
+
+  // Validate domain counts
+  const domainCounts = DOMAINS.reduce(
+    (acc, domain) => {
+      acc[domain] = EXAM_QUESTIONS.filter((q) => q.domain === domain).length;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
+
+  console.info("[exam-data] Validation passed. Domain distribution:", domainCounts);
+}
+
+// Run validation at module load
+validateExamQuestions();
+
+// ── COMPUTED DOMAIN INFO ────────────────────────────────────────────
+export const EXAM_DOMAIN_INFO = DOMAINS.map((domain) => ({
+  value: domain,
+  label: domain.split(": ")[1] || domain,
+  count: EXAM_QUESTIONS.filter((q) => q.domain === domain).length,
+}));
+
+/** Client-safe question (no correct answer) */
+export interface ClientExamQuestion {
+  id: number;
+  question: string;
+  options: string[];
+  domain: string;
+}
+
+/** Strip correct answers for client delivery */
+export function toClientQuestions(
+  questions: ExamQuestion[]
+): ClientExamQuestion[] {
+  if (!Array.isArray(questions)) {
+    throw new Error("toClientQuestions: input must be an array");
+  }
+
+  return questions.map(({ id, question, options, domain }) => {
+    // ✅ FIXED: check that options IS an array (was incorrectly inverted)
+    if (!id || !question || !Array.isArray(options) || !domain) {
+      throw new Error("toClientQuestions: malformed question object");
+    }
+
+    return { id, question, options, domain };
+  });
+}
+
+/** Shuffle array using Fisher-Yates with crypto-secure randomness */
+export function shuffleQuestions<T>(arr: T[]): T[] {
+  if (!Array.isArray(arr)) {
+    throw new Error("shuffleQuestions: input must be an array");
+  }
+
+  const shuffled = [...arr];
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    // Use crypto.randomInt for cryptographically secure randomness
+    const j = randomInt(0, i + 1);
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  return shuffled;
+}
