@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import React, { useState, useEffect } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 interface PurchaseInfo {
   product: string;
