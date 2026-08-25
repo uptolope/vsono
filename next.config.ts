@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const securityHeaders = [
@@ -28,7 +29,7 @@ const nextConfig: NextConfig = {
 
   // Turbopack fix for ambiguous project root warning
   turbopack: {
-    root: "./",
+    root: path.resolve(__dirname),
   },
 
   // These are now safe to remove (TypeScript + ESLint errors are fixed)
