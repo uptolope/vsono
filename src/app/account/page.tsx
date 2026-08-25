@@ -1,9 +1,8 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
+import dynamicImport from 'next/dynamic';
 
-const AccountPageClient = dynamic(() => import('./AccountPageClient'), {
+const AccountPageClient = dynamicImport(() => import('./AccountPageClient'), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen pt-32 px-6 text-[#8a8279] text-sm text-center">
@@ -12,12 +11,6 @@ const AccountPageClient = dynamic(() => import('./AccountPageClient'), {
   ),
 });
 
-export const dynamic = 'force-dynamic';
-
 export default function AccountPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen pt-32 px-6 text-[#8a8279] text-sm text-center">Loading…</div>}>
-      <AccountPageClient />
-    </Suspense>
-  );
+  return <AccountPageClient />;
 }
