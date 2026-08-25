@@ -1,0 +1,258 @@
+// ═══════════════════════════════════════════════════════════════════
+// SonoPrep — Flashcard Content (SERVER-SIDE ONLY)
+// 200 licensed educational flashcards
+// DO NOT IMPORT THIS FILE IN CLIENT COMPONENTS
+// ═══════════════════════════════════════════════════════════════════
+
+export interface Flashcard {
+  id: number;
+  question: string;
+  answer: string;
+  category: FlashcardCategory;
+}
+
+export type FlashcardCategory = "physics" | "transducers" | "doppler" | "artifacts" | "safety";
+
+export const FLASHCARD_CATEGORIES: { value: FlashcardCategory; label: string; count: number }[] = [
+  { value: "physics", label: "Physics Fundamentals", count: 89 },
+  { value: "transducers", label: "Transducer Technology", count: 38 },
+  { value: "doppler", label: "Doppler & Hemodynamics", count: 31 },
+  { value: "artifacts", label: "Image Artifacts", count: 13 },
+  { value: "safety", label: "Bioeffects & Safety", count: 29 },
+];
+
+/** All 200 flashcards — SERVER USE ONLY */
+export const FLASHCARDS: Flashcard[] = [
+  { id: 1, question: `What is physics in the context of sonographic imaging?`, answer: `The study of matter, energy, force, and their interactions.`, category: "physics" },
+  { id: 2, question: `What are the three states of matter important for ultrasound?`, answer: `Solids, liquids, and gases.`, category: "physics" },
+  { id: 3, question: `What is energy?`, answer: `The capacity to do work by applying force; can change forms.`, category: "physics" },
+  { id: 4, question: `Name at least three main forms of energy relevant to ultrasound.`, answer: `Mechanical (e.g. sound), electrical, thermal (heat).`, category: "physics" },
+  { id: 5, question: `What is a wave?`, answer: `An oscillation accompanied by energy transfer.`, category: "physics" },
+  { id: 6, question: `What are the two main types of waves in sonography?`, answer: `Mechanical (sound) and electromagnetic (not used for diagnostic ultrasound).`, category: "physics" },
+  { id: 7, question: `What is a sound wave?`, answer: `A mechanical, longitudinal wave requiring a medium to travel.`, category: "physics" },
+  { id: 8, question: `Describe a longitudinal wave.`, answer: `Particles of the medium vibrate parallel to the direction of wave travel.`, category: "physics" },
+  { id: 9, question: `What are compressions and rarefactions in a sound wave?`, answer: `Compressions are regions where molecules are squeezed; rarefactions are where they are spread apart.`, category: "physics" },
+  { id: 10, question: `What parameter defines the number of cycles a wave completes per second?`, answer: `Frequency.`, category: "physics" },
+  { id: 11, question: `What is the unit of frequency?`, answer: `Hertz (Hz).`, category: "physics" },
+  { id: 12, question: `What is the period of a wave?`, answer: `The time taken to complete one cycle.`, category: "physics" },
+  { id: 13, question: `What is the typical ultrasound frequency range used in clinical imaging?`, answer: `2–15 MHz.`, category: "physics" },
+  { id: 14, question: `How are period and frequency related?`, answer: `They are inversely related; period × frequency = 1.`, category: "physics" },
+  { id: 15, question: `What three parameters describe the 'bigness' of a sound wave?`, answer: `Amplitude, power, and intensity.`, category: "physics" },
+  { id: 16, question: `How do amplitude and power relate?`, answer: `Power ∝ amplitude².`, category: "physics" },
+  { id: 17, question: `How do amplitude and intensity relate?`, answer: `Intensity ∝ amplitude².`, category: "physics" },
+  { id: 18, question: `What is wavelength?`, answer: `The physical length of one wave cycle.`, category: "physics" },
+  { id: 19, question: `What is the formula to calculate wavelength in soft tissue?`, answer: `wavelength (mm) = 1.54 / frequency (MHz).`, category: "physics" },
+  { id: 20, question: `What is the propagation speed of sound in soft tissue?`, answer: `1540 m/s.`, category: "physics" },
+  { id: 21, question: `What determines the speed of sound in a medium?`, answer: `The stiffness and density of the medium.`, category: "physics" },
+  { id: 22, question: `In what medium does sound travel fastest?`, answer: `Solids.`, category: "physics" },
+  { id: 23, question: `What are the 5 key parameters of pulsed ultrasound?`, answer: `Spatial pulse length, pulse duration, pulse repetition period, pulse repetition frequency, duty factor.`, category: "physics" },
+  { id: 24, question: `What is spatial pulse length (SPL)?`, answer: `The distance from the start to end of a pulse.`, category: "physics" },
+  { id: 25, question: `What is pulse duration?`, answer: `The time from the beginning to end of a pulse.`, category: "physics" },
+  { id: 26, question: `What is pulse repetition frequency (PRF)?`, answer: `The number of pulses transmitted per second.`, category: "physics" },
+  { id: 27, question: `How is PRF affected by depth of view?`, answer: `PRF decreases as imaging depth increases.`, category: "physics" },
+  { id: 28, question: `What is duty factor?`, answer: `The percentage of time the system is transmitting a pulse.`, category: "physics" },
+  { id: 29, question: `What is the 13-microsecond rule?`, answer: `It takes 13 microseconds for sound to travel 1 cm to a reflector and back in soft tissue.`, category: "physics" },
+  { id: 30, question: `Define attenuation.`, answer: `Loss of wave amplitude/intensity due to absorption, reflection, and scattering.`, category: "physics" },
+  { id: 31, question: `Which has greater attenuation: higher or lower frequency?`, answer: `Higher frequency.`, category: "physics" },
+  { id: 32, question: `What is acoustic impedance?`, answer: `The resistance a medium offers to sound, calculated as density × speed.`, category: "physics" },
+  { id: 33, question: `What is the formula for the Intensity Reflection Coefficient (IRC) at normal incidence?`, answer: `IRC = [(Z2-Z1)/(Z2+Z1)]² × 100%, where Z1 and Z2 are acoustic impedances.`, category: "physics" },
+  { id: 34, question: `What is refraction?`, answer: `The change in direction of sound propagation when passing into a medium with a different speed.`, category: "physics" },
+  { id: 35, question: `What law predicts the degree of refraction?`, answer: `Snell's Law.`, category: "physics" },
+  { id: 36, question: `What is Rayleigh scattering?`, answer: `Redirection of sound waves equally in all directions; occurs with small interface structures like red blood cells and increases with frequency⁴.`, category: "physics" },
+  { id: 37, question: `What is the formula for attenuation in soft tissue?`, answer: `Attenuation (dB) = 0.5 × frequency (MHz) × distance (cm).`, category: "physics" },
+  { id: 38, question: `What is time gain compensation (TGC)?`, answer: `An electronic adjustment that compensates for tissue attenuation, keeping image brightness uniform at different depths.`, category: "physics" },
+  { id: 39, question: `What is the most common piezoelectric material in diagnostic ultrasound transducers?`, answer: `Lead zirconate titanate (PZT).`, category: "transducers" },
+  { id: 40, question: `What property of PZT allows it to function in ultrasound?`, answer: `The piezoelectric effect—generating voltage when deformed and changing shape when voltage is applied.`, category: "transducers" },
+  { id: 41, question: `What is the role of the backing (damping) material in a transducer?`, answer: `Reduces pulse duration and spatial pulse length, improving axial resolution by damping vibrations.`, category: "transducers" },
+  { id: 42, question: `What is the function of the matching layer in a probe?`, answer: `Minimizes acoustic impedance mismatch between the PZT and human skin, increasing sound transmission.`, category: "transducers" },
+  { id: 43, question: `Why is coupling gel critical in ultrasound?`, answer: `Eliminates air between the probe and skin, aiding acoustic energy transfer.`, category: "transducers" },
+  { id: 44, question: `What determines the frequency of a pulsed-wave transducer?`, answer: `Speed of sound in the PZT and the thickness of the crystal.`, category: "transducers" },
+  { id: 45, question: `How does crystal thickness relate to frequency in pulsed-wave transducers?`, answer: `Thinner crystals produce higher frequencies; thicker crystals produce lower frequencies.`, category: "transducers" },
+  { id: 46, question: `What is the primary advantage of a high bandwidth transducer?`, answer: `Facilitates better image resolution through shorter pulses and enables advanced imaging techniques like harmonics.`, category: "transducers" },
+  { id: 47, question: `What is Quality Factor (QF) in ultrasound?`, answer: `The number that represents damping; a lower QF means more damping and better image quality.`, category: "transducers" },
+  { id: 48, question: `What is lateral resolution, and how can it be improved?`, answer: `The ability to distinguish two objects side-by-side; improved with a narrower beam and focusing.`, category: "transducers" },
+  { id: 49, question: `What is the best method for improving axial resolution?`, answer: `Shortening the spatial pulse length—using higher frequency or better damping.`, category: "transducers" },
+  { id: 50, question: `What is elevational resolution, and what affects it?`, answer: `The ability to distinguish structures above and below the imaging plane, determined by the beam thickness and transducer design.`, category: "transducers" },
+  { id: 51, question: `Describe the output of a linear transducer.`, answer: `Produces a rectangular field of view with parallel scan lines.`, category: "transducers" },
+  { id: 52, question: `What is the primary use for linear transducers?`, answer: `High-resolution imaging of superficial structures such as vascular, breast, thyroid, and musculoskeletal areas.`, category: "transducers" },
+  { id: 53, question: `What frequency range do linear transducers typically use?`, answer: `5 to 15 MHz (sometimes higher for superficial imaging).`, category: "transducers" },
+  { id: 54, question: `What is the primary use for convex (curvilinear) transducers?`, answer: `Deep organ imaging, such as abdominal and obstetric examinations.`, category: "transducers" },
+  { id: 55, question: `What is the frequency range for convex transducers?`, answer: `2.5 to 7.5 MHz.`, category: "transducers" },
+  { id: 56, question: `What is the primary use for phased array transducers?`, answer: `Cardiac and intercostal imaging, where space is limited and deep penetration is needed.`, category: "transducers" },
+  { id: 57, question: `What is a key advantage of phased array transducers?`, answer: `Small footprint allows imaging between ribs; electronic beam steering achieves realtime (dynamic) focusing.`, category: "transducers" },
+  { id: 58, question: `Describe pencil (CW, or continuous wave) transducers.`, answer: `Used primarily for Doppler vascular studies, consists of two crystals (one sends, one receives) and cannot produce images.`, category: "transducers" },
+  { id: 59, question: `What is an endocavitary transducer?`, answer: `Designed for internal body cavity applications (e.g., transvaginal, transrectal); offers high-frequency imaging for improved resolution.`, category: "transducers" },
+  { id: 60, question: `What is a volume or 3D/4D transducer?`, answer: `Allows for three-dimensional or real-time volumetric (4D) imaging, particularly useful in obstetrics and gynecology.`, category: "transducers" },
+  { id: 61, question: `What is Doppler effect?`, answer: `The change in frequency of sound reflected from moving objects, used to measure blood flow.`, category: "doppler" },
+  { id: 62, question: `What does a positive Doppler shift indicate?`, answer: `Reflector (blood flow) is moving toward the transducer.`, category: "doppler" },
+  { id: 63, question: `What does a negative Doppler shift indicate?`, answer: `Reflector (blood flow) is moving away from the transducer.`, category: "doppler" },
+  { id: 64, question: `What is aliasing in pulsed Doppler?`, answer: `Misrepresentation of direction or velocity when the measured frequency exceeds half the PRF (Nyquist limit).`, category: "doppler" },
+  { id: 65, question: `What is the Nyquist limit?`, answer: `One-half the PRF; maximum detectable Doppler frequency shift without aliasing.`, category: "doppler" },
+  { id: 66, question: `How can aliasing be minimized?`, answer: `Lower the frequency, increase PRF, shift baseline, use continuous wave Doppler.`, category: "doppler" },
+  { id: 67, question: `What is continuous wave Doppler?`, answer: `Utilizes two crystals (one transmits, one receives) for unlimited detectable velocities, but cannot localize flow.`, category: "doppler" },
+  { id: 68, question: `What is pulsed wave Doppler?`, answer: `Uses one crystal for both transmission and reception, allowing range resolution but susceptible to aliasing.`, category: "doppler" },
+  { id: 69, question: `Define spectral broadening.`, answer: `Wide range of Doppler frequencies indicating turbulent or disturbed flow.`, category: "doppler" },
+  { id: 70, question: `What is color Doppler?`, answer: `Assigns color to Doppler frequency shifts, displaying direction and velocity of flow.`, category: "doppler" },
+  { id: 71, question: `What is color aliasing?`, answer: `Occurs when color flow velocities exceed the Nyquist limit; colors wrap around the scale.`, category: "doppler" },
+  { id: 72, question: `What is power Doppler?`, answer: `Displays signal amplitude (not velocity or direction); highly sensitive for detecting flow but not direction.`, category: "doppler" },
+  { id: 73, question: `What is clutter in Doppler imaging?`, answer: `Unwanted reflection from stationary or slowly moving structures like vessel walls.`, category: "doppler" },
+  { id: 74, question: `What is wall filter in Doppler?`, answer: `Electronic filtering that removes low-frequency Doppler signals due to vessel wall motion, not blood flow.`, category: "doppler" },
+  { id: 75, question: `What does the Doppler angle refer to?`, answer: `The angle between the ultrasound beam and the direction of blood flow.`, category: "doppler" },
+  { id: 76, question: `Why must Doppler angles be ≤ 60°?`, answer: `To optimize the accuracy of velocity measurements; angles > 60° increase error.`, category: "doppler" },
+  { id: 77, question: `What is the formula for volume flow?`, answer: `Volume flow = cross-sectional area × mean velocity.`, category: "doppler" },
+  { id: 78, question: `What is reverberation artifact?`, answer: `Multiple, equally spaced echoes caused by repeated sound reflection between two strong reflectors.`, category: "artifacts" },
+  { id: 79, question: `What is comet tail artifact?`, answer: `A type of reverberation presenting as a short, bright trail on the image.`, category: "artifacts" },
+  { id: 80, question: `What is shadowing?`, answer: `Dark areas under highly attenuating structures where sound beam intensity is diminished.`, category: "artifacts" },
+  { id: 81, question: `What is acoustic enhancement?`, answer: `Increased brightness under low attenuating structures (e.g., fluid-filled cysts).`, category: "artifacts" },
+  { id: 82, question: `What is an artifact in ultrasound imaging?`, answer: `An appearance in the image that does not correspond to actual anatomical structures.`, category: "artifacts" },
+  { id: 83, question: `What is mirror image artifact?`, answer: `Duplication of structures on the opposite side of a strong reflector, such as the diaphragm.`, category: "artifacts" },
+  { id: 84, question: `What is speed error artifact?`, answer: `Occurs when tissue speed is not 1540 m/s; displayed structures are placed at incorrect depths.`, category: "artifacts" },
+  { id: 85, question: `What is side lobe artifact?`, answer: `Additional weak sound beams emitted from a transducer, causing misplaced echoes.`, category: "artifacts" },
+  { id: 86, question: `What is grating lobe artifact?`, answer: `Extra off-axis beams from array transducers; similar to side lobes but in multi-element arrays.`, category: "artifacts" },
+  { id: 87, question: `What is slice-thickness artifact?`, answer: `Occurs when sound beam width is wider than the assumed thin imaging plane, causing false echoes.`, category: "artifacts" },
+  { id: 88, question: `What are the primary bioeffects of diagnostic ultrasound?`, answer: `Thermal (heating) and mechanical (cavitation).`, category: "safety" },
+  { id: 89, question: `What is ALARA, and why is it important?`, answer: `As Low As Reasonably Achievable - principle to minimize patient exposure without compromising image quality.`, category: "safety" },
+  { id: 90, question: `What is mechanical index (MI)?`, answer: `A calculated value indicating the risk of mechanical bioeffects (cavitation).`, category: "safety" },
+  { id: 91, question: `What is the thermal index (TI)?`, answer: `A calculated value estimating potential tissue heating.`, category: "safety" },
+  { id: 92, question: `What is the FDA regulatory intensity limit for diagnostic ultrasound (SPTA)?`, answer: `720 mW/cm² (spatial-peak temporal-average).`, category: "safety" },
+  { id: 93, question: `What is the safety principle must always be followed in diagnostic ultrasound?`, answer: `ALARA – As Low As Reasonably Achievable, minimizing exposure while maintaining diagnostic quality.`, category: "safety" },
+  { id: 94, question: `Who regulates the use of diagnostic ultrasound in the United States?`, answer: `The FDA (Food and Drug Administration) and individual U.S. states.`, category: "safety" },
+  { id: 95, question: `How do ergonomic principles help sonographers?`, answer: `Reduce risk of musculoskeletal injuries via proper posture and equipment positioning.`, category: "safety" },
+  { id: 96, question: `What infection control measures are mandatory for ultrasound equipment?`, answer: `Proper probe cleaning, use of sterile covers, and adherence to CDC guidelines.`, category: "safety" },
+  { id: 97, question: `What is the purpose of quality assurance (QA) programs in ultrasound?`, answer: `To maintain equipment performance, ensure imaging quality, and uphold safety standards.`, category: "safety" },
+  { id: 98, question: `What factors influence spatial resolution?`, answer: `Transducer frequency, beam width, focusing, pixel density.`, category: "physics" },
+  { id: 99, question: `What is persistence in ultrasound?`, answer: `Frame averaging over time to reduce noise but can reduce temporal resolution.`, category: "physics" },
+  { id: 100, question: `How does dynamic range impact image quality?`, answer: `Higher dynamic range shows more shades of gray, resulting in better contrast resolution.`, category: "physics" },
+  { id: 101, question: `What is the primary role of dynamic range in ultrasound equipment?`, answer: `Adjusts the number of displayable gray shades, compressing the range of echo amplitudes.`, category: "physics" },
+  { id: 102, question: `What is B-mode imaging in ultrasound?`, answer: `Brightness-mode imaging displaying 2D cross-sectional grayscale images representing tissue echogenicity.`, category: "physics" },
+  { id: 103, question: `What is M-mode ultrasound used for?`, answer: `Motion mode imaging to assess moving structures such as heart valves over time.`, category: "physics" },
+  { id: 104, question: `What is harmonic imaging's primary advantage?`, answer: `Enhanced image quality with reduced noise and artifacts by using tissue-generated harmonic frequencies.`, category: "physics" },
+  { id: 105, question: `What is spatial compounding?`, answer: `An imaging technique that averages images from multiple angles to reduce artifacts and improve contrast.`, category: "physics" },
+  { id: 106, question: `What is speckle in ultrasound imaging?`, answer: `A granular interference pattern caused by echoes from many small scatterers within tissue.`, category: "physics" },
+  { id: 107, question: `What is the difference between pre-processing and post-processing adjustments?`, answer: `Pre-processing affects data before storage; post-processing affects data retrieval, display, and annotation.`, category: "physics" },
+  { id: 108, question: `What are the major components of a diagnostic ultrasound system?`, answer: `Transducer, pulser, beamformer, receiver, signal processor, display, storage, and power supply.`, category: "physics" },
+  { id: 109, question: `What is the piezoelectric effect?`, answer: `The property in certain materials (like PZT) to generate an electric voltage when mechanically deformed, and to deform when electrically stimulated.`, category: "transducers" },
+  { id: 110, question: `What is the effect of increased frequency on penetration and resolution?`, answer: `Higher frequency improves resolution but reduces penetration depth.`, category: "physics" },
+  { id: 111, question: `What is edge enhancement?`, answer: `Increases visibility of tissue boundaries by sharpening image edges.`, category: "physics" },
+  { id: 112, question: `What is the purpose of coded excitation?`, answer: `Uses longer pulses with encoding to improve penetration and signal-to-noise ratio without sacrificing resolution.`, category: "physics" },
+  { id: 113, question: `What is spectral broadening?`, answer: `Widening of the Doppler waveform indicating turbulent flow or technical settings like large sample volumes.`, category: "doppler" },
+  { id: 114, question: `What produces aliasing in pulsed Doppler?`, answer: `The pulse repetition frequency being too low relative to the maximum Doppler shift.`, category: "doppler" },
+  { id: 115, question: `What is the difference between continuous wave (CW) and pulsed wave (PW) Doppler?`, answer: `CW Doppler uses two crystals for continuous transmission and reception, allowing unlimited velocity measurement but no depth specificity; PW Doppler uses one crystal for transmission and reception with range specificity but limited maximum velocity.`, category: "doppler" },
+  { id: 116, question: `What is color priority in Doppler?`, answer: `Controls whether color or grayscale image is displayed when signals overlap.`, category: "doppler" },
+  { id: 117, question: `What is the main benefit of harmonic imaging?`, answer: `Reduces artifacts and improves image clarity using higher-frequency harmonics.`, category: "artifacts" },
+  { id: 118, question: `What are the two main types of bioeffect studies?`, answer: `In vivo (inside living organisms) and in vitro (outside living organisms).`, category: "safety" },
+  { id: 119, question: `What are the two types of cavitation in tissues?`, answer: `Stable (oscillating bubbles) and transient (bubble collapse and heat generation).`, category: "safety" },
+  { id: 120, question: `What is elastography in ultrasound?`, answer: `A technique that maps tissue stiffness by measuring tissue displacement or strain under force.`, category: "physics" },
+  { id: 121, question: `What is contrast-enhanced ultrasound (CEUS)?`, answer: `Ultrasound imaging using gas-filled microbubbles to enhance visualization of blood flow and tissue vascularity.`, category: "physics" },
+  { id: 122, question: `What is a duplex ultrasound system?`, answer: `Combines B-mode imaging with Doppler capability.`, category: "doppler" },
+  { id: 123, question: `What is a triplex ultrasound system?`, answer: `Combines B-mode, spectral Doppler, and color Doppler imaging.`, category: "doppler" },
+  { id: 124, question: `What is the Bernoulli effect as it pertains to Doppler?`, answer: `Inverse relationship between pressure and velocity—velocity increases as pressure decreases at a stenosis.`, category: "doppler" },
+  { id: 125, question: `What determines axial resolution in ultrasound?`, answer: `Spatial pulse length; shorter pulses yield better axial resolution.`, category: "transducers" },
+  { id: 126, question: `How can the sonographer improve lateral resolution?`, answer: `Use higher frequency, focus the beam, or reduce the width of the sound beam.`, category: "transducers" },
+  { id: 127, question: `What is apodization?`, answer: `The technique of varying the excitation of array elements to reduce side lobes and improve image quality.`, category: "transducers" },
+  { id: 128, question: `What is subdicing in transducer arrays?`, answer: `Physically dividing each element into smaller sections to lessen grating lobe artifacts.`, category: "transducers" },
+  { id: 129, question: `What is dynamic aperture?`, answer: `Adjusting the number of activated transducer elements depending on imaging depth to maintain optimal beam width and resolution.`, category: "transducers" },
+  { id: 130, question: `What is electronic focusing in system arrays?`, answer: `The use of variable time delays to shape the sound beam for improved focusing at different depths.`, category: "transducers" },
+  { id: 131, question: `What is a channel in an ultrasound system?`, answer: `One transducer element, its wiring, and the corresponding signal processing electronics—more channels enhance focusing and steering.`, category: "physics" },
+  { id: 132, question: `Why is frame rate important in ultrasound?`, answer: `Higher frame rates provide smoother real-time imaging, crucial for moving structures like the heart.`, category: "physics" },
+  { id: 133, question: `What factors reduce frame rate?`, answer: `Increasing imaging depth, number of focal zones, line density, or area of image.`, category: "physics" },
+  { id: 134, question: `What is the trade-off between temporal and spatial resolution?`, answer: `Increasing temporal resolution (frame rate) may reduce spatial resolution and vice versa.`, category: "physics" },
+  { id: 135, question: `What are CDC guidelines relevant to sonography?`, answer: `Infection control protocols including proper disinfection and use of sterile covers.`, category: "safety" },
+  { id: 136, question: `What is the importance of ergonomic techniques for sonographers?`, answer: `Prevents repetitive strain injuries and ensures long-term career sustainability.`, category: "safety" },
+  { id: 137, question: `What is the difference between specular and diffuse reflection in ultrasound?`, answer: `Specular reflection occurs when the wave strikes a smooth, large surface; diffuse reflection occurs on rough or small surfaces causing scattered echoes.`, category: "physics" },
+  { id: 138, question: `What is scattering in ultrasound refer to?`, answer: `The random redirection of sound in many directions, typically at tissue interfaces smaller than the wavelength.`, category: "physics" },
+  { id: 139, question: `How is zoom affected image quality?`, answer: `Maintains spatial resolution by enlarging a portion of the image without pixelation.`, category: "physics" },
+  { id: 140, question: `What is the attenuation coefficient?`, answer: `The number of decibels of attenuation per centimeter of tissue the sound travels.`, category: "physics" },
+  { id: 141, question: `What is the impact of acoustic impedance mismatch at tissue boundaries?`, answer: `Greater mismatch produces stronger reflections; less mismatch yields weaker reflections.`, category: "physics" },
+  { id: 142, question: `What is oblique incidence and how does it affect ultrasound beams?`, answer: `Occurs when the incident angle is not 90 degrees; reflection and transmission directions become unpredictable.`, category: "physics" },
+  { id: 143, question: `What is the main disadvantage of using lower frequency transducers?`, answer: `Lower spatial resolution.`, category: "transducers" },
+  { id: 144, question: `What is the main disadvantage of using higher frequency transducers?`, answer: `Reduced tissue penetration.`, category: "transducers" },
+  { id: 145, question: `What is the purpose of the scan converter?`, answer: `Converts echo signals into a format suitable for image display (from acoustic lines to video raster pattern).`, category: "physics" },
+  { id: 146, question: `How does decreasing ultrasound frequency affect attenuation?`, answer: `Decreases attenuation, allowing for greater imaging depth.`, category: "physics" },
+  { id: 147, question: `What is grayscale mapping?`, answer: `Assigning echo intensities to different shades of gray to differentiate tissues.`, category: "physics" },
+  { id: 148, question: `What is wall filter do in Doppler imaging?`, answer: `Removes low-frequency signals from vessel walls or tissue to reduce clutter.`, category: "doppler" },
+  { id: 149, question: `What is low flow areas in Doppler imaging?`, answer: `Regions where blood moves slowly, often requiring sensitive settings for detection.`, category: "doppler" },
+  { id: 150, question: `Why is the Doppler angle important in velocity calculation?`, answer: `Doppler shift depends on cosine of the angle between flow and beam; accuracy is best at ≤60°.`, category: "doppler" },
+  { id: 151, question: `How is aliasing identified and prevented?`, answer: `Aliasing appears as wrapping around of velocity scale; prevent by adjusting scale, baseline, or switching to CW Doppler.`, category: "doppler" },
+  { id: 152, question: `How is heat in ultrasound machines managed?`, answer: `Power supply and cooling units stabilize operation and prevent overheating.`, category: "physics" },
+  { id: 153, question: `What is the main function of the analog-to-digital converter (ADC) in ultrasound?`, answer: `Converts received analog echo signals into digital data for processing.`, category: "physics" },
+  { id: 154, question: `What is 3D ultrasound imaging?`, answer: `Acquisition and reconstruction of volumetric images from consecutive 2D scans.`, category: "physics" },
+  { id: 155, question: `What is 4D ultrasound?`, answer: `Real-time 3D imaging showing dynamic movement like a live video.`, category: "physics" },
+  { id: 156, question: `What is speckle noise reduced in ultrasound imaging?`, answer: `Through spatial compounding, frequency compounding, or advanced image processing techniques.`, category: "physics" },
+  { id: 157, question: `What is ultrafast ultrasound imaging?`, answer: `High frame-rate imaging enabling real-time 2D or 3D visualization of rapid physiological processes.`, category: "physics" },
+  { id: 158, question: `What is deep learning (DL) in ultrasound?`, answer: `A subset of ML using multilayer neural networks to automatically extract features from imaging data.`, category: "physics" },
+  { id: 159, question: `How do convolutional neural networks (CNNs) apply to ultrasound?`, answer: `They analyze ultrasound images for feature detection, classification, and segmentation.`, category: "physics" },
+  { id: 160, question: `What is image pre-processing in ultrasound?`, answer: `Initial steps like noise reduction and filtering applied prior to image formation.`, category: "physics" },
+  { id: 161, question: `What is image post-processing?`, answer: `Operations applied after image formation such as contrast adjustment, edge enhancement, and annotation.`, category: "physics" },
+  { id: 162, question: `What is frequency compounding in ultrasound imaging?`, answer: `Combining images from different frequency bands to reduce noise and artifacts.`, category: "physics" },
+  { id: 163, question: `How does real-time image processing improve clinical ultrasound?`, answer: `Provides immediate feedback with dynamic image enhancement and artifact suppression.`, category: "physics" },
+  { id: 164, question: `What is the role of Doppler waveform analysis in ultrasound?`, answer: `Assesses velocity and flow characteristics through spectral Doppler display.`, category: "doppler" },
+  { id: 165, question: `What is maximum intensity projection (MIP)?`, answer: `An image processing technique displaying the highest intensity pixel values along a line through volume data.`, category: "physics" },
+  { id: 166, question: `What is required of ultrasound equipment under safety regulations?`, answer: `Compliance with federal and state guidelines, routine quality assurance, and maintenance.`, category: "safety" },
+  { id: 167, question: `What do accreditation agencies such as the American Institute of Ultrasound in Medicine (AIUM) require for practices?`, answer: `Certification of sonographers, documented QA, equipment maintenance, compliance with local legislation, and infection prevention protocols.`, category: "safety" },
+  { id: 168, question: `What is an incident reporting policy in ultrasound practices?`, answer: `A standardized procedure for responding to, documenting, and reporting accidents or complications.`, category: "safety" },
+  { id: 169, question: `What is the role of infection control in ultrasound?`, answer: `Prevents disease transmission by enforcing probe cleaning/disinfection protocols and using sterile covers for invasive procedures.`, category: "safety" },
+  { id: 170, question: `Why should sonography equipment ideally be less than five years old?`, answer: `To ensure currency with technology, reliability, and safety.`, category: "safety" },
+  { id: 171, question: `What is involved in regular quality assurance for ultrasound systems?`, answer: `Routine performance checks, calibration, probe integrity testing, and maintenance records.`, category: "safety" },
+  { id: 172, question: `What is a necessary characteristic of ultrasound image archiving systems?`, answer: `Ability to record and retrieve patient and study information for clinical QA, legal reasons, and teaching.`, category: "safety" },
+  { id: 173, question: `Why must ultrasound practitioners follow HIPAA regulations?`, answer: `To ensure patient confidentiality and data protection in records and communications.`, category: "safety" },
+  { id: 174, question: `Give an example of a safety-related continuing education topic for sonographers.`, answer: `Application of updated QA procedures, bioeffect prevention, or ergonomic techniques.`, category: "safety" },
+  { id: 175, question: `What is the purpose of maintaining service contracts on ultrasound equipment?`, answer: `Ensures timely repair, routine checks, and compliance with manufacturer and regulatory standards.`, category: "safety" },
+  { id: 176, question: `What is the expected interval for quality assurance checks of US equipment?`, answer: `At least annually or more frequently if problems arise.`, category: "safety" },
+  { id: 177, question: `Why is incident reporting and review important in ultrasound facilities?`, answer: `It aids in improving safety, learning from adverse events, and meeting accreditation standards.`, category: "safety" },
+  { id: 178, question: `Who is responsible for overseeing ultrasound operations in a clinic?`, answer: `The designated director of ultrasound, often a licensed medical provider with relevant credentials.`, category: "safety" },
+  { id: 179, question: `What is an annular array transducer?`, answer: `A probe with concentric ring elements enabling electronic focusing at multiple depths.`, category: "transducers" },
+  { id: 180, question: `What is a convex (curvilinear) array?`, answer: `A transducer with a curved array of elements, providing a wide field of view.`, category: "transducers" },
+  { id: 181, question: `What are grating lobes and how are they reduced?`, answer: `Side artifacts from array transducers, minimized by subdicing elements and apodization.`, category: "transducers" },
+  { id: 182, question: `What artifact results from a beam that is too wide perpendicular to the image plane?`, answer: `Slice thickness artifact.`, category: "artifacts" },
+  { id: 183, question: `What causes ring-down artifact?`, answer: `Resonance of gas bubbles following a pulse, appearing as a continuous band of echoes.`, category: "artifacts" },
+  { id: 184, question: `What factors increase the risk of aliasing?`, answer: `High frequency, shallow sample gate, lower PRF.`, category: "doppler" },
+  { id: 185, question: `What effect does increasing sample volume size have on Doppler signal?`, answer: `Increases spectral broadening, reduces resolution, and introduces more noise.`, category: "doppler" },
+  { id: 186, question: `What is pre-processing in ultrasound?`, answer: `Image adjustments applied before data are stored; includes gain, TGC, and compression.`, category: "physics" },
+  { id: 187, question: `What is post-processing in ultrasound?`, answer: `Image manipulation after data storage; includes changes to brightness, contrast, and annotations.`, category: "physics" },
+  { id: 188, question: `What is the negative effect does the backing material have?`, answer: `Reduces transducer sensitivity and decreases the quality factor (QF).`, category: "transducers" },
+  { id: 189, question: `What is the difference between sensitivity and bandwidth in ultrasound transducers?`, answer: `Sensitivity refers to the ability to detect weak echoes, while bandwidth is the range of frequencies a transducer emits.`, category: "transducers" },
+  { id: 190, question: `What determines frequency in continuous wave Doppler transducers?`, answer: `The frequency of electrical signal from the ultrasound system, not the crystal.`, category: "transducers" },
+  { id: 191, question: `What is the effect of damping material on bandwidth?`, answer: `Increases bandwidth (broadband), which improves axial resolution.`, category: "transducers" },
+  { id: 192, question: `When does refraction not occur in ultrasound imaging?`, answer: `If propagation speeds in both media are equal, there is no refraction.`, category: "physics" },
+  { id: 193, question: `What is the principle of conservation of energy at tissue boundaries?`, answer: `The sum of reflected and transmitted intensities equals the incident intensity.`, category: "physics" },
+  { id: 194, question: `What is the primary safety mandate for clinical ultrasound?`, answer: `Patient benefits must always outweigh examination risks.`, category: "safety" },
+  { id: 195, question: `What is dosimetry in ultrasound?`, answer: `The science of measuring ultrasound beam characteristics and assessing potential bioeffects.`, category: "safety" },
+  { id: 196, question: `What is Huygens's Principle?`, answer: `Every point on a wavefront acts as a source of spherical wavelets that form a new wavefront.`, category: "physics" },
+  { id: 197, question: `What is the typical propagation speed in bone?`, answer: `3500 m/s.`, category: "physics" },
+  { id: 198, question: `What is the propagation speed in air?`, answer: `About 330 m/s.`, category: "physics" },
+  { id: 199, question: `What is a sound beam?`, answer: `The focused path of acoustic energy as it travels through a medium.`, category: "physics" },
+  { id: 200, question: `How is beam focusing achieved in ultrasound?`, answer: `By superimposing wavelets from the transducer; constructive interference enhances focus.`, category: "physics" },
+];
+
+// ── SM-2 Spaced Repetition Algorithm ─────────────────────────────
+export interface SM2Result {
+  interval: number;
+  repetitions: number;
+  easeFactor: number;
+}
+
+export function calculateSM2(
+  quality: number,
+  repetitions: number,
+  easeFactor: number,
+  interval: number
+): SM2Result {
+  if (quality < 0 || quality > 5) throw new Error("Quality must be 0-5");
+
+  let newEF = easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+  if (newEF < 1.3) newEF = 1.3;
+
+  if (quality < 3) {
+    return { interval: 1, repetitions: 0, easeFactor: newEF };
+  }
+
+  let newInterval: number;
+  const newReps = repetitions + 1;
+
+  if (newReps === 1) newInterval = 1;
+  else if (newReps === 2) newInterval = 6;
+  else newInterval = Math.round(interval * newEF);
+
+  return { interval: newInterval, repetitions: newReps, easeFactor: newEF };
+}
