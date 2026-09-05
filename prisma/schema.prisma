@@ -1,0 +1,275 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@index([identifier])
+}
+
+model User {
+  id                  String              @id @default(cuid())
+  name                String?
+  email               String?             @unique
+  emailVerified       DateTime?
+  image               String?
+  role                Role                @default(STUDENT)
+  examDate            DateTime?
+  institution         String?
+  stripeCustomerId    String?             @unique
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  failedLoginAttempts Int                 @default(0)
+  lockedUntil         DateTime?
+  lastLoginAt         DateTime?
+  deletedAt           DateTime?
+  activeSessionId     String?
+  passwordHash        String?
+  accounts            Account[]
+  ExamSession         ExamSession[]
+  FlashcardProgress   FlashcardProgress[]
+  purchases           Purchase[]
+  sessions            Session[]
+  StudyNoteProgress   StudyNoteProgress[]
+  FlashcardReview     FlashcardReview[]
+
+  @@index([email])
+  @@index([stripeCustomerId])
+}
+
+model Purchase {
+  id                    String         @id @default(cuid())
+  userId                String
+  productId             String
+  status                PurchaseStatus @default(COMPLETED)
+  amountInCents         Int
+  currency              String         @default("usd")
+  stripeSessionId       String?        @unique
+  stripePaymentIntentId String?
+  accessGrantedAt       DateTime       @default(now())
+  accessExpiresAt       DateTime
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  Product               Product        @relation(fields: [productId], references: [id])
+  user                  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([stripePaymentIntentId])
+  @@index([stripeSessionId])
+  @@index([userId])
+  @@index([userId, productId])
+  @@index([userId, status, accessExpiresAt])
+}
+
+model AuditLog {
+  id        String   @id
+  userId    String?
+  action    String
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([action])
+  @@index([createdAt])
+  @@index([userId])
+}
+
+model DemoLead {
+  id        String   @id
+  email     String
+  source    String   @default("demo")
+  score     Int?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([email])
+}
+
+model ExamSession {
+  id                String       @id @default(cuid())
+  userId            String
+  examType          String       @default("SPI")
+  totalQuestions    Int
+  correctAnswers    Int          @default(0)
+  score             Float?
+  timeSpentSecs     Int          @default(0)
+  completed         Boolean      @default(false)
+  categoryBreakdown Json?
+  startedAt         DateTime     @default(now())
+  completedAt       DateTime?
+  ExamAnswer        ExamAnswer[]
+  User              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, completed])
+  @@index([userId, examType])
+  @@index([userId])
+}
+
+model ExamAnswer {
+  id            Int      @id @default(autoincrement())
+  sessionId     String
+  questionId    Int
+  selectedIndex Int
+  isCorrect     Boolean
+  timeSpentMs   Int      @default(0)
+
+  ExamSession   ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId])
+  @@map("exam_answers")
+}
+
+model FlashcardProgress {
+  id             String    @id @default(cuid())
+  userId         String
+  cardId         Int
+  box            Int       @default(1)
+  easeFactor     Float     @default(2.5)
+  interval       Int       @default(1)
+  repetitions    Int       @default(0)
+  reviewCount    Int       @default(0)
+  correctCount   Int       @default(0)
+  incorrectCount Int       @default(0)
+  isMastered     Boolean   @default(false)
+  nextReview     DateTime?
+  lastReviewed   DateTime?
+  timeSpentMs    Int       @default(0)
+
+  User           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Optional relation to Flashcard if you have a Flashcard model later
+  // flashcard      Flashcard? @relation(fields: [cardId], references: [id])
+
+  @@unique([userId, cardId])
+  @@index([userId])
+  @@index([userId, isMastered])
+  @@index([userId, nextReview])
+  @@map("flashcard_progress")
+}
+
+model FlashcardReview {
+  id          String   @id @default(cuid())
+  userId      String
+  flashcardId Int
+  quality     Int
+  timeSpentMs Int      @default(0)
+  reviewedAt  DateTime @default(now())
+
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("flashcard_reviews")
+}
+
+model StudyNoteProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  chapterId   Int
+  progress    Float    @default(0)
+  bookmarks   Json?
+  timeSpentMs Int      @default(0)
+  lastStudied DateTime @default(now())
+
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, chapterId])
+  @@index([userId])
+  @@map("study_note_progress")
+}
+
+model Product {
+  id            String      @id
+  type          ProductType @unique
+  name          String
+  description   String
+  priceInCents  Int
+  stripePriceId String?     @unique
+  active        Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  Purchase      Purchase[]
+}
+
+model Subscriber {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  subscribedAt DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("subscribers")
+}
+
+enum ProductType {
+  FLASHCARDS
+  PHYSICS_PEARLS
+  EXAM_SIMULATOR
+  STUDY_NOTES
+  PREMIUM_BUNDLE
+}
+
+enum PurchaseStatus {
+  COMPLETED
+  REFUNDED
+  DISPUTED
+  PENDING
+}
+
+enum Role {
+  STUDENT
+  ADMIN
+}
+
+// Shared, cross-instance store for rate-limit counters. Replaces the old
+// per-process in-memory Map in src/lib/rate-limit.ts, which gave every
+// Vercel serverless instance its own independent counter — an attacker
+// could bypass a "5 attempts" limit just by landing on different instances.
+// This table is a single shared counter every instance reads/writes via
+// Postgres, so the limit is enforced correctly regardless of which
+// instance handles a given request. Upstash Redis is still used instead
+// of this table when UPSTASH_REDIS_REST_URL/TOKEN are configured (faster,
+// less DB load at scale) — this is the always-available fallback so rate
+// limiting is never silently unsafe just because Upstash isn't set up yet.
+model RateLimitBucket {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@map("rate_limit_buckets")
+}
