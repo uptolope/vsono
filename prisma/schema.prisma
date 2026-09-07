@@ -140,7 +140,6 @@ model ExamSession {
 
   @@index([userId, completed])
   @@index([userId, examType])
-  @@index([userId])
 }
 
 model ExamAnswer {
