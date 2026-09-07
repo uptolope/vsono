@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Account {
@@ -40,7 +41,6 @@ model VerificationToken {
   identifier String
   token      String
   expires    DateTime
-
   @@id([identifier, token])
 }
 
@@ -227,14 +227,6 @@ model Subscriber {
   updatedAt    DateTime @updatedAt
 
   @@map("subscribers")
-}
-
-model RateLimitBucket {
-  key     String   @id
-  count   Int      @default(0)
-  resetAt DateTime
-
-  @@map("rate_limit_buckets")
 }
 
 enum ProductType {
