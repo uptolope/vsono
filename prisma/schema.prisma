@@ -65,11 +65,11 @@ model User {
   passwordHash        String?
   accounts            Account[]
   ExamSession         ExamSession[]
-  FlashcardProgress   FlashcardProgress[]
   purchases           Purchase[]
   sessions            Session[]
-  StudyNoteProgress   StudyNoteProgress[]
+  FlashcardProgress   FlashcardProgress[]
   FlashcardReview     FlashcardReview[]
+  StudyNoteProgress   StudyNoteProgress[]
 
   @@index([email])
   @@index([stripeCustomerId])
@@ -135,8 +135,8 @@ model ExamSession {
   categoryBreakdown Json?
   startedAt         DateTime     @default(now())
   completedAt       DateTime?
-  ExamAnswer        ExamAnswer[]
   User              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ExamAnswer        ExamAnswer[]
 
   @@index([userId, completed])
   @@index([userId, examType])
@@ -144,13 +144,13 @@ model ExamSession {
 }
 
 model ExamAnswer {
-  id            Int      @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   sessionId     String
   questionId    Int
   selectedIndex Int
   isCorrect     Boolean
-  timeSpentMs   Int      @default(0)
-
+  timeSpentMs   Int         @default(0)
+  userId        String
   ExamSession   ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
 
   @@index([sessionId])
@@ -172,10 +172,7 @@ model FlashcardProgress {
   nextReview     DateTime?
   lastReviewed   DateTime?
   timeSpentMs    Int       @default(0)
-
   User           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  // Optional relation to Flashcard if you have a Flashcard model later
-  // flashcard      Flashcard? @relation(fields: [cardId], references: [id])
 
   @@unique([userId, cardId])
   @@index([userId])
@@ -191,7 +188,6 @@ model FlashcardReview {
   quality     Int
   timeSpentMs Int      @default(0)
   reviewedAt  DateTime @default(now())
-
   User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("flashcard_reviews")
@@ -205,7 +201,6 @@ model StudyNoteProgress {
   bookmarks   Json?
   timeSpentMs Int      @default(0)
   lastStudied DateTime @default(now())
-
   User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, chapterId])
@@ -254,22 +249,4 @@ enum PurchaseStatus {
 enum Role {
   STUDENT
   ADMIN
-}
-
-// Shared, cross-instance store for rate-limit counters. Replaces the old
-// per-process in-memory Map in src/lib/rate-limit.ts, which gave every
-// Vercel serverless instance its own independent counter — an attacker
-// could bypass a "5 attempts" limit just by landing on different instances.
-// This table is a single shared counter every instance reads/writes via
-// Postgres, so the limit is enforced correctly regardless of which
-// instance handles a given request. Upstash Redis is still used instead
-// of this table when UPSTASH_REDIS_REST_URL/TOKEN are configured (faster,
-// less DB load at scale) — this is the always-available fallback so rate
-// limiting is never silently unsafe just because Upstash isn't set up yet.
-model RateLimitBucket {
-  key     String   @id
-  count   Int
-  resetAt DateTime
-
-  @@map("rate_limit_buckets")
 }

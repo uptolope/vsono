@@ -47,9 +47,23 @@ validateStripeEnvVars();
 
 // ── STRIPE CLIENT ──────────────────────────────────────────────────
 // Initialize Stripe with secret key and pinned API version
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2026-07-29.dahlia",
-});
+let stripe: Stripe | null = null;
+
+export function getStripe(): Stripe {
+  if (!stripe) {
+    const secretKey = process.env.STRIPE_SECRET_KEY;
+
+    if (!secretKey) {
+      throw new Error('STRIPE_SECRET_KEY is not configured');
+    }
+
+    stripe = new Stripe(secretKey, {
+      apiVersion: '2026-07-29.dahlia',
+    });
+  }
+
+  return stripe;
+}
 
 // ── PRODUCT PRICE MAP ──────────────────────────────────────────────
 // Maps product keys to their Stripe price IDs and access duration

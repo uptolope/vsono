@@ -92,9 +92,14 @@ async function postgresRateLimit(
   // separate cron job — cheap, and no operational setup required.
   if (Math.random() < 0.01) {
     const staleCutoff = new Date(now.getTime() - 60 * 60 * 1000);
-    prisma.rateLimitBucket
-      .deleteMany({ where: { resetAt: { lt: staleCutoff } } })
-      .catch((err: unknown) => console.error("[rate-limit] Cleanup failed:", err));
+    prisma.$executeRaw(
+      Prisma.sql`
+        DELETE FROM "rate_limit_buckets"
+        WHERE "resetAt" < ${staleCutoff}
+      `
+    ).catch((err: unknown) =>
+      console.error("[rate-limit] Cleanup failed:", err)
+    );
   }
 
   return {

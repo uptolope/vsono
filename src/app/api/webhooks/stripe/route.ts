@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { stripe, PRODUCT_PRICE_MAP } from "@/lib/stripe";
+import { getStripe, PRODUCT_PRICE_MAP } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 import { PHASE_PRODUCTION_BUILD } from "next/constants";
@@ -28,13 +28,19 @@ function extractPaymentIntentId(
   paymentIntent: string | Stripe.PaymentIntent | null | undefined
 ): string | undefined {
   if (typeof paymentIntent === "string") return paymentIntent;
-  if (paymentIntent && typeof paymentIntent === "object" && "id" in paymentIntent) {
+  if (
+    paymentIntent &&
+    typeof paymentIntent === "object" &&
+    "id" in paymentIntent
+  ) {
     return (paymentIntent as Stripe.PaymentIntent).id;
   }
   return undefined;
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  const stripe = getStripe();
+
   const rawBody = await req.text();
   const signature = req.headers.get("stripe-signature");
 
@@ -72,7 +78,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
       case "charge.dispute.created": {
         const dispute = event.data.object as Stripe.Dispute;
-        await handleDispute(dispute, eventId);
+        await handleDispute(dispute, eventId, stripe);
         break;
       }
 
@@ -127,7 +133,9 @@ async function handleCheckoutCompleted(
   }
 
   const now = new Date();
-  const accessDays = (PRODUCT_PRICE_MAP[product as keyof typeof PRODUCT_PRICE_MAP]).accessDays;
+  const accessDays = PRODUCT_PRICE_MAP[
+    product as keyof typeof PRODUCT_PRICE_MAP
+  ].accessDays;
   let windowStart = now;
 
   if (stackAfter) {
@@ -186,7 +194,8 @@ async function handleRefund(
 
   if (purchase.accessGrantedAt) {
     const daysSincePurchase = Math.floor(
-      (Date.now() - purchase.accessGrantedAt.getTime()) / (1000 * 60 * 60 * 24)
+      (Date.now() - purchase.accessGrantedAt.getTime()) /
+        (1000 * 60 * 60 * 24)
     );
     if (daysSincePurchase > REFUND_WINDOW_DAYS) {
       console.warn(
@@ -210,7 +219,8 @@ async function handleRefund(
 
 async function handleDispute(
   dispute: Stripe.Dispute,
-  eventId: string
+  eventId: string,
+  stripe: Stripe
 ): Promise<void> {
   const chargeId =
     typeof dispute.charge === "string" ? dispute.charge : dispute.charge?.id;
