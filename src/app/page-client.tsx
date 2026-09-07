@@ -64,8 +64,8 @@ function Hero() {
     animateBy="words"
     direction="bottom"
     stepDuration={0.4}
-    animationFrom={[{ filter: "blur(8px)", opacity: 0, y: 20 }]}
-    animationTo={[{ filter: "blur(0px)", opacity: 1, y: 0 }]}
+    animationFrom={{ filter: "blur(8px)", opacity: 0, y: 20 }}
+    animationTo={{ filter: "blur(0px)", opacity: 1, y: 0 }}
   />
 </div>
 
