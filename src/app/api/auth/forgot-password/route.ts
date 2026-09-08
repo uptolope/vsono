@@ -1,77 +1,116 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomBytes } from "crypto";
+import { createHash, randomBytes } from "crypto";
 import { prisma } from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { forgotPasswordSchema } from "@/lib/validations";
 
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000;
+
+const GENERIC_RESPONSE = {
+  message: "If an account with that email exists, a reset link has been sent.",
+};
+
+function hashResetToken(token: string): string {
+  return createHash("sha256").update(token, "utf8").digest("hex");
+}
+
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req.headers);
 
-  // Tight rate limit — this endpoint sends email and is an
-  // enumeration/spam vector if unbounded.
-  const limit = await rateLimit(`forgot:${ip}`, { limit: 3, windowMs: 15 * 60 * 1000 });
-  if (!limit.allowed) {
-    // Return the same 200 message to avoid leaking rate-limit status
-    // per email address. The attacker still gets a 429 per IP though.
+  const ipLimit = await rateLimit(`forgot:ip:${ip}`, {
+    limit: 3,
+    windowMs: 15 * 60 * 1000,
+  });
+
+  if (!ipLimit.allowed) {
     return NextResponse.json(
-      { message: "If an account with that email exists, a reset link has been sent." },
-      { status: 429 }
+      GENERIC_RESPONSE,
+      { status: 429 },
     );
   }
 
   let body: unknown;
+
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid request." },
+      { status: 400 },
+    );
   }
 
   const parsed = forgotPasswordSchema.safeParse(body);
+
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: "Enter a valid email address." },
+      { status: 400 },
+    );
   }
 
-  const { email } = parsed.data;
+  const email = parsed.data.email;
 
-  // Always return the same response whether the email exists or not —
-  // do not let the response leak whether this is a valid account.
-  const GENERIC_RESPONSE = {
-    message: "If an account with that email exists, a reset link has been sent.",
-  };
+  const emailLimit = await rateLimit(`forgot:email:${email}`, {
+    limit: 3,
+    windowMs: 15 * 60 * 1000,
+  });
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || user.deletedAt) {
+  if (!emailLimit.allowed) {
+    return NextResponse.json(
+      GENERIC_RESPONSE,
+      { status: 429 },
+    );
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      email: true,
+      deletedAt: true,
+    },
+  });
+
+  // Always return the same response for existing and nonexistent accounts.
+  if (!user || user.deletedAt || !user.email) {
     return NextResponse.json(GENERIC_RESPONSE);
   }
 
-  // Generate a secure random token and store it in VerificationToken.
-  // The "identifier" field uses "pwd-reset:" prefix to distinguish
-  // password reset tokens from email verification tokens.
-  const token = randomBytes(32).toString("hex");
-  const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  const rawToken = randomBytes(32).toString("hex");
+  const tokenHash = hashResetToken(rawToken);
+  const identifier = `pwd-reset:${email}`;
+  const expires = new Date(Date.now() + RESET_TOKEN_TTL_MS);
 
-  // Delete any existing reset tokens for this email first
+  // Keep only the newest reset token for this email address.
   await prisma.verificationToken.deleteMany({
-    where: { identifier: `pwd-reset:${email}` },
+    where: { identifier },
   });
 
   await prisma.verificationToken.create({
     data: {
-      identifier: `pwd-reset:${email}`,
-      token,
+      identifier,
+      token: tokenHash,
       expires,
     },
   });
 
-  // BUG FIXED: this used to build a full URL here and pass it as the
-  // "token" argument to sendPasswordResetEmail(email, token) — but that
-  // function's signature expects a bare token and builds the URL itself.
-  // The result was a double-nested, double-encoded URL (a full URL stuffed
-  // into the token= query param of another URL) that could never work as
-  // a real reset link. sendPasswordResetEmail is the single place that
-  // owns URL construction now — just pass the raw token.
-  await sendPasswordResetEmail(email, token);
+  const emailResult = await sendPasswordResetEmail(email, rawToken);
+
+  // If email delivery fails, remove the unusable token.
+  if (!emailResult.success) {
+    await prisma.verificationToken.deleteMany({
+      where: {
+        identifier,
+        token: tokenHash,
+      },
+    });
+
+    console.error("Password reset email delivery failed.", {
+      emailDomain: email.split("@")[1] ?? "unknown",
+    });
+  }
 
   return NextResponse.json(GENERIC_RESPONSE);
 }
