@@ -1,13 +1,21 @@
-// Shared client-facing shape for a single purchase, as returned by
-// GET /api/account/data. Both the API route and every consumer
-// (currently AccountPageClient.tsx) import this type so the property
-// names can never drift apart again.
 export interface AccountPurchaseInfo {
-  /** ProductType enum value, e.g. "FLASHCARDS" — matches PRODUCT_LABELS keys. */
+  /**
+   * ProductType enum value, such as:
+   * FLASHCARDS, EXAM_SIMULATOR, PHYSICS_PEARLS,
+   * STUDY_NOTES, or PREMIUM_BUNDLE.
+   */
   product: string;
-  status: string;
+
+  /**
+   * A completed purchase is returned by the account API.
+   */
+  status: "COMPLETED";
+
   amountPaidCents: number;
+
   accessGrantedAt: string;
+
   accessExpiresAt: string;
+
   createdAt: string;
 }

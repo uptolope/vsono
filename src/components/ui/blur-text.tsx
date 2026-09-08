@@ -50,7 +50,7 @@ const BlurText: React.FC<BlurTextProps> = ({
   return (
     <Tag className={className}>
       {items.map((item, index) => (
-        <React.Fragment key={`\${item}-\${index}`}>
+        <React.Fragment key={`${item}-${index}`}>
           <motion.span
             initial={animationFrom ?? defaultAnimationFrom}
             animate={animationTo}

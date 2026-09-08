@@ -41,9 +41,9 @@ Domains 3 and 4 (image optimization and Doppler) make up **60% of the exam**.
 
 ---
 
-## Premium Bundle — \$99
+## Premium Bundle — $99
 
-**~~\$116.99~~** → **\$99** (Save **\$17.99**) • 45-day access
+**~~$116.99~~** → **$99** (Save **$17.99**) • 45-day access
 
 Get everything in one package — the most popular and cost-effective choice.
 
@@ -55,28 +55,28 @@ Get everything in one package — the most popular and cost-effective choice.
 - Detailed clinical rationales
 - **10-day full refund** — no questions asked
 
-**GET THE PREMIUM BUNDLE — \$99 →**
+**GET THE PREMIUM BUNDLE — $99 →**
 
 ---
 
 ## Individual Products
 
-**Physics Pearls — \$9** (30-day access)  
+**Physics Pearls — $9** (30-day access)  
 50 concise, high-yield physics summaries organized by concept. Perfect quick reference for the formulas and relationships the SPI loves to test.
 
 **GET PHYSICS PEARLS →**
 
-**SPI Flashcards — \$24** (30-day access)  
+**SPI Flashcards — $24** (30-day access)  
 200+ digital flashcards mapped to all 5 domains. Built for active recall and spaced repetition.
 
 **GET SPI FLASHCARDS →**
 
-**Study Notes — \$34** (30-day access)  
+**Study Notes — $34** (30-day access)  
 159-page comprehensive PDF covering all 5 domains across 15 chapters. Excellent for deep understanding and offline study.
 
 **GET STUDY NOTES →**
 
-**Exam Simulator — \$49.99** (30-day access)  
+**Exam Simulator — $49.99** (30-day access)  
 110-question timed mock exams drawn from a 155-question ARDMS-style bank. Includes detailed rationales and domain-level performance tracking (3 attempts).
 
 **GET EXAM SIMULATOR →**

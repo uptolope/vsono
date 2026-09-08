@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
 
     // Validate email
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+\$/.test(email)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return NextResponse.json(
         { error: "Please enter a valid email address." },
         { status: 400 }

@@ -21,7 +21,8 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@index([userId])
@@ -32,7 +33,8 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -46,56 +48,85 @@ model VerificationToken {
 }
 
 model User {
-  id                  String              @id @default(cuid())
-  name                String?
-  email               String?             @unique
-  emailVerified       DateTime?
-  image               String?
-  role                Role                @default(STUDENT)
-  examDate            DateTime?
-  institution         String?
-  stripeCustomerId    String?             @unique
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
-  failedLoginAttempts Int                 @default(0)
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+
+  role        Role      @default(STUDENT)
+  examDate    DateTime?
+  institution String?
+
+  stripeCustomerId String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  failedLoginAttempts Int       @default(0)
   lockedUntil         DateTime?
   lastLoginAt         DateTime?
   deletedAt           DateTime?
   activeSessionId     String?
   passwordHash        String?
-  accounts            Account[]
-  ExamSession         ExamSession[]
-  purchases           Purchase[]
-  sessions            Session[]
-  FlashcardProgress   FlashcardProgress[]
-  FlashcardReview     FlashcardReview[]
-  StudyNoteProgress   StudyNoteProgress[]
+
+  accounts          Account[]
+  sessions          Session[]
+  purchases         Purchase[]
+  examSessions      ExamSession[]
+  examAnswers       ExamAnswer[]
+  flashcardProgress FlashcardProgress[]
+  flashcardReviews  FlashcardReview[]
+  studyNoteProgress StudyNoteProgress[]
+  auditLogs         AuditLog[]
 
   @@index([email])
   @@index([stripeCustomerId])
+  @@index([deletedAt])
 }
 
 model Purchase {
   id                    String         @id @default(cuid())
   userId                String
   productId             String
-  status                PurchaseStatus @default(COMPLETED)
+  status                PurchaseStatus @default(PENDING)
   amountInCents         Int
   currency              String         @default("usd")
   stripeSessionId       String?        @unique
-  stripePaymentIntentId String?
-  accessGrantedAt       DateTime       @default(now())
-  accessExpiresAt       DateTime
+  stripePaymentIntentId String?        @unique
+  accessGrantedAt       DateTime?
+  accessExpiresAt       DateTime?
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
-  Product               Product        @relation(fields: [productId], references: [id])
-  user                  User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([stripePaymentIntentId])
-  @@index([stripeSessionId])
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
   @@index([userId])
-  @@index([userId, productId])
+  @@index([productId])
+  @@index([userId, status])
   @@index([userId, status, accessExpiresAt])
+  @@index([stripeSessionId])
+  @@index([stripePaymentIntentId])
+  @@index([createdAt])
+}
+
+model Product {
+  id                 String      @id
+  type               ProductType @unique
+  name               String
+  description        String
+  priceInCents       Int
+  stripePriceId      String?     @unique
+  accessDurationDays Int         @default(30)
+  active             Boolean     @default(true)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+
+  purchases Purchase[]
+
+  @@index([active])
+  @@index([stripePriceId])
 }
 
 model AuditLog {
@@ -107,13 +138,15 @@ model AuditLog {
   userAgent String?
   createdAt DateTime @default(now())
 
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
   @@index([action])
   @@index([createdAt])
   @@index([userId])
 }
 
 model DemoLead {
-  id        String   @id
+  id        String   @id @default(cuid())
   email     String
   source    String   @default("demo")
   score     Int?
@@ -124,36 +157,39 @@ model DemoLead {
 }
 
 model ExamSession {
-  id                String       @id @default(cuid())
+  id                String    @id @default(cuid())
   userId            String
-  examType          String       @default("SPI")
+  examType          String    @default("SPI")
   totalQuestions    Int
-  correctAnswers    Int          @default(0)
+  correctAnswers    Int       @default(0)
   score             Float?
-  timeSpentSecs     Int          @default(0)
-  completed         Boolean      @default(false)
+  timeSpentSecs     Int       @default(0)
+  completed         Boolean   @default(false)
   categoryBreakdown Json?
-  startedAt         DateTime     @default(now())
+  startedAt         DateTime  @default(now())
   completedAt       DateTime?
-  User              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  ExamAnswer        ExamAnswer[]
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  examAnswers ExamAnswer[]
 
   @@index([userId, completed])
   @@index([userId, examType])
 }
 
 model ExamAnswer {
-  id            Int         @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   sessionId     String
   questionId    Int
   selectedIndex Int
   isCorrect     Boolean
-  timeSpentMs   Int         @default(0)
+  timeSpentMs   Int     @default(0)
   userId        String
-  ExamSession   ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  examSession ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([sessionId])
-  @@map("exam_answers")
+  @@index([userId])
 }
 
 model FlashcardProgress {
@@ -171,7 +207,8 @@ model FlashcardProgress {
   nextReview     DateTime?
   lastReviewed   DateTime?
   timeSpentMs    Int       @default(0)
-  User           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, cardId])
   @@index([userId])
@@ -187,8 +224,11 @@ model FlashcardReview {
   quality     Int
   timeSpentMs Int      @default(0)
   reviewedAt  DateTime @default(now())
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([flashcardId])
   @@map("flashcard_reviews")
 }
 
@@ -200,24 +240,12 @@ model StudyNoteProgress {
   bookmarks   Json?
   timeSpentMs Int      @default(0)
   lastStudied DateTime @default(now())
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, chapterId])
   @@index([userId])
   @@map("study_note_progress")
-}
-
-model Product {
-  id            String      @id
-  type          ProductType @unique
-  name          String
-  description   String
-  priceInCents  Int
-  stripePriceId String?     @unique
-  active        Boolean     @default(true)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  Purchase      Purchase[]
 }
 
 model Subscriber {
@@ -247,10 +275,10 @@ enum ProductType {
 }
 
 enum PurchaseStatus {
+  PENDING
   COMPLETED
   REFUNDED
   DISPUTED
-  PENDING
 }
 
 enum Role {

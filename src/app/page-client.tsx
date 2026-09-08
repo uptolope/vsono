@@ -58,16 +58,14 @@ function Hero() {
         {/* Headline — clear white text with a subtle entrance animation */}
           <div className="text-center mb-10 overflow-hidden">
             <BlurText
-            text="Pass the SPI. Earn your credential."
-            className="t-display text-[clamp(3rem,8vw,7.5rem)] text-white"
-            delay={80}
-            animateBy="words"
-            direction="bottom"
-            stepDuration={0.4}
-            animationFrom={{ filter: "blur(8px)", opacity: 0, y: 20 }}
-            animationTo={{ filter: "blur(0px)", opacity: 1, y: 0 }}
+              text="Pass the SPI. Earn your credential."
+              className="t-display text-[clamp(3rem,8vw,7.5rem)] text-white"
+              delay={80}
+              animateBy="words"
+              direction="bottom"
+              stepDuration={0.4}
             />
-            </div>
+        </div>
 
         {/* Subheadline */}
         <motion.p

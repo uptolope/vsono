@@ -27,24 +27,24 @@ Sample cards covering key concepts from all **5 ARDMS SPI domains**. Flip the ca
 
 ## Ready to Go Further?
 
-**Physics Pearls** — \$9 (30-day access)  
+**Physics Pearls** — $9 (30-day access)  
 50 high-yield physics summaries. Start studying in under 10 minutes.
 
-**SPI Flashcards** — \$24 (30-day access)  
+**SPI Flashcards** — $24 (30-day access)  
 200+ domain-organized flashcards with built-in spaced repetition.
 
-**Study Notes** — \$34 (30-day access)  
+**Study Notes** — $34 (30-day access)  
 159-page comprehensive PDF covering all 5 SPI domains in 15 chapters.
 
-**Exam Simulator** — \$49.99 (30-day access)  
+**Exam Simulator** — $49.99 (30-day access)  
 Full 110-question timed exam simulator with detailed rationales and domain performance analytics (3 attempts).
 
-**Premium Bundle** — **\$99** ~~\$116.99~~ (45-day access)  
-**Save \$17.99** — Get everything above in one package. The smartest way to prepare.
+**Premium Bundle** — **$99** ~~$116.99~~ (45-day access)  
+**Save $17.99** — Get everything above in one package. The smartest way to prepare.
 
 **10-day full refund** — If you go through the material and still don’t feel ready, get every penny back. No questions asked.
 
-**GET THE BUNDLE — \$99 →**
+**GET THE BUNDLE — $99 →**
 
 **One-time purchase only. No subscriptions.**
 
