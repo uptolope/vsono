@@ -8,3 +8,8 @@ build/
 *.log
 .DS_Store
 .env.production
+.vercel
+# Environment and secret files
+.env
+.env.*
+!.env.example

@@ -1,10 +1,11 @@
 "use client";
+
 import Link from "next/link";
 import { useState } from "react";
 import { trackCheckoutStarted } from "@/lib/analytics";
 
-// Maps the local product keys used in this page to the server-side
-// PRODUCT_PRICE_MAP keys in src/lib/stripe.ts / validations.ts.
+// Maps the local product keys used on this page to the server-side
+// PRODUCT_PRICE_MAP keys in src/lib/stripe.ts and validations.ts.
 const PRODUCT_KEY_MAP: Record<string, string> = {
   bundle: "PREMIUM_BUNDLE",
   flashcards: "FLASHCARDS",
@@ -28,9 +29,10 @@ type Product = {
   nudge?: string;
 };
 
-// Gravity pricing: every tier points upward toward the bundle.
-// Individual prices: $9 + $24 + $34 + $49.99 = $116.99 → display $116.
-// Bundle = $99. Save $17. Honest math.
+// Individual prices:
+// $9 + $24 + $34 + $49.99 = $116.99
+// Bundle price: $99
+// Displayed savings: $17
 const PRODUCTS: Product[] = [
   {
     key: "bundle",
@@ -129,34 +131,49 @@ export default function ProductsPage() {
 
   const handleCheckout = async (productKey: string) => {
     const serverKey = PRODUCT_KEY_MAP[productKey];
+
     if (!serverKey) {
       alert("Unknown product. Please contact support.");
       return;
     }
 
-    const product = PRODUCTS.find((p) => p.key === productKey);
-    const priceNum = product ? parseFloat(product.price.replace("$", "")) : 0;
-    trackCheckoutStarted(serverKey, priceNum);
+    const product = PRODUCTS.find((item) => item.key === productKey);
+    const priceNum = product
+      ? parseFloat(product.price.replace("$", ""))
+      : 0;
 
+    trackCheckoutStarted(serverKey, priceNum);
     setCheckoutLoading(productKey);
+
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product: serverKey }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          product: serverKey,
+        }),
       });
 
       if (res.status === 401) {
-        // Not logged in — redirect to signup, then back to products
-        window.location.href = `/signup`;
+        window.location.href = "/signup";
         return;
       }
 
       const data = await res.json();
+
       if (data.url) {
         window.location.href = data.url;
-      } else if (data.error) {
-        alert(typeof data.error === "string" ? data.error : "Checkout failed.");
+        return;
+      }
+
+      if (data.error) {
+        alert(
+          typeof data.error === "string"
+            ? data.error
+            : "Checkout failed."
+        );
       }
     } catch {
       alert("Something went wrong. Please try again.");
@@ -165,32 +182,40 @@ export default function ProductsPage() {
     }
   };
 
-  const bundle = PRODUCTS.find((p) => p.bundle)!;
-  const individual = PRODUCTS.filter((p) => !p.bundle);
+  const bundle = PRODUCTS.find((product) => product.bundle);
+
+  if (!bundle) {
+    return null;
+  }
+
+  const individual = PRODUCTS.filter((product) => !product.bundle);
 
   return (
-    <div className="min-h-screen pt-32 px-6 pb-24">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen px-6 pb-24 pt-32">
+      <div className="mx-auto max-w-5xl">
         {/* Page header */}
         <div className="mb-14 border-b border-white/6 pb-10">
           <span className="meta">SPI EXAM PREP</span>
-          <h1 className="display-display text-5xl sm:text-6xl mt-4 leading-[1.06]">
+
+          <h1 className="display-display mt-4 text-5xl leading-[1.06] sm:text-6xl">
             There is one clear path
             <br />
             <span className="text-[#c85b3a]">to passing the SPI.</span>
           </h1>
-          <p className="body-readable text-[#c2bab0] max-w-xl mt-5">
-            Most students get the bundle. If you want to start smaller, Physics
-            Pearls at $9 gets you studying in 10 minutes — and every step after
-            that leads to the same place.
+
+          <p className="body-readable mt-5 max-w-xl text-[#c2bab0]">
+            Most students get the bundle. If you want to start smaller,
+            Physics Pearls at $9 gets you studying in 10 minutes — and every
+            step after that leads to the same place.
           </p>
 
           {/* What this is not — decision filter */}
-          <div className="mt-7 p-5 border border-white/5 bg-[#f0ebe4]/[0.01]">
-            <p className="meta text-[9px] text-[#4a453f] mb-3">
+          <div className="mt-7 border border-white/5 bg-[#f0ebe4]/[0.01] p-5">
+            <p className="meta mb-3 text-[9px] text-[#4a453f]">
               BEFORE YOU BUY — SET THE RIGHT EXPECTATION
             </p>
-            <div className="grid sm:grid-cols-3 gap-4">
+
+            <div className="grid gap-4 sm:grid-cols-3">
               {[
                 {
                   not: "Not a textbook",
@@ -206,153 +231,194 @@ export default function ProductsPage() {
                 },
               ].map(({ not, is }) => (
                 <div key={not}>
-                  <p className="meta text-[9px] text-[#c85b3a] line-through mb-1">
+                  <p className="meta mb-1 text-[9px] text-[#c85b3a] line-through">
                     {not}
                   </p>
-                  <p className="body-small text-[#8a8279] text-xs">{is}</p>
+                  <p className="body-small text-xs text-[#8a8279]">
+                    {is}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          <p className="meta text-[9px] text-[#3a3530] mt-4">
-            Individual products include 30-day access · Premium Bundle includes
-            45-day access · 10-day full refund policy · Instant unlock after checkout
+          <p className="meta mt-4 text-[9px] text-[#3a3530]">
+            Individual products include 30-day access · Premium Bundle
+            includes 45-day access · 10-day full refund policy · Instant
+            unlock after checkout
           </p>
         </div>
 
-        {/* Bundle — the decision */}
-        <p className="meta text-[10px] text-[#c85b3a]/80 font-medium mb-3 text-center">
+        {/* Bundle */}
+        <p className="meta mb-3 text-center text-[10px] font-medium text-[#c85b3a]/80">
           Most students choose this
         </p>
+
         <div
           id="bundle"
-          className="scroll-mt-28 depth-border corner-arch p-8 sm:p-10 mb-10 relative border-[#c85b3a]/30 bg-[#c85b3a]/[0.04] ring-1 ring-[#c85b3a]/10"
+          className="corner-arch depth-border relative mb-10 scroll-mt-28 border-[#c85b3a]/30 bg-[#c85b3a]/[0.04] p-8 ring-1 ring-[#c85b3a]/10 sm:p-10"
         >
-          <div className="absolute top-0 left-0 bg-[#c85b3a] px-4 py-1.5 text-[9px] meta text-white tracking-wider">
+          <div className="meta absolute left-0 top-0 bg-[#c85b3a] px-4 py-1.5 text-[9px] tracking-wider text-white">
             MOST POPULAR
           </div>
-          <div className="pt-4 grid md:grid-cols-2 gap-10 items-start">
+
+          <div className="grid items-start gap-10 pt-4 md:grid-cols-2">
             <div>
-              <div className="meta text-[9px] text-[#c85b3a] mb-2">
+              <div className="meta mb-2 text-[9px] text-[#c85b3a]">
                 {bundle.tag}
               </div>
-              <h2 className="display-serif text-2xl font-bold text-white mb-3">
+
+              <h2 className="display-serif mb-3 text-2xl font-bold text-white">
                 {bundle.name}
               </h2>
-              <div className="flex items-baseline gap-3 mb-2">
+
+              <div className="mb-2 flex items-baseline gap-3">
                 <span className="text-4xl font-bold text-[#c85b3a]">
                   {bundle.price}
                 </span>
+
                 <span className="text-sm text-[#4a453f] line-through">
                   {bundle.strikethrough}
                 </span>
+
                 <span className="meta text-[9px] text-[#3a3530]">
                   / 45-day access
                 </span>
               </div>
-              <p className="meta text-[10px] text-[#c85b3a]/70 mb-4">
+
+              <p className="meta mb-4 text-[10px] text-[#c85b3a]/70">
                 {bundle.savings}
               </p>
-              <p className="body-readable text-[#c2bab0] text-sm leading-relaxed">
+
+              <p className="body-readable text-sm leading-relaxed text-[#c2bab0]">
                 {bundle.description}
               </p>
 
               {/* Risk reversal */}
-              <div className="mt-5 p-4 border border-white/5 bg-[#f0ebe4]/[0.01]">
-                <p className="meta text-[9px] text-[#4a453f] mb-1">
+              <div className="mt-5 border border-white/5 bg-[#f0ebe4]/[0.01] p-4">
+                <p className="meta mb-1 text-[9px] text-[#4a453f]">
                   10-DAY REFUND POLICY
                 </p>
-                <p className="body-small text-[#8a8279] text-xs leading-relaxed">
-                  If you go through this and still don't feel prepared, you get
-                  your money back. No questions about how much you used it.
-                  We're confident enough in the material to make buying feel
-                  safer than not buying.
+
+                <p className="body-small text-xs leading-relaxed text-[#8a8279]">
+                  If you go through this and still don&apos;t feel prepared,
+                  you get your money back. No questions about how much you
+                  used it. We&apos;re confident enough in the material to make
+                  buying feel safer than not buying.
                 </p>
               </div>
             </div>
+
             <div>
-              <ul className="space-y-2.5 mb-7">
-                {bundle.features.map((f) => (
+              <ul className="mb-7 space-y-2.5">
+                {bundle.features.map((feature) => (
                   <li
-                    key={f}
+                    key={feature}
                     className="flex items-center gap-3 text-sm text-[#c2bab0]"
                   >
-                    <span className="text-[#c85b3a] text-xs shrink-0">✓</span>
-                    {f}
+                    <span className="shrink-0 text-xs text-[#c85b3a]">
+                      ✓
+                    </span>
+                    {feature}
                   </li>
                 ))}
               </ul>
+
               <button
+                type="button"
                 onClick={() => handleCheckout("bundle")}
-                className="btn-industrial w-full py-4 text-[11px]"
+                disabled={checkoutLoading !== null}
+                aria-busy={checkoutLoading === "bundle"}
+                className="btn-industrial w-full py-4 text-[11px] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                GET THE BUNDLE — $99 →
+                {checkoutLoading === "bundle"
+                  ? "PROCESSING..."
+                  : "GET THE BUNDLE — $99 →"}
               </button>
-              <p className="meta text-[10px] text-[#8a8279] text-center mt-2">
+
+              <p className="meta mt-2 text-center text-[10px] text-[#8a8279]">
                 One bad exam costs more than everything you need to pass
               </p>
-              <p className="meta text-[9px] text-[#3a3530] text-center mt-1">
+
+              <p className="meta mt-1 text-center text-[9px] text-[#3a3530]">
                 10-day full refund · instant access · no subscription
               </p>
             </div>
           </div>
         </div>
 
-        {/* Individual products — each step leads upward */}
+        {/* Individual products */}
         <div className="mb-4">
-          <p className="meta text-[10px] text-[#3a3530] mb-5">
+          <p className="meta mb-5 text-[10px] text-[#3a3530]">
             OR TAKE ONE STEP AT A TIME
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-12">
+
+        <div className="mb-12 grid grid-cols-1 gap-5 sm:grid-cols-2">
           {individual.map((product) => (
             <div
               key={product.key}
               id={product.key}
-              className={`scroll-mt-28 depth-border corner-arch p-6 tactile-card relative flex flex-col ${product.featured ? "border-l-[3px] border-l-[#c85b3a]/50" : ""}`}
+              className={`corner-arch depth-border tactile-card relative flex scroll-mt-28 flex-col p-6 ${
+                product.featured
+                  ? "border-l-[3px] border-l-[#c85b3a]/50"
+                  : ""
+              }`}
             >
               <div className="flex-grow">
-                <div className="meta text-[9px] text-[#4a453f] mb-2">
+                <div className="meta mb-2 text-[9px] text-[#4a453f]">
                   {product.tag}
                 </div>
-                <h3 className="display-serif text-lg font-semibold text-white mb-1">
+
+                <h3 className="display-serif mb-1 text-lg font-semibold text-white">
                   {product.name}
                 </h3>
-                <div className="text-2xl font-semibold text-[#c85b3a] mb-3">
+
+                <div className="mb-3 text-2xl font-semibold text-[#c85b3a]">
                   {product.price}
-                  <span className="text-[9px] text-[#4a453f] ml-1">
+
+                  <span className="ml-1 text-[9px] text-[#4a453f]">
                     / 30-day access
                   </span>
                 </div>
-                <p className="body-small text-[#c2bab0] text-sm leading-relaxed mb-5">
+
+                <p className="body-small mb-5 text-sm leading-relaxed text-[#c2bab0]">
                   {product.description}
                 </p>
+
                 {product.socialProof && (
-                  <p className="meta text-[10px] text-[#c85b3a]/70 mb-4">
+                  <p className="meta mb-4 text-[10px] text-[#c85b3a]/70">
                     ({product.socialProof})
                   </p>
                 )}
-                <ul className="space-y-1.5 mb-6">
-                  {product.features.map((f) => (
+
+                <ul className="mb-6 space-y-1.5">
+                  {product.features.map((feature) => (
                     <li
-                      key={f}
+                      key={feature}
                       className="flex items-center gap-2.5 text-xs text-[#8a8279]"
                     >
-                      <span className="text-[#c85b3a] shrink-0">—</span>
-                      {f}
+                      <span className="shrink-0 text-[#c85b3a]">—</span>
+                      {feature}
                     </li>
                   ))}
                 </ul>
               </div>
+
               <button
+                type="button"
                 onClick={() => handleCheckout(product.key)}
-                className="btn-industrial-outline w-full py-3 text-center text-[10px]"
+                disabled={checkoutLoading !== null}
+                aria-busy={checkoutLoading === product.key}
+                className="btn-industrial-outline w-full py-3 text-center text-[10px] disabled:cursor-not-allowed disabled:opacity-60"
               >
-                GET {product.name.toUpperCase()} →
+                {checkoutLoading === product.key
+                  ? "PROCESSING..."
+                  : `GET ${product.name.toUpperCase()} →`}
               </button>
+
               {product.nudge && (
-                <p className="meta text-[9px] text-[#8a8279] text-center mt-2">
+                <p className="meta mt-2 text-center text-[9px] text-[#8a8279]">
                   {product.nudge}
                 </p>
               )}
@@ -361,25 +427,27 @@ export default function ProductsPage() {
         </div>
 
         {/* Try before you buy */}
-        <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 sm:flex-row">
           <div>
-            <p className="display-serif text-base font-semibold text-white mb-1">
+            <p className="display-serif mb-1 text-base font-semibold text-white">
               Not sure yet?
             </p>
-            <p className="body-small text-[#8a8279] text-sm">
+
+            <p className="body-small text-sm text-[#8a8279]">
               Try the exam simulator and flashcards free — no account required.
             </p>
           </div>
+
           <Link
             href="/demo"
-            className="btn-industrial-outline px-6 py-3 text-[10px] shrink-0"
+            className="btn-industrial-outline shrink-0 px-6 py-3 text-[10px]"
           >
             TRY FREE DEMO →
           </Link>
         </div>
 
         {/* Legal */}
-        <div className="mt-12 pt-6 border-t border-white/5 text-center">
+        <div className="mt-12 border-t border-white/5 pt-6 text-center">
           <p className="meta text-[9px] text-[#2e2b27]">
             © {new Date().getFullYear()} SonoPrep. All content is original and
             copyright protected. Unauthorized redistribution is prohibited.
