@@ -6,7 +6,9 @@ import Link from "next/link";
 
 export default function ResetPasswordClient() {
   const searchParams = useSearchParams();
+
   const token = searchParams.get("token") ?? "";
+  const email = searchParams.get("email") ?? "";
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,11 +18,16 @@ export default function ResetPasswordClient() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (loading) {
+      return;
+    }
+
     setError("");
 
-    if (!token) {
+    if (!token || !email) {
       setError(
-        "This reset link is invalid or missing a token. Please request a new one."
+        "This reset link is invalid or missing required information. Please request a new one."
       );
       return;
     }
@@ -52,6 +59,7 @@ export default function ResetPasswordClient() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          email,
           token,
           password,
         }),
@@ -60,20 +68,33 @@ export default function ResetPasswordClient() {
       const data = await response.json().catch(() => null);
 
       if (!response.ok) {
+        if (response.status === 429) {
+          setError("Too many attempts. Please wait and try again later.");
+          return;
+        }
+
         if (data?.error?.fieldErrors) {
           const messages = Object.values(data.error.fieldErrors)
             .flat()
-            .filter((message): message is string => typeof message === "string");
+            .filter(
+              (message): message is string => typeof message === "string"
+            );
 
           setError(messages.join(" ") || "Unable to reset password.");
-        } else if (typeof data?.error === "string") {
-          setError(data.error);
-        } else if (typeof data?.message === "string") {
-          setError(data.message);
-        } else {
-          setError("Unable to reset password. Please try again.");
+          return;
         }
 
+        if (typeof data?.error === "string") {
+          setError(data.error);
+          return;
+        }
+
+        if (typeof data?.message === "string") {
+          setError(data.message);
+          return;
+        }
+
+        setError("Unable to reset password. Please try again.");
         return;
       }
 
@@ -85,7 +106,7 @@ export default function ResetPasswordClient() {
     }
   };
 
-  if (!token) {
+  if (!token || !email) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6">
         <div className="w-full max-w-sm text-center">
@@ -195,6 +216,7 @@ export default function ResetPasswordClient() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40"
               placeholder="••••••••••"
+              disabled={loading}
             />
 
             <p className="meta text-[9px] text-[#3a3530] mt-1.5">
@@ -221,6 +243,7 @@ export default function ResetPasswordClient() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40"
               placeholder="••••••••••"
+              disabled={loading}
             />
           </div>
 
