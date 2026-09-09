@@ -54,8 +54,8 @@ assert.equal(parsePageParam("01"), 1, "leading zero still parses to a valid int"
 assert.equal(parsePageParam("999999999999"), null, "huge number rejected (out of range)");
 
 // ── blobPathForPage ───────────────────────────────────────────────
-assert.equal(blobPathForPage(1), "sonographic-physics/pages/page-0001.png");
-assert.equal(blobPathForPage(159), "sonographic-physics/pages/page-0159.png");
+assert.equal(blobPathForPage(1), "page-0001.png");
+assert.equal(blobPathForPage(159), "page-0159.png");
 assert.throws(() => blobPathForPage(0), /Invalid page number/);
 assert.throws(() => blobPathForPage(160), /Invalid page number/);
 

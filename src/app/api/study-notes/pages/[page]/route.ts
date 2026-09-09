@@ -111,7 +111,7 @@ export async function GET(
    * Generate the exact Blob pathname.
    *
    * Expected page 1 path:
-   * sonographic-physics/pages/page-0001.png
+   * page-0001.png
    */
   const pathname = blobPathForPage(pageNum);
 

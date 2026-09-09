@@ -49,7 +49,7 @@ export function blobPathForPage(page: number): string {
 
   const padded = String(page).padStart(4, "0");
 
-  return `sonographic-physics/pages/page-${padded}.png`;
+  return `page-${padded}.png`;
 }
 
 /**

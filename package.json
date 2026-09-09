@@ -1,6 +1,7 @@
 {
   "name": "sonoprep",
   "private": true,
+  "type": "module",
   "engines": {
     "node": "24.x"
   },
