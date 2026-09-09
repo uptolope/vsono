@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useProtectedContent } from '@/lib/hooks/useProtectedContent';
 import type { StudySection } from '@/lib/content/study-notes-data';
+import { SONOGRAPHIC_PHYSICS_META } from '@/lib/content/sonographic-physics';
 
 interface StudyNotesResponse {
   sections: StudySection[];
@@ -103,6 +104,39 @@ export default function StudyNotesPage() {
               </span>
             )}
           </p>
+        </div>
+
+        {/*
+          Sonographic Physics product card. Reaching this point in the
+          component means useProtectedContent already got a 200 from
+          /api/content/STUDY_NOTES, i.e. checkContentAccess("STUDY_NOTES")
+          already passed server-side for this session. The card below
+          reflects that server-verified access — it does not itself
+          decide or infer entitlement from anything client-visible.
+          The viewer route re-checks access independently on every
+          request regardless of what this card shows.
+        */}
+        <div className="mb-10 border border-white/[0.06] rounded p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <span className="meta text-[9px] text-[#4a453f]">
+              {SONOGRAPHIC_PHYSICS_META.category} · LICENSED BOARD-EXAM NOTES
+            </span>
+            <h2 className="display-serif text-xl text-white font-semibold mt-1">
+              {SONOGRAPHIC_PHYSICS_META.title}
+            </h2>
+            <p className="body-small text-[#8a8279] text-xs mt-1">
+              {SONOGRAPHIC_PHYSICS_META.pageCount} pages · Included with your Study Notes access
+              {expiresAt && (
+                <span> · Access until {new Date(expiresAt).toLocaleDateString()}</span>
+              )}
+            </p>
+          </div>
+          <Link
+            href="/study-notes/viewer"
+            className="btn-industrial px-6 py-3 text-[10px] whitespace-nowrap"
+          >
+            OPEN SONOGRAPHIC PHYSICS →
+          </Link>
         </div>
 
         <div className="grid md:grid-cols-[220px_1fr] gap-8">
