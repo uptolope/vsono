@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/auth/", "/billing/"],
+        disallow: ["/api/", "/auth/", "/billing/", "/study-notes/viewer"],
       },
       // OpenAI
       { userAgent: "GPTBot", allow: "/" },
