@@ -13,9 +13,9 @@ export interface AccountPurchaseInfo {
 
   amountPaidCents: number;
 
-  accessGrantedAt: string;
+  accessGrantedAt: string | null;
 
-  accessExpiresAt: string;
+  accessExpiresAt: string | null;
 
   createdAt: string;
 }

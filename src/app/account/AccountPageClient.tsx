@@ -208,9 +208,9 @@ export default function AccountPageClient() {
           ) : (
             <div className="space-y-3">
               {purchases.map((purchase) => {
-                const days = daysUntil(
-                  purchase.accessExpiresAt
-                );
+                const days = purchase.accessExpiresAt
+                  ? daysUntil(purchase.accessExpiresAt)
+                  : 0;
 
                 const routes =
                   purchase.product === "PREMIUM_BUNDLE"

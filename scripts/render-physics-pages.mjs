@@ -97,7 +97,7 @@ try {
 
 try {
   // Import PDF.js only after canvas globals have been installed.
-  const pdfjsModule = await import("pdfjs-dist/legacy/build/pdf.js");
+  const pdfjsModule = await import("pdfjs-dist/legacy/build/pdf.mjs");
   pdfjsLib = pdfjsModule.default ?? pdfjsModule;
 } catch (err) {
   fail(
@@ -316,7 +316,8 @@ async function main() {
   // for this path scheme (blobPathForPage). It's TypeScript and this is
   // a plain Node script with no TS loader, so the same deterministic
   // scheme is duplicated here — keep the two in sync if either changes.
-  const pathFor = (n) => `sonographic-physics/pages/page-${String(n).padStart(4, "0")}.png`;
+  const pathFor = (n) =>
+  `page-${String(n).padStart(4, "0")}.png`;
 
   console.log(`[render-physics-pages] Uploading ${results.length} validated pages to private Blob...`);
   for (const r of results) {

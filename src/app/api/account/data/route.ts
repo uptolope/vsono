@@ -72,8 +72,10 @@ export async function GET(): Promise<NextResponse> {
           product: purchase.product.type,
           status: "COMPLETED" as const,
           amountPaidCents: purchase.amountInCents,
-          accessGrantedAt: purchase.accessGrantedAt.toISOString(),
-          accessExpiresAt: purchase.accessExpiresAt.toISOString(),
+          accessGrantedAt:
+            purchase.accessGrantedAt?.toISOString() ?? null,
+          accessExpiresAt:
+            purchase.accessExpiresAt?.toISOString() ?? null,
           createdAt: purchase.createdAt.toISOString(),
         },
       ];
