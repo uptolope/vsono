@@ -1,3 +1,4 @@
+import { get } from "@vercel/blob";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -9,101 +10,239 @@ import {
   parsePageParam,
 } from "@/lib/content/sonographic-physics";
 
-// Private Blob objects are fetched server-side and streamed through
-// this route — the browser never sees a direct Blob URL, so a
-// signed/guessed Blob URL alone can't bypass entitlement checks.
-//
-// Every request is re-validated against session + checkContentAccess
-// on every call (no caching of the access decision across requests).
+const JSON_HEADERS = {
+  "Cache-Control": "private, no-store",
+  "X-Content-Type-Options": "nosniff",
+};
+
+function jsonError(
+  body: Record<string, unknown>,
+  status: number,
+  extraHeaders: Record<string, string> = {},
+) {
+  return NextResponse.json(body, {
+    status,
+    headers: {
+      ...JSON_HEADERS,
+      ...extraHeaders,
+    },
+  });
+}
 
 export async function GET(
-  req: NextRequest,
-  { params }: { params: Promise<{ page: string }> }
+  _request: NextRequest,
+  { params }: { params: Promise<{ page: string }> },
 ) {
+  /*
+   * Authenticate the user.
+   */
   const session = await getServerSession(authOptions);
 
-  // IDOR guard: userId comes only from the authenticated session,
-  // never from a query param, header, or the route's [page] segment.
   const userId = (session?.user as { id?: string } | undefined)?.id;
+
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return jsonError({ error: "Unauthorized" }, 401);
   }
 
+  /*
+   * Resolve and validate the page number.
+   */
+  const { page: rawPage } = await params;
+  const pageNum = parsePageParam(rawPage);
+
+  if (pageNum === null) {
+    return jsonError({ error: "Invalid page number" }, 400);
+  }
+
+  /*
+   * Rate-limit page requests.
+   */
   const limit = await rateLimit(`study-notes-pages:${userId}`, {
     limit: 300,
     windowMs: 60_000,
   });
+
   if (!limit.allowed) {
-    console.warn(`[study-notes/pages] Rate limit exceeded for user ${userId}`);
-    return NextResponse.json({ error: "Rate limited" }, { status: 429 });
+    console.warn(
+      `[study-notes/pages] Rate limit exceeded for user ${userId}`,
+    );
+
+    return jsonError({ error: "Rate limited" }, 429, {
+      "Retry-After": "60",
+    });
   }
 
-  const access = await checkContentAccess(userId, SONOGRAPHIC_PHYSICS_PRODUCT_KEY);
+  /*
+   * Verify that the user has access to the product.
+   */
+  const access = await checkContentAccess(
+    userId,
+    SONOGRAPHIC_PHYSICS_PRODUCT_KEY,
+  );
+
   if (!access.hasAccess) {
     console.warn(
-      `[study-notes/pages] Access denied for user ${userId}: ${access.reason}`
+      `[study-notes/pages] Access denied for user ${userId}: ${access.reason}`,
     );
-    return NextResponse.json(
-      { error: "Access denied", reason: access.reason },
-      { status: 403 }
+
+    return jsonError(
+      {
+        error: "Access denied",
+        reason: access.reason,
+      },
+      403,
     );
   }
 
-  const { page: rawPage } = await params;
-
-  // Strict validation: only a plain integer string in [1, pageCount]
-  // is accepted. This is also what blocks path traversal — anything
-  // that isn't `^[0-9]+$` (e.g. "../", encoded slashes, non-numeric
-  // ids) is rejected before it ever touches a Blob path, and the
-  // resulting path is always the fixed, server-controlled
-  // `blobPathForPage(n)` scheme — there is no code path where
-  // client input is interpolated directly into a Blob pathname.
-  const pageNum = parsePageParam(rawPage);
-  if (pageNum === null) {
-    return NextResponse.json({ error: "Invalid page number" }, { status: 400 });
-  }
-
+  /*
+   * Read the private Blob token.
+   */
   const blobToken = process.env.BLOB_READ_WRITE_TOKEN;
+
   if (!blobToken) {
-    console.error("[study-notes/pages] BLOB_READ_WRITE_TOKEN is not configured");
-    return NextResponse.json({ error: "Content not available" }, { status: 500 });
-  }
-
-  let head;
-  try {
-    const { head: headBlob } = await import("@vercel/blob");
-    head = await headBlob(blobPathForPage(pageNum), { token: blobToken });
-  } catch (err) {
-    console.error(`[study-notes/pages] Blob lookup failed for page ${pageNum}:`, err);
-    return NextResponse.json({ error: "Page not found" }, { status: 404 });
-  }
-
-  if (!head?.url) {
-    return NextResponse.json({ error: "Page not found" }, { status: 404 });
-  }
-
-  // Fetch the private object server-side and stream the bytes back.
-  // The client only ever sees this route's own response body — never
-  // the underlying (private, tokenless-but-obscure) Blob URL.
-  const blobRes = await fetch(head.url);
-  if (!blobRes.ok || !blobRes.body) {
     console.error(
-      `[study-notes/pages] Failed to fetch blob for page ${pageNum}: ${blobRes.status}`
+      "[study-notes/pages] BLOB_READ_WRITE_TOKEN is not configured",
     );
-    return NextResponse.json({ error: "Page not found" }, { status: 404 });
+
+    return jsonError({ error: "Content not available" }, 500);
   }
 
-  console.info(`[study-notes/pages] Serving page ${pageNum} to user ${userId}`);
+  /*
+   * Generate the exact Blob pathname.
+   *
+   * Expected page 1 path:
+   * sonographic-physics/pages/page-0001.png
+   */
+  const pathname = blobPathForPage(pageNum);
 
-  return new NextResponse(blobRes.body, {
-    status: 200,
-    headers: {
-      "Content-Type": "image/png",
-      // Private per-user content — do not let any shared/proxy cache
-      // serve one user's fetch of a page to a different user.
-      "Cache-Control": "private, no-store",
-      "X-Content-Type-Options": "nosniff",
-      "Content-Disposition": "inline",
-    },
+  console.log("[study-notes/pages] Requested Blob path:", {
+    pageNum,
+    pathname,
   });
+
+  /*
+   * Read and stream the private Blob.
+   */
+  try {
+    const result = await get(pathname, {
+      access: "private",
+      token: blobToken,
+    });
+
+    /*
+     * The SDK may return null when the object is not found.
+     * Check this before accessing result.statusCode.
+     */
+    if (!result) {
+      console.error("[study-notes/pages] Blob returned null", {
+        pageNum,
+        pathname,
+      });
+
+      return jsonError(
+        {
+          error: "Blob not found",
+          pageNum,
+          pathname,
+        },
+        404,
+      );
+    }
+
+    /*
+     * Confirm that the Blob response contains a usable stream.
+     */
+    if (result.statusCode !== 200 || !result.stream) {
+      console.error(
+        `[study-notes/pages] Blob stream unavailable for page ${pageNum}`,
+        {
+          pageNum,
+          pathname,
+          statusCode: result.statusCode,
+          hasStream: Boolean(result.stream),
+        },
+      );
+
+      return jsonError(
+        {
+          error: "Blob stream unavailable",
+          pageNum,
+          pathname,
+          statusCode: result.statusCode,
+        },
+        502,
+      );
+    }
+
+    /*
+     * The content type is stored inside result.blob.
+     */
+    const contentType = result.blob?.contentType?.toLowerCase();
+
+    /*
+     * Only serve PNG page images.
+     */
+    if (contentType && !contentType.startsWith("image/png")) {
+      console.error(
+        `[study-notes/pages] Unexpected content type for page ${pageNum}`,
+        {
+          pageNum,
+          pathname,
+          contentType,
+        },
+      );
+
+      return jsonError(
+        {
+          error: "Unexpected content type",
+          pageNum,
+          pathname,
+          contentType,
+        },
+        500,
+      );
+    }
+
+    console.info(
+      `[study-notes/pages] Serving page ${pageNum} to user ${userId}`,
+    );
+
+    /*
+     * Stream the image to the browser.
+     */
+    return new NextResponse(result.stream, {
+      status: 200,
+      headers: {
+        "Content-Type": contentType || "image/png",
+        "Cache-Control": "private, no-store",
+        "X-Content-Type-Options": "nosniff",
+        "Content-Disposition": "inline",
+      },
+    });
+  } catch (error) {
+    const errorDetails =
+      error instanceof Error
+        ? {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          }
+        : String(error);
+
+    console.error("[study-notes/pages] Blob read failed", {
+      pageNum,
+      pathname,
+      error: errorDetails,
+    });
+
+    return jsonError(
+      {
+        error: "Blob read failed",
+        pageNum,
+        pathname,
+        details: errorDetails,
+      },
+      500,
+    );
+  }
 }

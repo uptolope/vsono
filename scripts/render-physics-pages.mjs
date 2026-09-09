@@ -68,40 +68,43 @@ if (!fs.existsSync(PDF_PATH)) {
 
 // ── Dependency resolution (approved deps only) ──────────────────
 let pdfjsLib, createCanvas, ImageDataCtor;
+
 try {
-  // Legacy build is the one meant for non-browser (Node) environments.
-  pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  // Load the native canvas package first. PDF.js must see these globals
+  // before its module is initialized.
+  const canvasPkg = require("canvas");
+
+  createCanvas = canvasPkg.createCanvas;
+  ImageDataCtor = canvasPkg.ImageData;
+
+  if (typeof globalThis.DOMMatrix === "undefined" && canvasPkg.DOMMatrix) {
+    globalThis.DOMMatrix = canvasPkg.DOMMatrix;
+  }
+
+  if (typeof globalThis.ImageData === "undefined" && ImageDataCtor) {
+    globalThis.ImageData = ImageDataCtor;
+  }
+
+  if (typeof globalThis.Path2D === "undefined" && canvasPkg.Path2D) {
+    globalThis.Path2D = canvasPkg.Path2D;
+  }
+} catch (err) {
+  fail(
+    `"canvas" package is not installed (${err.message}). It is the approved ` +
+      `local rasterization dependency for this script — run "npm install canvas".`
+  );
+}
+
+try {
+  // Import PDF.js only after canvas globals have been installed.
+  const pdfjsModule = await import("pdfjs-dist/legacy/build/pdf.js");
+  pdfjsLib = pdfjsModule.default ?? pdfjsModule;
 } catch (err) {
   fail(
     `pdfjs-dist is not installed / legacy build unavailable (${err.message}). ` +
       `Run "npm install pdfjs-dist" first.`
   );
 }
-try {
-  const canvasPkg = require("canvas");
-  createCanvas = canvasPkg.createCanvas;
-  ImageDataCtor = canvasPkg.ImageData;
-} catch (err) {
-  fail(
-    `"canvas" package is not installed (${err.message}). It is the approved ` +
-      `local rasterization dependency for this script — run "npm install canvas". ` +
-      `Do not substitute another renderer without explicit approval.`
-  );
-}
-
-// pdfjs's legacy build runs its worker logic on the main thread in
-// Node as long as no workerSrc/workerPort is configured — do not set
-// GlobalWorkerOptions.workerSrc here, that's for browser bundles and
-// pointing it at a nonexistent path is a separate way to get silent
-// blank renders.
-
-// Some pdfjs internals reference these DOM globals even off the
-// main rendering path (color spaces, image decoding). The legacy
-// build expects the embedder to provide them in Node.
-if (typeof globalThis.ImageData === "undefined") {
-  globalThis.ImageData = ImageDataCtor;
-}
-
 // Resolve pdfjs's bundled standard fonts so non-embedded standard
 // fonts (Helvetica, Times, etc.) resolve to real glyphs instead of
 // silently drawing nothing. This is required even when a PDF's fonts

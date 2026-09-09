@@ -13,3 +13,6 @@ build/
 .env
 .env.*
 !.env.example*.tsbuildinfo
+
+# Local source PDFs
+*.pdf
