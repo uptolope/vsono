@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import Link from 'next/link';
 import { useProtectedContent } from '@/lib/hooks/useProtectedContent';
@@ -15,7 +15,7 @@ export default function PhysicsPearlsPage() {
   if (state.status === 'idle' || state.status === 'loading') {
     return (
       <Centered>
-        <p className="text-[#8a8279] text-sm">Loading Physics Pearls…</p>
+        <p className="text-[#8a8279] text-sm">Loading Physics Pearlsâ€¦</p>
       </Centered>
     );
   }
@@ -30,7 +30,7 @@ export default function PhysicsPearlsPage() {
           Please log in to access Physics Pearls.
         </p>
         <Link href="/login" className="btn-industrial px-6 py-3 text-[10px]">
-          SIGN IN →
+          SIGN IN â†’
         </Link>
       </Centered>
     );
@@ -47,7 +47,7 @@ export default function PhysicsPearlsPage() {
           Premium Bundle) to unlock this content.
         </p>
         <Link href="/products" className="btn-industrial px-6 py-3 text-[10px]">
-          BROWSE PRODUCTS →
+          BROWSE PRODUCTS â†’
         </Link>
       </Centered>
     );
@@ -58,7 +58,7 @@ export default function PhysicsPearlsPage() {
       <Centered>
         <p className="text-[#c85b3a] text-sm mb-6">{state.message}</p>
         <button onClick={refetch} className="btn-industrial px-6 py-3 text-[10px]">
-          RELOAD →
+          RELOAD â†’
         </button>
       </Centered>
     );
@@ -83,7 +83,7 @@ export default function PhysicsPearlsPage() {
           href="/account"
           className="meta text-[10px] text-[#4a453f] hover:text-[#c85b3a] mb-8 inline-block transition-colors"
         >
-          ← BACK TO ACCOUNT
+          â† BACK TO ACCOUNT
         </Link>
 
         <div className="mb-10">
@@ -95,7 +95,7 @@ export default function PhysicsPearlsPage() {
             {pearls.length} high-yield concepts
             {expiresAt && (
               <span className="ml-2">
-                • Access until {new Date(expiresAt).toLocaleDateString()}
+                â€¢ Access until {new Date(expiresAt).toLocaleDateString()}
               </span>
             )}
           </p>

@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Pricing & Products — SPI Exam Prep | SonoPrep",
@@ -11,12 +12,51 @@ export const metadata: Metadata = {
     "SPI exam simulator",
     "sonography exam prep bundle",
   ],
+  alternates: {
+    canonical: "https://sonoprep.com/products",
+  },
 };
+
+function ProductsSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "SonoPrep ARDMS SPI Exam Prep",
+    description:
+      "SPI exam preparation tools including flashcards, exam simulator, Physics Pearls, study notes, and a complete study bundle.",
+    url: "https://sonoprep.com/products",
+    brand: {
+      "@type": "Brand",
+      name: "SonoPrep",
+    },
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "USD",
+      lowPrice: "9.00",
+      highPrice: "99.00",
+      offerCount: 5,
+      availability: "https://schema.org/InStock",
+      url: "https://sonoprep.com/products",
+    },
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
 
 export default function ProductsLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <ProductsSchema />
+      {children}
+    </>
+  );
 }
