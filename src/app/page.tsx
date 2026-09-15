@@ -1,15 +1,31 @@
 ﻿import type { Metadata } from "next";
+import { FaqSchema } from "@/components/marketing/faq-schema";
 import { HomePageClient } from "./page-client";
 
 export const metadata: Metadata = {
-  title: "SonoPrep - Pass the ARDMS SPI Exam on Your First Attempt",
+  title: "ARDMS SPI Exam Prep & Physics Simulator | SonoPrep",
   description:
-    "Master the ARDMS SPI exam with high-yield physics questions, interactive mock exams, spaced-repetition flashcards, and physics pearls.",
+    "Prepare for the ARDMS SPI exam with ultrasound physics explanations, calculators, flashcards, formula resources, diagnostic feedback, and practice exams.",
   alternates: {
     canonical: "https://sonoprep.com",
+  },
+  openGraph: {
+    title: "ARDMS SPI Exam Prep & Physics Simulator | SonoPrep",
+    description:
+      "Prepare for the ARDMS SPI exam with ultrasound physics explanations, calculators, flashcards, formula resources, diagnostic feedback, and practice exams.",
+    url: "https://sonoprep.com",
+    siteName: "SonoPrep",
+    type: "website",
   },
 };
 
 export default function HomePage() {
-  return <HomePageClient />;
+  return (
+    <>
+      <FaqSchema />
+      <HomePageClient />
+    </>
+  );
 }
+
+

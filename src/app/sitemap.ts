@@ -1,4 +1,4 @@
-﻿import type { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 const SITE = "https://sonoprep.com";
 
@@ -43,3 +43,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticPages, ...blogPages];
 }
+
+

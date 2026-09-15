@@ -9,7 +9,6 @@ import { Footer } from "@/components/layout/footer";
 import { ExamSimulator } from "@/components/app/exam-simulator";
 import { FlashcardViewer } from "@/components/app/flashcard-viewer";
 import { FaqSection } from "@/components/marketing/faq-section";
-import BlurText from "@/components/ui/blur-text";
 
 /* ═══════════════════════════════════════════════════════════════════
    SECTION: Hero — Clean, full-viewport, 1+1 animation
@@ -55,17 +54,10 @@ function Hero() {
           </div>
         </motion.div>
 
-        {/* Headline — clear white text with a subtle entrance animation */}
-          <div className="text-center mb-10 overflow-hidden">
-            <BlurText
-              text="Pass the SPI. Earn your credential."
-              className="t-display text-[clamp(3rem,8vw,7.5rem)] text-white"
-              delay={80}
-              animateBy="words"
-              direction="bottom"
-              stepDuration={0.4}
-            />
-        </div>
+        {/* Primary homepage heading */}
+<h1 className="t-display text-center mb-10 text-[clamp(3rem,8vw,7.5rem)] text-white">
+  Pass the ARDMS SPI Exam
+</h1>
 
         {/* Subheadline */}
         <motion.p
@@ -74,12 +66,9 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8 }}
         >
-          The SPI exam blocks every ARDMS credential — RDMS, RDCS, RVT, RMSKS.
-          Most students fail not from lack of effort, but because they studied
-          the wrong material at the wrong weight. SonoPrep gives you a
-          110-question simulator, 200+ flashcards, and 50
-          Physics Pearls — all written by an RDMS instructor to the exact ARDMS
-          blueprint.
+          Prepare for the ARDMS SPI exam with a 110-question practice simulator,
+200+ ultrasound physics flashcards, 50 Physics Pearls, and domain-focused
+feedback developed by an RDMS instructor.
         </motion.p>
 
         {/* CTA pair — static, no magnetic/bouncing effects */}
@@ -380,7 +369,7 @@ function WhyMostFail() {
             The question isn't whether you studied enough. It's whether you know
             where you'd lose points today.
           </p>
-          <Link href="demo" className="premium-cta px-10 py-5 text-sm">
+          <Link href="/demo" className="premium-cta px-10 py-5 text-sm">
             FIND OUT WHERE YOU STAND — FREE →
           </Link>
         </motion.div>

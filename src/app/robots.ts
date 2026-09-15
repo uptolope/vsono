@@ -1,26 +1,13 @@
-﻿import type { MetadataRoute } from 'next';
+import type { MetadataRoute } from "next";
+
+const SITE = "https://sonoprep.com";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: [
-      {
-        userAgent: '*',
-        allow: '/',
-        disallow: [
-          '/api/',
-          '/account/',
-          '/auth/',
-          '/billing/',
-          '/login',
-          '/signup',
-          '/reset-password',
-          '/forgot-password',
-          '/verify-email',
-          '/flashcards/review/',
-          '/study-notes/viewer/',
-        ],
-      },
-    ],
-    sitemap: 'https://sonoprep.com/sitemap.xml',
+    rules: {
+      userAgent: "*",
+      allow: "/",
+    },
+    sitemap: `${SITE}/sitemap.xml`,
   };
 }
