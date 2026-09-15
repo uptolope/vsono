@@ -5,6 +5,7 @@ const SITE = "https://www.sonoprep.com";
 const BLOG_POSTS = [
   { slug: "complete-spi-exam-guide", updated: "2026-06-15" },
   { slug: "doppler-principles-spi-exam", updated: "2026-06-15" },
+  { slug: "ardms-exam-blueprint", updated: "2026-04-26" },
   { slug: "ultrasound-physics-spi", updated: "2026-06-15" },
   { slug: "ultrasound-artifacts-spi", updated: "2026-06-15" },
   { slug: "pass-spi-first-attempt", updated: "2026-06-15" },
