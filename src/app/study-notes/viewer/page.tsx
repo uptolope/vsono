@@ -10,9 +10,6 @@ interface ViewerMeta {
   category?: string;
   pageCount: number;
   downloadsEnabled: boolean;
-  watermarkText: string;
-  accountIdentifier: string;
-  accessDate: string;
   expiresAt: string | null;
 }
 
@@ -29,6 +26,7 @@ export default function SonographicPhysicsViewerPage() {
   const [state, setState] = useState<ViewerState>({
     status: "loading",
   });
+
   const [page, setPage] = useState(1);
   const [zoom, setZoom] = useState(1);
   const [imgLoading, setImgLoading] = useState(true);
@@ -116,45 +114,13 @@ export default function SonographicPhysicsViewerPage() {
   const goTo = useCallback((nextPage: number, pageCount: number) => {
     const clampedPage = Math.min(
       Math.max(Math.trunc(nextPage) || 1, 1),
-      pageCount
+      pageCount,
     );
 
     setImgLoading(true);
     setImgError(false);
     setPage(clampedPage);
   }, []);
-
-  // These are casual deterrents only. They cannot prevent screenshots,
-  // screen recording, photography, OCR, browser devtools, or other
-  // capture methods available to an authorized viewer.
-  useEffect(() => {
-    if (state.status !== "ready") {
-      return;
-    }
-
-    const blockContextMenu = (event: MouseEvent) => {
-      event.preventDefault();
-    };
-
-    const blockShortcuts = (event: KeyboardEvent) => {
-      const key = event.key.toLowerCase();
-      const modifierPressed = event.ctrlKey || event.metaKey;
-      const isSaveOrPrintShortcut =
-        modifierPressed && (key === "s" || key === "p");
-
-      if (isSaveOrPrintShortcut) {
-        event.preventDefault();
-      }
-    };
-
-    document.addEventListener("contextmenu", blockContextMenu);
-    document.addEventListener("keydown", blockShortcuts);
-
-    return () => {
-      document.removeEventListener("contextmenu", blockContextMenu);
-      document.removeEventListener("keydown", blockShortcuts);
-    };
-  }, [state.status]);
 
   if (state.status === "loading") {
     return (
@@ -175,10 +141,7 @@ export default function SonographicPhysicsViewerPage() {
           Please log in to access Sonographic Physics.
         </p>
 
-        <Link
-          href="/login"
-          className="btn-industrial px-6 py-3 text-[10px]"
-        >
+        <Link href="/login" className="btn-industrial px-6 py-3 text-[10px]">
           SIGN IN →
         </Link>
       </Centered>
@@ -218,13 +181,9 @@ export default function SonographicPhysicsViewerPage() {
 
   const { meta } = state;
   const pageImageSource = `/api/study-notes/pages/${page}`;
-  const accessDateLabel = formatAccessDate(meta.accessDate);
 
   return (
-    <div
-      className="flex min-h-screen select-none flex-col bg-[#0c0b0a]"
-      style={{ userSelect: "none" }}
-    >
+    <div className="flex min-h-screen select-none flex-col bg-[#0c0b0a]">
       <header className="flex items-center justify-between border-b border-white/10 px-4 py-3 sm:px-6">
         <div>
           <h1 className="text-sm font-semibold text-white">
@@ -242,7 +201,7 @@ export default function SonographicPhysicsViewerPage() {
             className="btn-industrial px-3 py-2 text-[10px]"
             onClick={() =>
               setZoom((currentZoom) =>
-                Math.max(0.5, Number((currentZoom - 0.25).toFixed(2)))
+                Math.max(0.5, Number((currentZoom - 0.25).toFixed(2))),
               )
             }
             aria-label="Zoom out"
@@ -259,7 +218,7 @@ export default function SonographicPhysicsViewerPage() {
             className="btn-industrial px-3 py-2 text-[10px]"
             onClick={() =>
               setZoom((currentZoom) =>
-                Math.min(3, Number((currentZoom + 0.25).toFixed(2)))
+                Math.min(3, Number((currentZoom + 0.25).toFixed(2))),
               )
             }
             aria-label="Zoom in"
@@ -269,7 +228,14 @@ export default function SonographicPhysicsViewerPage() {
         </div>
       </header>
 
-      <main className="relative flex flex-1 items-center justify-center overflow-auto p-4">
+      <main className="relative flex flex-1 flex-col items-center justify-center overflow-auto p-4">
+        <div className="mb-4 w-full max-w-4xl rounded border border-[#c85b3a]/30 bg-[#c85b3a]/5 px-4 py-3 text-sm leading-6 text-[#c2bab0]">
+          <strong className="text-white">Licensed study material:</strong>{" "}
+          This content is for your personal use during your active access
+          period. Please do not copy, record, scrape, share, or redistribute
+          it.
+        </div>
+
         <div
           className="relative"
           style={{
@@ -305,30 +271,8 @@ export default function SonographicPhysicsViewerPage() {
               setImgLoading(false);
               setImgError(true);
             }}
-            onContextMenu={(event) => event.preventDefault()}
             className="block h-auto max-w-full"
-            style={{ pointerEvents: "none" }}
           />
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 overflow-hidden"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(
-                watermarkSvg(meta.accountIdentifier, accessDateLabel)
-              )}")`,
-              backgroundRepeat: "repeat",
-              opacity: 0.12,
-            }}
-          />
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] text-white/70"
-          >
-            {meta.watermarkText} — {meta.accountIdentifier} —{" "}
-            {accessDateLabel}
-          </div>
         </div>
       </main>
 
@@ -371,46 +315,8 @@ export default function SonographicPhysicsViewerPage() {
           NEXT →
         </button>
       </footer>
-
-      <p className="pb-3 text-center text-[10px] text-[#5a5348]">
-        {meta.watermarkText}
-      </p>
     </div>
   );
-}
-
-function watermarkSvg(identifier: string, accessDate: string): string {
-  const label = `${identifier} · ${accessDate}`;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="150">
-    <text
-      x="10"
-      y="80"
-      transform="rotate(-30 10,80)"
-      font-size="14"
-      fill="white"
-      font-family="sans-serif"
-    >${escapeXml(label)}</text>
-  </svg>`;
-}
-
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
-}
-
-function formatAccessDate(value: string): string {
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value.slice(0, 10);
-  }
-
-  return date.toISOString().slice(0, 10);
 }
 
 function Centered({ children }: { children: React.ReactNode }) {

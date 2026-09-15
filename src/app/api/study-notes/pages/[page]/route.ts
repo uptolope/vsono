@@ -84,7 +84,7 @@ function createWatermarkSvg(
           <text
             x="20"
             y="${Math.round(patternHeight * 0.5)}"
-            fill="white"
+            fill="#222222"
             fill-opacity="0.18"
             font-family="Arial, Helvetica, sans-serif"
             font-size="${mainFontSize}"
@@ -96,7 +96,7 @@ function createWatermarkSvg(
           <text
             x="20"
             y="${Math.round(patternHeight * 0.68)}"
-            fill="white"
+            fill="#222222"
             fill-opacity="0.18"
             font-family="Arial, Helvetica, sans-serif"
             font-size="${secondaryFontSize}"
@@ -118,7 +118,7 @@ function createWatermarkSvg(
         x="${Math.round(width / 2)}"
         y="${footerY}"
         text-anchor="middle"
-        fill="white"
+        fill="#222222"
         fill-opacity="0.68"
         font-family="Arial, Helvetica, sans-serif"
         font-size="${footerFontSize}"

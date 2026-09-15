@@ -1,3 +1,5 @@
+﻿
+
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -217,7 +219,7 @@ useEffect(() => {
     return (
       <Centered>
         <p className="text-[#8a8279] text-sm">
-          Checking your session…
+          Checking your sessionâ€¦
         </p>
       </Centered>
     );
@@ -238,7 +240,7 @@ useEffect(() => {
           href="/login"
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          SIGN IN →
+          SIGN IN â†’
         </Link>
       </Centered>
     );
@@ -261,7 +263,7 @@ useEffect(() => {
     return (
       <Centered>
         <p className="text-[#8a8279] text-sm">
-          Loading Exam Simulator…
+          Loading Exam Simulatorâ€¦
         </p>
       </Centered>
     );
@@ -283,7 +285,7 @@ useEffect(() => {
           href="/products"
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          BROWSE PRODUCTS →
+          BROWSE PRODUCTS â†’
         </Link>
       </Centered>
     );
@@ -300,7 +302,7 @@ useEffect(() => {
           onClick={refetch}
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          RELOAD →
+          RELOAD â†’
         </button>
       </Centered>
     );
@@ -326,7 +328,7 @@ useEffect(() => {
             href="/account"
             className="meta text-[10px] text-[#4a453f] hover:text-[#c85b3a] mb-8 inline-block transition-colors"
           >
-            ← BACK TO ACCOUNT
+            â† BACK TO ACCOUNT
           </Link>
 
           <div className="text-center mb-10">
@@ -400,7 +402,7 @@ useEffect(() => {
             }}
             className="btn-industrial w-full py-3 text-[11px] mt-10"
           >
-            RETAKE EXAM →
+            RETAKE EXAM â†’
           </button>
         </div>
       </div>
@@ -493,7 +495,7 @@ useEffect(() => {
 
       if (!res.ok) {
         setSubmitError(
-          'We couldn’t save your results. Please try again.',
+          'We couldnâ€™t save your results. Please try again.',
         );
         return;
       }
@@ -523,7 +525,7 @@ useEffect(() => {
             href="/account"
             className="meta text-[10px] text-[#4a453f] hover:text-[#c85b3a] transition-colors"
           >
-            ← BACK TO ACCOUNT
+            â† BACK TO ACCOUNT
           </Link>
 
           <span className="meta text-[10px] text-[#4a453f]">
@@ -591,7 +593,7 @@ useEffect(() => {
               disabled={currentIndex === 0}
               className="btn-industrial-outline px-6 py-3 text-[10px] disabled:opacity-40"
             >
-              ← PREVIOUS
+              â† PREVIOUS
             </button>
 
             {currentIndex < total - 1 ? (
@@ -599,7 +601,7 @@ useEffect(() => {
                 onClick={() => goTo(currentIndex + 1)}
                 className="btn-industrial px-6 py-3 text-[10px]"
               >
-                NEXT →
+                NEXT â†’
               </button>
             ) : (
               <button
@@ -608,8 +610,8 @@ useEffect(() => {
                 className="btn-industrial px-6 py-3 text-[10px] disabled:opacity-50"
               >
                 {isSubmitting
-                  ? 'SUBMITTING…'
-                  : 'SUBMIT EXAM →'}
+                  ? 'SUBMITTINGâ€¦'
+                  : 'SUBMIT EXAM â†’'}
               </button>
             )}
           </div>
@@ -626,7 +628,7 @@ useEffect(() => {
             {answeredCount < total
               ? `${total - answeredCount} question${
                   total - answeredCount === 1 ? '' : 's'
-                } unanswered — only answered questions count toward your score.`
+                } unanswered â€” only answered questions count toward your score.`
               : 'All questions answered.'}
           </p>
         )}
@@ -722,7 +724,7 @@ function ExamReadinessDialog({
               onClick={onStart}
               className="btn-industrial px-6 py-3 text-[10px] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              I&apos;M READY — START EXAM
+              I&apos;M READY â€” START EXAM
             </button>
           </div>
         </div>

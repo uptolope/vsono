@@ -1,4 +1,4 @@
-import path from "node:path";
+﻿import path from "node:path";
 import type { NextConfig } from "next";
 
 const securityHeaders = [
@@ -25,22 +25,33 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
   reactStrictMode: true,
 
-  // Turbopack fix for ambiguous project root warning
   turbopack: {
     root: path.resolve(__dirname),
   },
 
-  // These are now safe to remove (TypeScript + ESLint errors are fixed)
-  // typescript: { ignoreBuildErrors: true },
-  // eslint: { ignoreDuringBuilds: true },
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60 * 60 * 24 * 30,
+  },
 
   async headers() {
     return [
       {
         source: "/(.*)",
         headers: securityHeaders,
+      },
+      {
+        source: "/(.*)\\.(png|jpg|jpeg|webp|avif|svg|woff2)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
       },
     ];
   },
