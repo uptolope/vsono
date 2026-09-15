@@ -25,7 +25,7 @@ export default function BlogPostSchema({
   dateModified = '2026-06-15T12:00:00+00:00',
   faqs = [],
 }: BlogPostSchemaProps) {
-  const postUrl = `https://sonoprep.com/blog/\${slug}`;
+  const postUrl = `https://www.sonoprep.com/blog/${slug}`;
 
   const graph: SchemaNode[] = [
     {
@@ -45,22 +45,21 @@ export default function BlogPostSchema({
       inLanguage: 'en-US',
       mainEntityOfPage: postUrl,
       author: {
-        '@type': 'Organization',
-        name: 'SonoPrep Clinical Faculty',
-        url: 'https://sonoprep.com',
+        '@type': 'Person',
+        name: 'Olajide Labiyi',
       },
       publisher: {
         '@type': 'Organization',
         name: 'SonoPrep',
-        url: 'https://sonoprep.com',
+        url: 'https://www.sonoprep.com',
         logo: {
           '@type': 'ImageObject',
-          url: 'https://sonoprep.com/logo.webp',
+          url: 'https://www.sonoprep.com/logo.webp',
         },
       },
       image: {
         '@type': 'ImageObject',
-        url: 'https://sonoprep.com/og-image.png',
+        url: 'https://www.sonoprep.com/og-image.png',
         width: 1200,
         height: 630,
       },
