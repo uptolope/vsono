@@ -1,10 +1,9 @@
 import type { MetadataRoute } from "next";
 
-const SITE = "https://sonoprep.com";
+const SITE = "https://www.sonoprep.com";
 
 const BLOG_POSTS = [
   { slug: "complete-spi-exam-guide", updated: "2026-06-15" },
-  { slug: "ardms-exam-blueprint", updated: "2026-06-15" },
   { slug: "doppler-principles-spi-exam", updated: "2026-06-15" },
   { slug: "ultrasound-physics-spi", updated: "2026-06-15" },
   { slug: "ultrasound-artifacts-spi", updated: "2026-06-15" },
@@ -18,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date().toISOString().split("T")[0];
 
   const staticPages: MetadataRoute.Sitemap = [
-    { url: SITE, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
+    { url: SITE, lastModified: now, changeFrequency: "weekly", priority: 1 },
     { url: `${SITE}/get-started`, lastModified: now, changeFrequency: "monthly", priority: 0.95 },
     { url: `${SITE}/products`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${SITE}/demo`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
@@ -43,5 +42,3 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticPages, ...blogPages];
 }
-
-
