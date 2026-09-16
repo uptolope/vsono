@@ -38,8 +38,8 @@ const PRODUCTS: Product[] = [
     key: "bundle",
     name: "Premium Bundle",
     price: "$99",
-    strikethrough: "$116",
-    savings: "Save $17 vs buying individually",
+    strikethrough: "$116.99",
+    savings: "Save $17.99 vs buying individually",
     tag: "THE PATH PEOPLE ACTUALLY TAKE",
     description:
       "Everything you need to pass — in one system. The flashcard deck, the full exam simulator, Physics Pearls, and the 159-page study notes. All 5 ARDMS SPI domains. No piecing resources together.",

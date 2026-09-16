@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "SM-2 algorithm flashcards",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/spaced-repetition-spi-exam",
+    canonical: "https://www.sonoprep.com/blog/spaced-repetition-spi-exam",
   },
 };
 
@@ -23,7 +23,7 @@ export default function Page() {
       title="Spaced Repetition for SPI Exam Success: Why Active Recall Beats Cramming"
       date="March 20, 2026"
       read="12 min read"
-      url="https://sonoprep.com/blog/spaced-repetition-spi-exam"
+      url="https://www.sonoprep.com/blog/spaced-repetition-spi-exam"
       description="The science behind spaced repetition and active recall, and how SonoPrep's flashcard system applies it specifically to ARDMS SPI exam content."
     >
       <p>

@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "SonoPrep's privacy policy: what data we collect, how we use it, and your rights as a user.",
   keywords: ["SonoPrep privacy policy", "sonography exam prep privacy"],
   alternates: {
-    canonical: "https://sonoprep.com/privacy",
+    canonical: "https://www.sonoprep.com/privacy",
   },
 };
 

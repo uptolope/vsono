@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "comet tail artifact",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/ultrasound-artifacts-spi",
+    canonical: "https://www.sonoprep.com/blog/ultrasound-artifacts-spi",
   },
 };
 
@@ -24,7 +24,7 @@ export default function Page() {
       title="Ultrasound Artifacts: The 7 Most Common SPI Exam Questions"
       date="April 3, 2026"
       read="15 min read"
-      url="https://sonoprep.com/blog/ultrasound-artifacts-spi"
+      url="https://www.sonoprep.com/blog/ultrasound-artifacts-spi"
       description="Reverberation, shadowing, comet-tail, mirror image — the ARDMS SPI exam tests these artifacts heavily. Learn to identify and explain all 7."
     >
       <p>

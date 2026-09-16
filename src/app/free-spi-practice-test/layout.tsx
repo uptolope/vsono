@@ -15,12 +15,12 @@ export const metadata: Metadata = {
     title: "Free ARDMS SPI Practice Test | SonoPrep",
     description:
       "Test your ultrasound physics knowledge with 10 free SPI practice questions and instant explanations.",
-    url: "https://sonoprep.com/free-spi-practice-test",
+    url: "https://www.sonoprep.com/free-spi-practice-test",
     siteName: "SonoPrep",
     type: "website",
   },
   alternates: {
-    canonical: "https://sonoprep.com/free-spi-practice-test",
+    canonical: "https://www.sonoprep.com/free-spi-practice-test",
   },
 };
 

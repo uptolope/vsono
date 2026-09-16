@@ -1,10 +1,10 @@
-﻿import type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Providers from './providers';
 import StructuredData from '@/components/StructuredData';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://sonoprep.com'),
+  metadataBase: new URL('https://www.sonoprep.com'),
   title: {
     default: 'SonoPrep - Pass the ARDMS SPI Exam on Your First Attempt',
     template: '%s | SonoPrep',
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://sonoprep.com',
+    url: 'https://www.sonoprep.com',
     siteName: 'SonoPrep',
     title: 'SonoPrep - Pass the ARDMS SPI Exam on Your First Attempt',
     description:

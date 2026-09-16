@@ -8,7 +8,7 @@
 //   - checkout/route.ts interpolated NEXTAUTH_URL with NO fallback,
 //     so a missing var produced "undefined/account?purchase=success"
 //     as the Stripe success_url.
-//   - email.ts fell back to a hardcoded "https://sonoprep.com".
+//   - email.ts fell back to a hardcoded "https://www.sonoprep.com".
 // If you set one var and not the other, checkout and emails silently
 // point to different places. This file fixes that: one function, one
 // var, one real fallback, used everywhere a base URL is needed.
@@ -22,7 +22,7 @@ export function getAppUrl(): string {
   const url =
     process.env.NEXT_PUBLIC_APP_URL ||
     process.env.NEXTAUTH_URL ||
-    "https://sonoprep.com";
+    "https://www.sonoprep.com";
 
   // Strip a trailing slash so callers can always safely do `${getAppUrl()}/path`
   // without risking a double slash.

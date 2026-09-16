@@ -16,12 +16,12 @@ export const metadata: Metadata = {
     title: "SonoPrep Blog — SPI Exam Study Tips & ARDMS Guides",
     description:
       "Free study resources for the ARDMS SPI exam. Physics, Doppler, test strategies, and credential guides.",
-    url: "https://sonoprep.com/blog",
+    url: "https://www.sonoprep.com/blog",
     siteName: "SonoPrep",
     type: "website",
   },
   alternates: {
-    canonical: "https://sonoprep.com/blog",
+    canonical: "https://www.sonoprep.com/blog",
   },
 };
 

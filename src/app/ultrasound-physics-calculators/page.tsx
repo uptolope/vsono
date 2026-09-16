@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import UltrasoundCalculatorsClient from "./UltrasoundCalculatorsClient";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Ultrasound Physics Calculators: Axial Resolution & Nyquist | SonoPrep",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     "ARDMS SPI physics",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/ultrasound-physics-calculators",
+    canonical: "https://www.sonoprep.com/ultrasound-physics-calculators",
   },
 };
 
@@ -26,7 +27,7 @@ function CalculatorSchema() {
     isAccessibleForFree: true,
     description:
       "Interactive calculators for axial resolution and the Nyquist limit used in ultrasound physics and ARDMS SPI exam preparation.",
-    url: "https://sonoprep.com/ultrasound-physics-calculators",
+    url: "https://www.sonoprep.com/ultrasound-physics-calculators",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -48,6 +49,19 @@ export default function CalculatorsPage() {
       <CalculatorSchema />
 
       <main className="min-h-screen pt-24 px-6 pb-20">
+          <Breadcrumbs
+            items={[
+              {
+                name: "Home",
+                url: "https://www.sonoprep.com/",
+              },
+              {
+                name: "Ultrasound Physics Calculators",
+                url: "https://www.sonoprep.com/ultrasound-physics-calculators",
+              },
+            ]}
+          />
+
         <div className="mx-auto max-w-3xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#c85b3a]">
             ARDMS SPI Study Tools
@@ -58,8 +72,10 @@ export default function CalculatorsPage() {
           </h1>
 
           <p className="mb-10 text-lg leading-relaxed text-[#c2bab0]">
-            Use these free interactive calculators to practice two important
-            ultrasound physics formulas: axial resolution and the Nyquist limit.
+            SonoPrep’s ultrasound physics calculators help SPI candidates work
+            through common relationships involving axial resolution and the
+            Nyquist limit. Use them to check your calculations, then review the
+            underlying concept so you can recognize the same principle on the exam.
           </p>
         </div>
 

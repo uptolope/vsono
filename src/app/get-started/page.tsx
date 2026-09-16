@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   description:
     "Enter your email to unlock instant diagnostic access to a free ARDMS SPI practice exam, ultrasound formula sheet, and study resources.",
   alternates: {
-    canonical: "https://sonoprep.com/get-started",
+    canonical: "https://www.sonoprep.com/get-started",
   },
   openGraph: {
     title: "Claim Free Instant Access | SonoPrep",
     description:
       "Unlock a free ARDMS SPI diagnostic test and ultrasound physics study resources.",
-    url: "https://sonoprep.com/get-started",
+    url: "https://www.sonoprep.com/get-started",
     siteName: "SonoPrep",
     type: "website",
   },
@@ -26,11 +26,11 @@ export default function GetStartedPage() {
     name: "SonoPrep Free Diagnostic Study Access",
     description:
       "Free ARDMS SPI diagnostic practice test and ultrasound physics study resources.",
-    url: "https://sonoprep.com/get-started",
+    url: "https://www.sonoprep.com/get-started",
     publisher: {
       "@type": "Organization",
       name: "SonoPrep",
-      url: "https://sonoprep.com",
+      url: "https://www.sonoprep.com",
     },
   };
 

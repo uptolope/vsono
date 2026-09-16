@@ -15,12 +15,12 @@ export const metadata: Metadata = {
     title: "Free SPI Exam Demo — Try Before You Buy | SonoPrep",
     description:
       "10 real SPI questions. 10 flashcards. No account required. Find out what you'd get wrong if you took the SPI today.",
-    url: "https://sonoprep.com/demo",
+    url: "https://www.sonoprep.com/demo",
     siteName: "SonoPrep",
     type: "website",
   },
   alternates: {
-    canonical: "https://sonoprep.com/demo",
+    canonical: "https://www.sonoprep.com/demo",
   },
 };
 

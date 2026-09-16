@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Complete SPI ultrasound physics formula cheat sheet. Quick reference guide for Doppler shifts, axial resolution, acoustic impedance, Snell's law, and attenuation.",
   alternates: {
-    canonical: "https://sonoprep.com/spi-physics-formula-sheet",
+    canonical: "https://www.sonoprep.com/spi-physics-formula-sheet",
   },
 };
 
@@ -90,20 +90,20 @@ function FormulaSheetSchema() {
     headline: "ARDMS SPI Ultrasound Physics Formula Sheet",
     description:
       "Comprehensive quick-reference guide to SPI ultrasound physics formulas and equations.",
-    url: "https://sonoprep.com/spi-physics-formula-sheet",
+    url: "https://www.sonoprep.com/spi-physics-formula-sheet",
     author: {
       "@type": "Organization",
       name: "SonoPrep Clinical Faculty",
-      url: "https://sonoprep.com",
+      url: "https://www.sonoprep.com",
     },
     publisher: {
       "@type": "Organization",
       name: "SonoPrep",
-      url: "https://sonoprep.com",
+      url: "https://www.sonoprep.com",
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://sonoprep.com/spi-physics-formula-sheet",
+      "@id": "https://www.sonoprep.com/spi-physics-formula-sheet",
     },
   };
 

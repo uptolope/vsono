@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "SonoPrep's terms of service: license terms, refund policy, acceptable use, and limitations of liability.",
   keywords: ["SonoPrep terms of service", "SonoPrep refund policy"],
   alternates: {
-    canonical: "https://sonoprep.com/terms",
+    canonical: "https://www.sonoprep.com/terms",
   },
 };
 

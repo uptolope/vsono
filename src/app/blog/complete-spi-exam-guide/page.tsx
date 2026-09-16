@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "SPI exam complete guide",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/complete-spi-exam-guide",
+    canonical: "https://www.sonoprep.com/blog/complete-spi-exam-guide",
   },
 };
 
@@ -25,7 +25,7 @@ export default function Page() {
       title="The Complete ARDMS SPI Exam Guide: Everything You Need to Pass"
       date="May 12, 2026"
       read="25 min read"
-      url="https://sonoprep.com/blog/complete-spi-exam-guide"
+      url="https://www.sonoprep.com/blog/complete-spi-exam-guide"
       description="Domain weightings, a proven 6-week study plan, common mistakes, and how to pass the ARDMS SPI exam on your first attempt."
     >
       <p>

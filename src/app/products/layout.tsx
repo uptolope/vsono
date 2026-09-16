@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "sonography exam prep bundle",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/products",
+    canonical: "https://www.sonoprep.com/products",
   },
 };
 
@@ -24,7 +24,7 @@ function ProductsSchema() {
     name: "SonoPrep ARDMS SPI Exam Prep",
     description:
       "SPI exam preparation tools including flashcards, exam simulator, Physics Pearls, study notes, and a complete study bundle.",
-    url: "https://sonoprep.com/products",
+    url: "https://www.sonoprep.com/products",
     brand: {
       "@type": "Brand",
       name: "SonoPrep",
@@ -36,7 +36,7 @@ function ProductsSchema() {
       highPrice: "99.00",
       offerCount: 5,
       availability: "https://schema.org/InStock",
-      url: "https://sonoprep.com/products",
+      url: "https://www.sonoprep.com/products",
     },
   };
 
