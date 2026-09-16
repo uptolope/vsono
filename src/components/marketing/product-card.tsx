@@ -33,7 +33,7 @@ export interface ProductData {
 }
 
 /* â”€â”€â”€ Product data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
-const INDIVIDUAL_TOTAL = 11600;
+const INDIVIDUAL_TOTAL = 11699;
 
 export const PRODUCTS: ProductData[] = [
   {
@@ -364,3 +364,4 @@ export function ProductGrid({ onPurchase }: ProductGridProps) {
     </section>
   );
 }
+

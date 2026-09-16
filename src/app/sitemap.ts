@@ -1,4 +1,4 @@
-import type { MetadataRoute } from "next";
+﻿import type { MetadataRoute } from "next";
 
 const SITE = "https://www.sonoprep.com";
 
@@ -7,7 +7,7 @@ const BLOG_POSTS = [
   { slug: "doppler-principles-spi-exam", updated: "2026-06-15" },
   { slug: "ardms-exam-blueprint", updated: "2026-04-26" },
   { slug: "ultrasound-physics-spi", updated: "2026-06-15" },
-  { slug: "ultrasound-artifacts-spi", updated: "2026-06-15" },
+  { slug: "spi-ultrasound-artifacts-guide", updated: "2026-09-15" },
   { slug: "pass-spi-first-attempt", updated: "2026-06-15" },
   { slug: "spaced-repetition-spi-exam", updated: "2026-06-15" },
   { slug: "test-taking-strategies-spi", updated: "2026-06-15" },
@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE}/demo`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE}/free-spi-practice-test`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE}/ultrasound-physics-calculators`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE}/tools/nyquist-calculator`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE}/spi-physics-formula-sheet`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE}/spi-ultrasound-glossary`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE}/exam-simulator`, lastModified: now, changeFrequency: "weekly", priority: 0.8 },
