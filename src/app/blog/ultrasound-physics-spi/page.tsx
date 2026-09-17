@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "sonography physics review",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/ultrasound-physics-spi",
+    canonical: "https://www.sonoprep.com/blog/ultrasound-physics-spi",
   },
 };
 
@@ -23,7 +23,7 @@ export default function Page() {
       title="Ultrasound Physics for the SPI Exam: The 6 Concepts That Actually Appear"
       date="April 10, 2026"
       read="18 min read"
-      url="https://sonoprep.com/blog/ultrasound-physics-spi"
+      url="https://www.sonoprep.com/blog/ultrasound-physics-spi"
       description="Cut through the noise. These are the foundational ultrasound physics concepts responsible for the most questions on the ARDMS SPI exam."
     >
       <p>

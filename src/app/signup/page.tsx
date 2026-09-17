@@ -3,10 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 
+declare global {
+  function gtag(...args: any[]): void;
+}
+
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -24,12 +29,12 @@ export default function SignupPage() {
           name: name.trim(),
           email: email.trim().toLowerCase(),
           password,
+          phone: phone.trim(),
         }),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        // Server returns validation errors as { error: { fieldErrors: {...} } }
         if (data.error?.fieldErrors) {
           const msgs = Object.values(data.error.fieldErrors).flat();
           setError((msgs as string[]).join(" "));
@@ -39,8 +44,32 @@ export default function SignupPage() {
         return;
       }
 
-      // Signup succeeded — show "check your email" instead of auto-sign-in.
-      // The user needs to verify their email before they can purchase.
+      // ===== TRACKING CONVERSIONS =====
+
+      // TAG 4: Microsoft UET - Capture user data and track signup conversion
+      if (typeof window !== 'undefined') {
+        window.uetq = window.uetq || [];
+        window.uetq.push('set', { 'pid': { 
+          'em': email.trim().toLowerCase(),
+          'ph': phone.trim(),
+        } });
+        window.uetq.push('event', '', { 
+          'revenue_value': 0, // Free signup
+          'currency': 'USD' 
+        });
+      }
+
+      // Google Analytics - Track signup conversion
+      if (typeof window !== 'undefined' && typeof gtag !== 'undefined') {
+        gtag('event', 'sign_up', {
+          method: 'email',
+          email: email.trim().toLowerCase(),
+        });
+      }
+
+      // ===== END TRACKING =====
+
+      // Signup succeeded
       setSuccess(true);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -130,6 +159,21 @@ export default function SignupPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40"
               placeholder="your@email.com"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="phone" className="meta text-[9px] text-[#4a453f] block mb-1.5">
+              PHONE (OPTIONAL)
+            </label>
+            <input
+              id="phone"
+              type="tel"
+              autoComplete="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40"
+              placeholder="+1 (555) 000-0000"
             />
           </div>
 

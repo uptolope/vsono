@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "ARDMS specialty exams",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/ardms-specialties-comparison",
+    canonical: "https://www.sonoprep.com/blog/ardms-specialties-comparison",
   },
 };
 
@@ -24,7 +24,7 @@ export default function Page() {
       title="RDMS vs RDCS vs RVT vs RMSKS: Which ARDMS Specialty Is Right for You?"
       date="March 6, 2026"
       read="13 min read"
-      url="https://sonoprep.com/blog/ardms-specialties-comparison"
+      url="https://www.sonoprep.com/blog/ardms-specialties-comparison"
       description="A practical comparison of the four ARDMS specialty credentials — RDMS, RDCS, RVT, and RMSKS — including exam requirements, career paths, and how to choose."
     >
       <p>

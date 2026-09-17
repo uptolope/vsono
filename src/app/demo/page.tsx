@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -130,7 +130,7 @@ export default function DemoPage() {
               See your SPI weak spots before exam day.
             </p>
             <p className="body-readable text-[#c2bab0] text-sm mb-6 leading-relaxed">
-              Get a domain-by-domain breakdown sent to your inbox. No spam.
+              Get a . No spam.
               Unsubscribe any time.
             </p>
             <form
@@ -246,3 +246,4 @@ export default function DemoPage() {
     </div>
   );
 }
+

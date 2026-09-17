@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "how to study for SPI exam",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/pass-spi-first-attempt",
+    canonical: "https://www.sonoprep.com/blog/pass-spi-first-attempt",
   },
 };
 
@@ -23,7 +23,7 @@ export default function Page() {
       title="How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint"
       date="March 28, 2026"
       read="14 min read"
-      url="https://sonoprep.com/blog/pass-spi-first-attempt"
+      url="https://www.sonoprep.com/blog/pass-spi-first-attempt"
       description="A week-by-week study schedule built around the ARDMS SPI content outline, designed to get first-time candidates to passing in six weeks."
     >
       <p>

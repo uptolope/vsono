@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "SPI exam time management",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/test-taking-strategies-spi",
+    canonical: "https://www.sonoprep.com/blog/test-taking-strategies-spi",
   },
 };
 
@@ -23,7 +23,7 @@ export default function Page() {
       title="SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time"
       date="March 14, 2026"
       read="11 min read"
-      url="https://sonoprep.com/blog/test-taking-strategies-spi"
+      url="https://www.sonoprep.com/blog/test-taking-strategies-spi"
       description="How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage your pace through 110 questions in two hours."
     >
       <p>

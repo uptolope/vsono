@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 const FOOTER_LINKS = [
   { href: "/products", label: "Products" },
@@ -18,7 +18,7 @@ export function Footer() {
               SonoPrep
             </Link>
             <p className="body-small text-[#4a453f] text-xs mt-1">
-              ARDMS SPI exam prep — pass on your first attempt.
+              ARDMS SPI exam prep — .
             </p>
           </div>
           <nav className="flex flex-wrap gap-6">
@@ -45,3 +45,4 @@ export function Footer() {
     </footer>
   );
 }
+

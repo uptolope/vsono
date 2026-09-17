@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "spectral Doppler SPI exam",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/doppler-principles-spi-exam",
+    canonical: "https://www.sonoprep.com/blog/doppler-principles-spi-exam",
   },
 };
 
@@ -24,7 +24,7 @@ export default function Page() {
       title="Doppler Principles for the SPI Exam: Nyquist, Aliasing & Spectral Analysis"
       date="April 18, 2026"
       read="20 min read"
-      url="https://sonoprep.com/blog/doppler-principles-spi-exam"
+      url="https://www.sonoprep.com/blog/doppler-principles-spi-exam"
       description="The Doppler domain is 34% of the SPI exam. This guide covers the core concepts ARDMS tests — Nyquist limit, aliasing, spectral Doppler analysis, and PRF."
     >
       <p>
