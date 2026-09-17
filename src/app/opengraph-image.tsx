@@ -1,4 +1,6 @@
 ﻿import { ImageResponse } from "next/og";
+
+export const runtime = "edge";
 export const alt = "SonoPrep — Pass the ARDMS SPI Exam";
 export const size = {
   width: 1200,
@@ -65,4 +67,3 @@ export default function Image() {
     }
   );
 }
-

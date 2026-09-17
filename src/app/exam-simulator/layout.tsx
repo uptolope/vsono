@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'ARDMS SPI Exam Simulator — Timed Practice Tests',
     description:
       'Practice ultrasound physics with realistic timed ARDMS SPI mock exams and detailed answer explanations.',
-    url: 'https://www.sonoprep.com/exam-simulator',
+    url: 'https://sonoprep.com/exam-simulator',
     type: 'website',
   },
 };

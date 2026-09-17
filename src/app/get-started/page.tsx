@@ -1,8 +1,5 @@
-﻿'use client';
-
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
-import { useEffect } from 'react';
 import GetStartedClient from "./GetStartedClient";
 
 export const metadata: Metadata = {
@@ -10,38 +7,30 @@ export const metadata: Metadata = {
   description:
     "Enter your email to unlock instant diagnostic access to a free ARDMS SPI practice exam, ultrasound formula sheet, and study resources.",
   alternates: {
-    canonical: "https://www.sonoprep.com/get-started",
+    canonical: "https://sonoprep.com/get-started",
   },
   openGraph: {
     title: "Claim Free Instant Access | SonoPrep",
     description:
       "Unlock a free ARDMS SPI diagnostic test and ultrasound physics study resources.",
-    url: "https://www.sonoprep.com/get-started",
+    url: "https://sonoprep.com/get-started",
     siteName: "SonoPrep",
     type: "website",
   },
 };
 
 export default function GetStartedPage() {
-  // TAG 3: Free Demo Signup Conversion
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      window.uetq = window.uetq || [];
-      window.uetq.push('event', '', { 'revenue_value': 0, 'currency': 'USD' });
-    }
-  }, []);
-
   const leadSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     name: "SonoPrep Free Diagnostic Study Access",
     description:
       "Free ARDMS SPI diagnostic practice test and ultrasound physics study resources.",
-    url: "https://www.sonoprep.com/get-started",
+    url: "https://sonoprep.com/get-started",
     publisher: {
       "@type": "Organization",
       name: "SonoPrep",
-      url: "https://www.sonoprep.com",
+      url: "https://sonoprep.com",
     },
   };
 

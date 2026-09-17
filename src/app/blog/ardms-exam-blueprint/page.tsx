@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "SPI domain weightings",
   ],
   alternates: {
-    canonical: "https://www.sonoprep.com/blog/ardms-exam-blueprint",
+    canonical: "https://sonoprep.com/blog/ardms-exam-blueprint",
   },
 };
 
@@ -24,7 +24,7 @@ function BlogPostingSchema() {
     headline: "ARDMS SPI Exam Blueprint: Domain Weightings Explained",
     description:
       "A breakdown of the official ARDMS SPI content outline — exactly how many questions come from each domain and how to allocate your study time.",
-    url: "https://www.sonoprep.com/blog/ardms-exam-blueprint",
+    url: "https://sonoprep.com/blog/ardms-exam-blueprint",
     datePublished: "2026-04-26",
     dateModified: "2026-04-26",
     author: {
@@ -37,7 +37,7 @@ function BlogPostingSchema() {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://www.sonoprep.com/blog/ardms-exam-blueprint",
+      "@id": "https://sonoprep.com/blog/ardms-exam-blueprint",
     },
   };
 
@@ -58,15 +58,15 @@ export default function Page() {
         items={[
           {
             name: "Home",
-            url: "https://www.sonoprep.com",
+            url: "https://sonoprep.com",
           },
           {
             name: "Blog",
-            url: "https://www.sonoprep.com/blog",
+            url: "https://sonoprep.com/blog",
           },
           {
             name: "ARDMS SPI Exam Blueprint",
-            url: "https://www.sonoprep.com/blog/ardms-exam-blueprint",
+            url: "https://sonoprep.com/blog/ardms-exam-blueprint",
           },
         ]}
       />
@@ -76,7 +76,7 @@ export default function Page() {
         title="ARDMS SPI Exam Blueprint: Domain Weightings Explained"
         date="April 26, 2026"
         read="17 min read"
-        url="https://www.sonoprep.com/blog/ardms-exam-blueprint"
+        url="https://sonoprep.com/blog/ardms-exam-blueprint"
         description="A breakdown of the official ARDMS SPI content outline — exactly how many questions come from each domain, and how to weight your study time accordingly."
       >
         <p>

@@ -1,5 +1,7 @@
 ﻿'use client';
 
+'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { useProtectedContent } from '@/lib/hooks/useProtectedContent';
@@ -312,4 +314,3 @@ function Centered({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
-

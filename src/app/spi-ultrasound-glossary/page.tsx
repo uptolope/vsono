@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "A practical ultrasound physics glossary covering acoustic impedance, axial resolution, duty factor, Nyquist limit, attenuation, cavitation, and more.",
   alternates: {
-    canonical: "https://www.sonoprep.com/spi-ultrasound-glossary",
+    canonical: "https://sonoprep.com/spi-ultrasound-glossary",
   },
 };
 
@@ -74,7 +74,7 @@ function GlossarySchema() {
     "@context": "https://schema.org",
     "@type": "DefinedTermSet",
     name: "ARDMS SPI Ultrasound Physics Glossary",
-    url: "https://www.sonoprep.com/spi-ultrasound-glossary",
+    url: "https://sonoprep.com/spi-ultrasound-glossary",
     hasDefinedTerm: TERMS.map((item) => ({
       "@type": "DefinedTerm",
       name: item.term,
