@@ -15,7 +15,7 @@ export default function PhysicsPearlsPage() {
   if (state.status === 'idle' || state.status === 'loading') {
     return (
       <Centered>
-        <p className="text-[#8a8279] text-sm">Loading Physics Pearlsâ€¦</p>
+        <p className="text-[#8a8279] text-sm">Loading Physics Pearls</p>
       </Centered>
     );
   }
@@ -30,7 +30,7 @@ export default function PhysicsPearlsPage() {
           Please log in to access Physics Pearls.
         </p>
         <Link href="/login" className="btn-industrial px-6 py-3 text-[10px]">
-          SIGN IN â†’
+          SIGN IN
         </Link>
       </Centered>
     );
@@ -47,7 +47,7 @@ export default function PhysicsPearlsPage() {
           Premium Bundle) to unlock this content.
         </p>
         <Link href="/products" className="btn-industrial px-6 py-3 text-[10px]">
-          BROWSE PRODUCTS â†’
+          BROWSE PRODUCTS
         </Link>
       </Centered>
     );
@@ -58,7 +58,7 @@ export default function PhysicsPearlsPage() {
       <Centered>
         <p className="text-[#c85b3a] text-sm mb-6">{state.message}</p>
         <button onClick={refetch} className="btn-industrial px-6 py-3 text-[10px]">
-          RELOAD â†’
+          RELOAD
         </button>
       </Centered>
     );

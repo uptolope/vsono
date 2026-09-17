@@ -32,11 +32,7 @@ export interface ProductData {
   savingsLabel?: string;
 }
 
-<<<<<<< HEAD
 /* Product data  */
-=======
-/* â”€â”€â”€ Product data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
->>>>>>> origin/main
 const INDIVIDUAL_TOTAL = 11699;
 
 export const PRODUCTS: ProductData[] = [
@@ -59,7 +55,7 @@ export const PRODUCTS: ProductData[] = [
     name: "SPI Flashcards",
     price: 2400,
     description:
-      "Fix your weakest topics fast. 200+ clinically focused flashcards with SM-2 spaced repetition â€” the algorithm prioritizes what you're getting wrong.",
+      "Fix your weakest topics fast. 200+ clinically focused flashcards with SM-2 spaced repetition the algorithm prioritizes what you're getting wrong.",
     features: [
       "200+ expert-written flashcards",
       "SM-2 spaced repetition algorithm",
