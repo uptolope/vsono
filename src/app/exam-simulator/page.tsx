@@ -495,7 +495,7 @@ useEffect(() => {
 
       if (!res.ok) {
         setSubmitError(
-          'We couldn't save your results. Please try again.',
+          'We could not save your results. Please try again.',
         );
         return;
       }
