@@ -328,7 +328,7 @@ useEffect(() => {
             href="/account"
             className="meta text-[10px] text-[#4a453f] hover:text-[#c85b3a] mb-8 inline-block transition-colors"
           >
-            â† BACK TO ACCOUNT
+            BACK TO ACCOUNT
           </Link>
 
           <div className="text-center mb-10">
@@ -525,7 +525,7 @@ useEffect(() => {
             href="/account"
             className="meta text-[10px] text-[#4a453f] hover:text-[#c85b3a] transition-colors"
           >
-            â† BACK TO ACCOUNT
+            BACK TO ACCOUNT
           </Link>
 
           <span className="meta text-[10px] text-[#4a453f]">
@@ -593,7 +593,7 @@ useEffect(() => {
               disabled={currentIndex === 0}
               className="btn-industrial-outline px-6 py-3 text-[10px] disabled:opacity-40"
             >
-              â† PREVIOUS
+              PREVIOUS
             </button>
 
             {currentIndex < total - 1 ? (

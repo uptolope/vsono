@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
 
-/* â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Types */
 export interface ProductData {
   key: string;
   name: string;
@@ -32,7 +32,11 @@ export interface ProductData {
   savingsLabel?: string;
 }
 
+<<<<<<< HEAD
+/* Product data  */
+=======
 /* â”€â”€â”€ Product data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+>>>>>>> origin/main
 const INDIVIDUAL_TOTAL = 11699;
 
 export const PRODUCTS: ProductData[] = [
@@ -41,7 +45,7 @@ export const PRODUCTS: ProductData[] = [
     name: "Physics Pearls",
     price: 900,
     description:
-      "Start studying in 10 minutes. 50 high-yield physics principles â€” concise, memorable, and mapped to what ARDMS actually tests.",
+      "Start studying in 10 minutes. 50 high-yield physics principles concise, memorable, and mapped to what ARDMS actually tests.",
     features: [
       "50 high-yield concept summaries",
       "Clinical application examples",
@@ -69,7 +73,7 @@ export const PRODUCTS: ProductData[] = [
     name: "Study Notes",
     price: 3400,
     description:
-      "Understand the system â€” not just memorize answers. 159-page comprehensive guide covering all 5 SPI domains across 10 organized chapters.",
+      "Understand the system not just memorize answers. 159-page comprehensive guide covering all 5 SPI domains across 10 organized chapters.",
     features: [
       "159 pages of content",
       "10 organized chapters",
@@ -85,8 +89,8 @@ export const PRODUCTS: ProductData[] = [
     description:
       "3 full exam attempts over 30 days. Each attempt draws 110 random questions from a 155-question bank, timed at 2 hours, with detailed rationales and per-domain analytics.",
     features: [
-      "3 exam attempts Â· 30-day access",
-      "155-question bank Â· 110 per exam",
+      "3 exam attempts 30-day access",
+      "155-question bank 110 per exam",
       "2-hour timer (matches real SPI)",
       "Randomized each time",
       "Detailed clinical rationales",
@@ -101,11 +105,11 @@ export const PRODUCTS: ProductData[] = [
     price: 9900,
     originalPrice: INDIVIDUAL_TOTAL,
     description:
-      "Everything you need to pass â€” in one system. For less than the cost of a single retake fee, you get the complete system: flashcards, simulator, Physics Pearls, and study notes.",
+      "Everything you need to pass in one system. For less than the cost of a single retake fee, you get the complete system: flashcards, simulator, Physics Pearls, and study notes.",
     features: [
       "All 4 products included",
       "200+ flashcards + 50 Pearls",
-      "3 exam attempts Â· 110 questions from 155-question bank",
+      "3 exam attempts 110 questions from 155-question bank",
       "159-page study notes",
       "One bad exam costs more than everything you need to pass",
       "45-day full access",
@@ -115,7 +119,7 @@ export const PRODUCTS: ProductData[] = [
   },
 ];
 
-/* â”€â”€â”€ Trust bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Trust bar */
 function TrustBar() {
   return (
     <div className="flex flex-wrap justify-center gap-6 text-xs text-cream-dim/50">
@@ -134,20 +138,20 @@ function TrustBar() {
   );
 }
 
-/* â”€â”€â”€ Bundle value strip â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Bundle value strip */
 function BundleValueStrip() {
   return (
     <div className="flex items-center gap-3 rounded-lg border border-[#c85b3a]/20 bg-[#c85b3a]/[0.04] px-4 py-2.5">
       <ShieldCheck className="h-3.5 w-3.5 shrink-0 text-[#c85b3a]/70" />
       <span className="text-xs text-cream-dim/70">
-        45-day access to all 4 products Â· 10-day full refund policy Â· no
+        45-day access to all 4 products 10-day full refund policy no
         subscription
       </span>
     </div>
   );
 }
 
-/* â”€â”€â”€ Product Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Product Card */
 interface ProductCardProps {
   product: ProductData;
   onPurchase?: (key: string) => void;
@@ -165,7 +169,7 @@ function ProductCard({ product, onPurchase }: ProductCardProps) {
             : "hover:border-[#c85b3a]/30 hover:shadow-[0_0_40px_rgba(200,91,58,0.15)] bg-gradient-to-br from-charcoal/90 via-slate/60 to-charcoal/90"
         }`}
       >
-        {/* Hover glow â€” static, CSS only */}
+        {/* Hover glow static, CSS only */}
         <div className="pointer-events-none absolute inset-0 rounded opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-gradient-to-br from-[#c85b3a]/[0.04] to-transparent" />
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#c85b3a]/0 to-transparent transition-all duration-500 group-hover:via-[#c85b3a]/50" />
 
@@ -215,7 +219,7 @@ function ProductCard({ product, onPurchase }: ProductCardProps) {
               </div>
               {isBundle && product.originalPrice && (
                 <p className="font-mono text-sm text-[#c85b3a]/70 flex items-center gap-2">
-                  <span>â†“</span>
+                  <span></span>
                   Save {formatCurrency(product.originalPrice - product.price)}{" "}
                   vs buying individually
                 </p>
@@ -226,7 +230,7 @@ function ProductCard({ product, onPurchase }: ProductCardProps) {
           {/* Bundle value strip */}
           {isBundle && <BundleValueStrip />}
 
-          {/* Features â€” shown immediately, no stagger */}
+          {/* Features shown immediately, no stagger */}
           <ul className="space-y-3">
             {product.features.map((f) => (
               <li
@@ -241,7 +245,7 @@ function ProductCard({ product, onPurchase }: ProductCardProps) {
             ))}
           </ul>
 
-          {/* CTA â€” static, no bouncing arrow */}
+          {/* CTA static, no bouncing arrow */}
           <Button
             className={`w-full transition-all duration-300 ${
               isBundle
@@ -253,7 +257,7 @@ function ProductCard({ product, onPurchase }: ProductCardProps) {
             onClick={() => onPurchase?.(product.key)}
           >
             <span>
-              {isBundle ? "Get the Full Bundle â€” $99" : `Get ${product.name}`}
+              {isBundle ? "Get the Full Bundle $99" : `Get ${product.name}`}
             </span>
             <ArrowRight className="ml-1 h-4 w-4" />
           </Button>
@@ -263,7 +267,7 @@ function ProductCard({ product, onPurchase }: ProductCardProps) {
   );
 }
 
-/* â”€â”€â”€ Product Grid â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Product Grid*/
 interface ProductGridProps {
   onPurchase?: (productKey: string) => void;
 }
@@ -272,7 +276,7 @@ export function ProductGrid({ onPurchase }: ProductGridProps) {
   return (
     <section className="py-24" id="products">
       <div className="mx-auto max-w-7xl px-6">
-        {/* Section heading â€” fade-up once */}
+        {/* Section heading fade-up once */}
         <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -288,13 +292,13 @@ export function ProductGrid({ onPurchase }: ProductGridProps) {
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-cream-dim">
             110-question exams from a 155-question bank, 200+ spaced repetition
-            flashcards, 50 Physics Pearls, and 159 pages of study notes â€” all
+            flashcards, 50 Physics Pearls, and 159 pages of study notes all
             written by a credentialed RDMS instructor. Start with a free demo.
             Upgrade when you're ready.
           </p>
         </motion.div>
 
-        {/* Introductory pricing banner â€” fade-up once */}
+        {/* Introductory pricing banner fade-up once */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -307,12 +311,12 @@ export function ProductGrid({ onPurchase }: ProductGridProps) {
             <span className="text-cream font-semibold">
               Introductory pricing
             </span>{" "}
-            â€” SonoPrep is a new platform. These are launch rates. All products
+            SonoPrep is a new platform. These are launch rates. All products
             include a 10-day full refund policy.
           </p>
         </motion.div>
 
-        {/* Card grid â€” fade-up once per card */}
+        {/* Card grid fade-up once per card */}
         <div className="mt-12 grid gap-8 sm:grid-cols-2">
           {PRODUCTS.map((product, i) => (
             <motion.div
@@ -334,7 +338,7 @@ export function ProductGrid({ onPurchase }: ProductGridProps) {
           ))}
         </div>
 
-        {/* Trust bar â€” fade-up once */}
+        {/* Trust bar fade-up once */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -355,7 +359,7 @@ export function ProductGrid({ onPurchase }: ProductGridProps) {
         >
           <p className="text-xs text-cream-dim/30">
             All content is original, proprietary, and copyright protected.
-            SonoPrep is not affiliated with ARDMS. SPIÂ® is a registered
+            SonoPrep is not affiliated with ARDMS. SPI is a registered
             trademark of the American Registry for Diagnostic Medical
             Sonography.
           </p>

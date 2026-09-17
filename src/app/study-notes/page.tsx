@@ -104,7 +104,7 @@ export default function StudyNotesPage() {
           href="/account"
           className="meta text-[10px] text-[#4a453f] hover:text-[#c85b3a] mb-8 inline-block transition-colors"
         >
-          â† BACK TO ACCOUNT
+          BACK TO ACCOUNT
         </Link>
 
         <section className="mb-8 rounded border border-[#c85b3a]/30 bg-[#c85b3a]/5 p-5 text-sm text-[#c2bab0]">
@@ -136,7 +136,7 @@ export default function StudyNotesPage() {
             {sections.length} sections
             {expiresAt && (
               <span className="ml-2">
-                â€¢ Access until {new Date(expiresAt).toLocaleDateString()}
+                Access until {new Date(expiresAt).toLocaleDateString()}
               </span>
             )}
           </p>
