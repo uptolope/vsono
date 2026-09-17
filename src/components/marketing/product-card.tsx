@@ -32,15 +32,7 @@ export interface ProductData {
   savingsLabel?: string;
 }
 
-<<<<<<< HEAD
-/* Product data  */
-=======
-<<<<<<< HEAD
-/* Product data  */
-=======
-/* â”€â”€â”€ Product data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
->>>>>>> origin/main
->>>>>>> origin/main
+/* Product data */
 const INDIVIDUAL_TOTAL = 11699;
 
 export const PRODUCTS: ProductData[] = [
