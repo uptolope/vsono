@@ -22,7 +22,7 @@ export default function StudyNotesPage() {
   if (state.status === 'idle' || state.status === 'loading') {
     return (
       <Centered>
-        <p className="text-[#8a8279] text-sm">Loading Study Notesâ€¦</p>
+        <p className="text-[#8a8279] text-sm">Loading Study Notes</p>
       </Centered>
     );
   }
@@ -39,7 +39,7 @@ export default function StudyNotesPage() {
         </p>
 
         <Link href="/login" className="btn-industrial px-6 py-3 text-[10px]">
-          SIGN IN â†’
+          SIGN IN
         </Link>
       </Centered>
     );
@@ -61,7 +61,7 @@ export default function StudyNotesPage() {
           href="/products"
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          BROWSE PRODUCTS â†’
+          BROWSE PRODUCTS
         </Link>
       </Centered>
     );
@@ -76,7 +76,7 @@ export default function StudyNotesPage() {
           onClick={refetch}
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          RELOAD â†’
+          RELOAD
         </button>
       </Centered>
     );
@@ -145,7 +145,7 @@ export default function StudyNotesPage() {
         <div className="mb-10 border border-white/[0.06] rounded p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <span className="meta text-[9px] text-[#4a453f]">
-              {SONOGRAPHIC_PHYSICS_META.category} Â· LICENSED BOARD-EXAM NOTES
+              {SONOGRAPHIC_PHYSICS_META.category} LICENSED BOARD-EXAM NOTES
             </span>
 
             <h2 className="display-serif text-xl text-white font-semibold mt-1">
@@ -153,12 +153,12 @@ export default function StudyNotesPage() {
             </h2>
 
             <p className="body-small text-[#8a8279] text-xs mt-1">
-              {SONOGRAPHIC_PHYSICS_META.pageCount} pages Â· Included with your
+              {SONOGRAPHIC_PHYSICS_META.pageCount} pages Included with your
               Study Notes access
               {expiresAt && (
                 <span>
                   {' '}
-                  Â· Access until {new Date(expiresAt).toLocaleDateString()}
+                  Access until {new Date(expiresAt).toLocaleDateString()}
                 </span>
               )}
             </p>
@@ -168,7 +168,7 @@ export default function StudyNotesPage() {
             href="/study-notes/viewer"
             className="btn-industrial px-6 py-3 text-[10px] whitespace-nowrap"
           >
-            OPEN SONOGRAPHIC PHYSICS â†’
+            OPEN SONOGRAPHIC PHYSICS
           </Link>
         </div>
 
@@ -237,7 +237,7 @@ export default function StudyNotesPage() {
                       key={bulletIndex}
                       className="body-small text-[#c2bab0] text-sm leading-relaxed flex gap-2"
                     >
-                      <span className="text-[#c85b3a] shrink-0">â€”</span>
+                      <span className="text-[#c85b3a] shrink-0"></span>
                       <span>{bullet}</span>
                     </li>
                   ))}

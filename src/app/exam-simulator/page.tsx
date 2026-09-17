@@ -219,7 +219,7 @@ useEffect(() => {
     return (
       <Centered>
         <p className="text-[#8a8279] text-sm">
-          Checking your sessionâ€¦
+          Checking your session
         </p>
       </Centered>
     );
@@ -240,7 +240,7 @@ useEffect(() => {
           href="/login"
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          SIGN IN â†’
+          SIGN IN
         </Link>
       </Centered>
     );
@@ -263,7 +263,7 @@ useEffect(() => {
     return (
       <Centered>
         <p className="text-[#8a8279] text-sm">
-          Loading Exam Simulatorâ€¦
+          Loading Exam Simulator
         </p>
       </Centered>
     );
@@ -285,7 +285,7 @@ useEffect(() => {
           href="/products"
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          BROWSE PRODUCTS â†’
+          BROWSE PRODUCTS
         </Link>
       </Centered>
     );
@@ -302,7 +302,7 @@ useEffect(() => {
           onClick={refetch}
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          RELOAD â†’
+          RELOAD
         </button>
       </Centered>
     );
@@ -402,7 +402,7 @@ useEffect(() => {
             }}
             className="btn-industrial w-full py-3 text-[11px] mt-10"
           >
-            RETAKE EXAM â†’
+            RETAKE EXAM
           </button>
         </div>
       </div>
@@ -495,7 +495,7 @@ useEffect(() => {
 
       if (!res.ok) {
         setSubmitError(
-          'We couldnâ€™t save your results. Please try again.',
+          'We could not save your results. Please try again.',
         );
         return;
       }
@@ -601,7 +601,7 @@ useEffect(() => {
                 onClick={() => goTo(currentIndex + 1)}
                 className="btn-industrial px-6 py-3 text-[10px]"
               >
-                NEXT â†’
+                NEXT
               </button>
             ) : (
               <button
@@ -610,8 +610,8 @@ useEffect(() => {
                 className="btn-industrial px-6 py-3 text-[10px] disabled:opacity-50"
               >
                 {isSubmitting
-                  ? 'SUBMITTINGâ€¦'
-                  : 'SUBMIT EXAM â†’'}
+                  ? 'SUBMITTING'
+                  : 'SUBMIT EXAM'}
               </button>
             )}
           </div>
@@ -628,7 +628,7 @@ useEffect(() => {
             {answeredCount < total
               ? `${total - answeredCount} question${
                   total - answeredCount === 1 ? '' : 's'
-                } unanswered â€” only answered questions count toward your score.`
+                } unanswered only answered questions count toward your score.`
               : 'All questions answered.'}
           </p>
         )}
@@ -724,7 +724,7 @@ function ExamReadinessDialog({
               onClick={onStart}
               className="btn-industrial px-6 py-3 text-[10px] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              I&apos;M READY â€” START EXAM
+              I'M READY START EXAM
             </button>
           </div>
         </div>
