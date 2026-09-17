@@ -83,7 +83,7 @@ export default function PhysicsPearlsPage() {
           href="/account"
           className="meta text-[10px] text-[#4a453f] hover:text-[#c85b3a] mb-8 inline-block transition-colors"
         >
-          â† BACK TO ACCOUNT
+          BACK TO ACCOUNT
         </Link>
 
         <div className="mb-10">
@@ -95,7 +95,7 @@ export default function PhysicsPearlsPage() {
             {pearls.length} high-yield concepts
             {expiresAt && (
               <span className="ml-2">
-                â€¢ Access until {new Date(expiresAt).toLocaleDateString()}
+                Access until {new Date(expiresAt).toLocaleDateString()}
               </span>
             )}
           </p>
