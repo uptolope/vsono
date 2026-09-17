@@ -1,5 +1,8 @@
-﻿import type { Metadata } from "next";
+﻿'use client';
+
+import type { Metadata } from "next";
 import Link from "next/link";
+import { useEffect } from 'react';
 import GetStartedClient from "./GetStartedClient";
 
 export const metadata: Metadata = {
@@ -20,6 +23,14 @@ export const metadata: Metadata = {
 };
 
 export default function GetStartedPage() {
+  // TAG 3: Free Demo Signup Conversion
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.uetq = window.uetq || [];
+      window.uetq.push('event', '', { 'revenue_value': 0, 'currency': 'USD' });
+    }
+  }, []);
+
   const leadSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",

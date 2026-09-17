@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { trackLogin } from "@/lib/analytics";
 
 export default function LoginFormClient() {
   const searchParams = useSearchParams();
@@ -46,6 +47,10 @@ export default function LoginFormClient() {
           setError("Invalid email or password.");
         }
       } else if (result?.url) {
+        // Track successful login
+        trackLogin();
+        
+        // Redirect after tracking
         window.location.href = result.url;
       }
     } catch {
@@ -64,7 +69,7 @@ export default function LoginFormClient() {
         body: JSON.stringify({ email: email.trim().toLowerCase() }),
       });
     } catch {
-      // Fall through to the generic "sent" state either way — this
+      // Fall through to the generic "sent" state either way – this
       // endpoint deliberately never reveals success/failure per-account.
     } finally {
       setResendState("sent");
@@ -83,7 +88,7 @@ export default function LoginFormClient() {
 
         {justVerified && !error && (
           <div className="mb-6 border border-[#c85b3a]/30 bg-[#c85b3a]/[0.08] p-4 rounded">
-            <p className="text-[#e06840] text-sm">Email verified — you can log in now.</p>
+            <p className="text-[#e06840] text-sm">Email verified – you can log in now.</p>
           </div>
         )}
 

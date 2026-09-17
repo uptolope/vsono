@@ -1,8 +1,20 @@
-﻿import Link from "next/link";
+﻿"use client";
+
+import { useEffect } from "react";
+import Link from "next/link";
 import { ExamSimulator } from "@/components/app/exam-simulator";
 import { DEMO_QUESTIONS } from "@/lib/demo/exam-data";
+import { trackPageView, trackDemoEngagement } from "@/lib/analytics";
 
 export default function FreeSpiPracticeTestPage() {
+  useEffect(() => {
+    // Track page view
+    trackPageView("Free SPI Practice Test");
+
+    // Track demo engagement - page visit
+    trackDemoEngagement("practice_test_viewed");
+  }, []);
+
   const quizSchema = {
     "@context": "https://schema.org",
     "@type": "Quiz",
