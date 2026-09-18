@@ -4,7 +4,7 @@ import { PrismaClient, ProductType } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const secretKey = process.env.STRIPE_SECRET_KEY;
+const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
 
 if (!secretKey) {
   throw new Error("STRIPE_SECRET_KEY is missing from .env");
@@ -19,6 +19,7 @@ const products = [
     description: "Access to the SonoPrep flashcard library.",
     envName: "STRIPE_PRICE_FLASHCARDS",
     id: "flashcards",
+    accessDurationDays: 30,
   },
   {
     type: ProductType.PHYSICS_PEARLS,
@@ -26,6 +27,7 @@ const products = [
     description: "Access to SonoPrep Physics Pearls.",
     envName: "STRIPE_PRICE_PHYSICS_PEARLS",
     id: "physics-pearls",
+    accessDurationDays: 30,
   },
   {
     type: ProductType.EXAM_SIMULATOR,
@@ -33,6 +35,7 @@ const products = [
     description: "Access to the SonoPrep exam simulator.",
     envName: "STRIPE_PRICE_EXAM_SIMULATOR",
     id: "exam-simulator",
+    accessDurationDays: 30,
   },
   {
     type: ProductType.STUDY_NOTES,
@@ -40,6 +43,7 @@ const products = [
     description: "Access to SonoPrep study notes.",
     envName: "STRIPE_PRICE_STUDY_NOTES",
     id: "study-notes",
+    accessDurationDays: 30,
   },
   {
     type: ProductType.PREMIUM_BUNDLE,
@@ -47,31 +51,32 @@ const products = [
     description: "Access to all SonoPrep premium resources.",
     envName: "STRIPE_PRICE_PREMIUM_BUNDLE",
     id: "premium-bundle",
+    accessDurationDays: 45,
   },
-];
+] as const;
 
 async function main() {
   for (const item of products) {
-    const priceId = process.env[item.envName];
+    const priceId = process.env[item.envName]?.trim();
 
     if (!priceId) {
-      throw new Error(item.envName + " is missing from .env");
+      throw new Error(`${item.envName} is missing from .env`);
     }
 
     if (!priceId.startsWith("price_")) {
-      throw new Error(item.envName + " is not a valid Stripe Price ID");
+      throw new Error(`${item.envName} is not a valid Stripe Price ID`);
     }
 
-    console.log("Checking " + item.type + "...");
+    console.log(`Checking ${item.type}...`);
 
     const stripePrice = await stripe.prices.retrieve(priceId);
 
     if (!stripePrice.active) {
-      throw new Error(item.envName + " points to an inactive Stripe price");
+      throw new Error(`${item.envName} points to an inactive Stripe price`);
     }
 
     if (stripePrice.unit_amount === null) {
-      throw new Error(item.envName + " has no unit amount");
+      throw new Error(`${item.envName} has no unit amount`);
     }
 
     const savedProduct = await prisma.product.upsert({
@@ -83,6 +88,7 @@ async function main() {
         description: item.description,
         priceInCents: stripePrice.unit_amount,
         stripePriceId: priceId,
+        accessDurationDays: item.accessDurationDays,
         active: true,
       },
       create: {
@@ -92,17 +98,16 @@ async function main() {
         description: item.description,
         priceInCents: stripePrice.unit_amount,
         stripePriceId: priceId,
+        accessDurationDays: item.accessDurationDays,
         active: true,
       },
     });
 
     console.log(
-      "Saved " +
-        savedProduct.type +
-        " - " +
-        savedProduct.priceInCents +
-        " cents - " +
-        savedProduct.stripePriceId
+      `Saved ${savedProduct.type} - ` +
+        `${savedProduct.priceInCents} cents - ` +
+        `${savedProduct.accessDurationDays} days - ` +
+        `${savedProduct.stripePriceId}`,
     );
   }
 
