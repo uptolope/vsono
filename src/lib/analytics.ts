@@ -4,8 +4,8 @@
 // ────────────────────────────────────────────────────────────────────────────────
 
 declare global {
-  function gtag(...args: any[]): void;
-  var uetq: any[];
+  function gtag(...args: unknown[]): void;
+  var uetq: unknown[];
 }
 
 export function trackCheckoutStarted(product: string, price: number): void {

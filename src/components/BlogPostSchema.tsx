@@ -25,7 +25,7 @@ export default function BlogPostSchema({
   dateModified = '2026-06-15T12:00:00+00:00',
   faqs = [],
 }: BlogPostSchemaProps) {
-  const postUrl = `https://sonoprep.com/blog/\${slug}`;
+  const postUrl = `https://sonoprep.com/blog/${slug}`;
 
   const graph: SchemaNode[] = [
     {
