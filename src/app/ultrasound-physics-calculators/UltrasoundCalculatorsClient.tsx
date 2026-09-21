@@ -19,12 +19,12 @@ export default function UltrasoundCalculatorsClient() {
 
   return (
     <div className="grid gap-8 md:grid-cols-2">
-      <section className="rounded border border-white/[0.06] bg-white/[0.02] p-6 ">
+      <section className="rounded border border-white/[0.06] bg-white/[0.02] p-6">
         <h2 className="mb-2 text-2xl font-semibold text-white">
           Axial Resolution
         </h2>
 
-        <p className="mb-6 text-sm leading-relaxed text-[#8a8279]">
+        <p className="mb-6 text-sm leading-relaxed text-[#c2bab0]">
           Axial resolution is calculated by dividing the spatial pulse length
           by two.
         </p>
@@ -49,23 +49,23 @@ export default function UltrasoundCalculatorsClient() {
           step="0.01"
           value={spl}
           onChange={(event) => setSpl(event.target.value)}
-          className="mb-6 w-full rounded border border-slate-300 px-3 py-2 text-white outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+          className="mb-6 w-full rounded border border-slate-300 bg-[#0B0D10] px-3 py-2 text-white outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
         />
 
         <div className="rounded border border-sky-100 bg-sky-50 p-4">
-          <p className="text-sm text-[#8a8279]">Axial Resolution</p>
+          <p className="text-sm text-slate-700">Axial Resolution</p>
           <p className="text-3xl font-bold text-[#c85b3a]">
             {axialResolution} mm
           </p>
         </div>
       </section>
 
-      <section className="rounded border border-white/[0.06] bg-white/[0.02] p-6 ">
+      <section className="rounded border border-white/[0.06] bg-white/[0.02] p-6">
         <h2 className="mb-2 text-2xl font-semibold text-white">
           Nyquist Limit
         </h2>
 
-        <p className="mb-6 text-sm leading-relaxed text-[#8a8279]">
+        <p className="mb-6 text-sm leading-relaxed text-[#c2bab0]">
           The Nyquist limit is the maximum Doppler frequency shift that can be
           measured without aliasing.
         </p>
@@ -90,11 +90,11 @@ export default function UltrasoundCalculatorsClient() {
           step="100"
           value={prf}
           onChange={(event) => setPrf(event.target.value)}
-          className="mb-6 w-full rounded border border-slate-300 px-3 py-2 text-white outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
+          className="mb-6 w-full rounded border border-slate-300 bg-[#0B0D10] px-3 py-2 text-white outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-200"
         />
 
         <div className="rounded border border-sky-100 bg-sky-50 p-4">
-          <p className="text-sm text-[#8a8279]">Nyquist Limit</p>
+          <p className="text-sm text-slate-700">Nyquist Limit</p>
           <p className="text-3xl font-bold text-[#c85b3a]">
             {nyquistLimit} Hz
           </p>
