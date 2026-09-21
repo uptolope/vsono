@@ -1,0 +1,32 @@
+node_modules/
+.next/
+.env
+.env.local
+.env.*.local
+dist/
+build/
+*.log
+.DS_Store
+.env.production
+.vercel
+# Environment and secret files
+.env
+.env.*
+!.env.example`r`n*.tsbuildinfo
+
+# Local source PDFs
+*.pdf
+
+# Local development artifacts
+src-before-main-landmark-fix/
+next.config.ts.csp-backup
+accessibility-report.json
+main-landmark-audit.csv
+encoding_errors.csv
+routes-main-missing-id.txt
+routes-missing-main.txt
+build-after-landmark-fix.txt
+lint-after-landmark-fix.txt
+
+# TypeScript build metadata
+*.tsbuildinfo
