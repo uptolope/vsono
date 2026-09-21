@@ -1,18 +1,21 @@
+# Dependencies and build output
 node_modules/
 .next/
-.env
-.env.local
-.env.*.local
 dist/
 build/
-*.log
-.DS_Store
-.env.production
-.vercel
+.vercel/
+
 # Environment and secret files
 .env
 .env.*
-!.env.example`r`n*.tsbuildinfo
+!.env.example
+
+# Logs and local OS files
+*.log
+.DS_Store
+
+# TypeScript build metadata
+*.tsbuildinfo
 
 # Local source PDFs
 *.pdf
@@ -28,5 +31,5 @@ routes-missing-main.txt
 build-after-landmark-fix.txt
 lint-after-landmark-fix.txt
 
-# TypeScript build metadata
-*.tsbuildinfo
+# Backup source files
+*.backup
