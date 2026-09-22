@@ -61,8 +61,6 @@ function createWatermarkSvg(
   const patternWidth = Math.max(900, Math.round(width * 0.75));
   const patternHeight = Math.max(520, Math.round(height * 0.30));
 
-  const patternWidth = Math.max(520, Math.round(width * 0.45));
-  const patternHeight = Math.max(260, Math.round(height * 0.16));
 
 
   const mainFontSize = Math.max(22, Math.round(width * 0.023));
