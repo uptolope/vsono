@@ -57,15 +57,11 @@ function createWatermarkSvg(
     SONOGRAPHIC_PHYSICS_META.watermarkText,
   );
 
-  const patternWidth = Math.max(520, Math.round(width * 0.45));
-  const patternHeight = Math.max(260, Math.round(height * 0.16));
-
-  const mainFontSize = Math.max(22, Math.round(width * 0.023));
-  const secondaryFontSize = Math.max(18, Math.round(width * 0.018));
-  const footerFontSize = Math.max(20, Math.round(width * 0.02));
-
+  // Footer positioning
   const footerY = Math.max(60, height - Math.round(height * 0.035));
+  const footerFontSize = Math.max(16, Math.round(width * 0.016));
 
+  // Simple footer-only watermark (no diagonal pattern)
   return Buffer.from(`
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -73,54 +69,13 @@ function createWatermarkSvg(
       height="${height}"
       viewBox="0 0 ${width} ${height}"
     >
-      <defs>
-        <pattern
-          id="watermark"
-          width="${patternWidth}"
-          height="${patternHeight}"
-          patternUnits="userSpaceOnUse"
-          patternTransform="rotate(-30)"
-        >
-          <text
-            x="20"
-            y="${Math.round(patternHeight * 0.5)}"
-            fill="#222222"
-            fill-opacity="0.18"
-            font-family="Arial, Helvetica, sans-serif"
-            font-size="${mainFontSize}"
-            font-weight="600"
-          >
-            Licensed access · ${safeIdentifier}
-          </text>
-
-          <text
-            x="20"
-            y="${Math.round(patternHeight * 0.68)}"
-            fill="#222222"
-            fill-opacity="0.18"
-            font-family="Arial, Helvetica, sans-serif"
-            font-size="${secondaryFontSize}"
-          >
-            Page ${safePage} · ${safeDate}
-          </text>
-        </pattern>
-      </defs>
-
-      <rect
-        x="0"
-        y="0"
-        width="${width}"
-        height="${height}"
-        fill="url(#watermark)"
-      />
-
       <text
         x="${Math.round(width / 2)}"
         y="${footerY}"
         text-anchor="middle"
-        fill="#222222"
-        fill-opacity="0.68"
-        font-family="Arial, Helvetica, sans-serif"
+        fill="#666666"
+        fill-opacity="0.5"
+        font-family="serif"
         font-size="${footerFontSize}"
       >
         ${safeWatermarkText}
