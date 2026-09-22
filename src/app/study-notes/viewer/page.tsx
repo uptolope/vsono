@@ -284,8 +284,6 @@ export default function SonographicPhysicsViewerPage() {
 
             alt={`${meta.shortTitle} - page ${page}`}
 
-            alt={`${meta.shortTitle}  page ${page}`}
-
             draggable={false}
             onLoad={() => {
               setImgLoading(false);
