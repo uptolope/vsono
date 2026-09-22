@@ -40,8 +40,6 @@ export interface ExamQuestion {
 
   correctAnswer: number; // Index of correct option  NEVER expose to client
 
-  correctAnswer: number; // Index of correct option  NEVER expose to client
-
   domain: string;
   explanation: string; // Only shown AFTER answer submission
   /** Editorial review status against the source question bank. */
@@ -706,8 +704,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
 
     explanation: `Attenuation in tissue results from a combination of reflection, absorption, and scattering  so "all of the above" is correct.`,
 
-    explanation: `Attenuation in tissue results from a combination of reflection, absorption, and scattering  so "all of the above" is correct.`,
-
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified wording; original answer (D) already correct, no letter change.`,
   },
@@ -966,9 +962,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     editorialStatus: "editorially_corrected",
     editorialNote: `REWRITTEN. The source question ("Attenuation in soft tissue [increases with]") was single-factor and its source-key answer (frequency) was correct, but an externally supplied correction proposed changing the answer to "propagation speed," which is not an established acoustic relationship  propagation speed is not a determinant of attenuation. Rather than silently keep the old wording or adopt an incorrect answer, the question was rewritten as a two-factor item ("tissue thickness and frequency"), which is the scientifically precise, single-best-answer version of the same learning objective (what governs total attenuation). Correct answer: A.`,
 
-    explanation: `Total attenuation in soft tissue scales with both the distance the beam travels through tissue (path length/thickness) and the operating frequency  soft tissue attenuates roughly 0.5 dB per centimeter per MHz. Propagation speed, period, beam width, focal depth, PRF, and duty factor do not determine how much a beam attenuates.`,
-    editorialStatus: "editorially_corrected",
-    editorialNote: `REWRITTEN. The source question ("Attenuation in soft tissue [increases with]") was single-factor and its source-key answer (frequency) was correct, but an externally supplied correction proposed changing the answer to "propagation speed," which is not an established acoustic relationship  propagation speed is not a determinant of attenuation. Rather than silently keep the old wording or adopt an incorrect answer, the question was rewritten as a two-factor item ("tissue thickness and frequency"), which is the scientifically precise, single-best-answer version of the same learning objective (what governs total attenuation). Correct answer: A.`,
 
   },
   {
@@ -1087,22 +1080,14 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     id: 70,
     question: `The formula for the incident reflection coefficient (IRC) is?`,
     options: [
-      `(Z2 + Z1 /Z2 + Z1 )2 X 100`,
-      `(Z2 + Z1 /Z2 - Z1 )2 X 100`,
-
-      `(Z2  Z1 /Z2 + Z1 )2 X 100`,
-      `(Z2  Z1 /Z2 - Z1 )2 X 100`,
+      "(Z2 + Z1 / Z2 + Z1)2 X 100",
+      "(Z2 + Z1 / Z2 - Z1)2 X 100",
+      "(Z2 - Z1 / Z2 + Z1)2 X 100",
+      "(Z2 - Z1 / Z2 - Z1)2 X 100",
     ],
     correctAnswer: 2,
     domain: "Domain 3: Principles of Imaging",
-    explanation: `Incident Reflection Coefficient (IRC) = [(Z2  Z1) / (Z2 + Z1)]  100, where Z1 and Z2 are the acoustic impedances of the two media.`,
-
-      `(Z2  Z1 /Z2 + Z1 )2 X 100`,
-      `(Z2  Z1 /Z2 - Z1 )2 X 100`,
-    ],
-    correctAnswer: 2,
-    domain: "Domain 3: Principles of Imaging",
-    explanation: `Incident Reflection Coefficient (IRC) = [(Z2  Z1) / (Z2 + Z1)]  100, where Z1 and Z2 are the acoustic impedances of the two media.`,
+    explanation: `Incident Reflection Coefficient (IRC) = [(Z2 - Z1) / (Z2 + Z1)] 100, where Z1 and Z2 are the acoustic impedances of the two media.`,
 
     editorialStatus: "editorially_corrected",
     editorialNote: `Corrected garbled formula formatting from the source text; original answer (C) was already correct.`,
@@ -1289,8 +1274,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
 
     explanation: `The scan converter digitizes incoming echo/image data, organizes it into a format suitable for display, and outputs the assembled frames  all three functions apply.`,
 
-    explanation: `The scan converter digitizes incoming echo/image data, organizes it into a format suitable for display, and outputs the assembled frames  all three functions apply.`,
-
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified wording; original answer (D) already correct.`,
   },
@@ -1305,8 +1288,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 1,
     domain: "Domain 3: Principles of Imaging",
-
-    explanation: `PACS (Picture Archiving and Communications System) is the network and storage infrastructure used to store, retrieve, distribute, and display medical images within a facility  distinct from DICOM, which is the communication standard/protocol the devices use.`,
 
     explanation: `PACS (Picture Archiving and Communications System) is the network and storage infrastructure used to store, retrieve, distribute, and display medical images within a facility  distinct from DICOM, which is the communication standard/protocol the devices use.`,
 
@@ -1408,8 +1389,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 0,
     domain: "Domain 3: Principles of Imaging",
-
-    explanation: `Dynamic range is the range of signal amplitudes (expressed in dB) a system can process and display accurately. The other options describe things that are false  dynamic range is adjustable, it directly affects the number of displayable gray shades, and it is conventionally expressed in decibels.`,
 
     explanation: `Dynamic range is the range of signal amplitudes (expressed in dB) a system can process and display accurately. The other options describe things that are false  dynamic range is adjustable, it directly affects the number of displayable gray shades, and it is conventionally expressed in decibels.`,
 
@@ -1584,8 +1563,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
 
     explanation: `The receiver processes the returning echo signal in this order: amplification (boosts the weak returning signal), compensation/TGC (corrects for depth-dependent attenuation), compression (reduces the dynamic range to fit the display), demodulation (envelope detection  converts the RF signal to a video signal), and rejection (removes low-level noise). This is the sequence taught throughout standard SPI review references.`,
 
-    explanation: `The receiver processes the returning echo signal in this order: amplification (boosts the weak returning signal), compensation/TGC (corrects for depth-dependent attenuation), compression (reduces the dynamic range to fit the display), demodulation (envelope detection  converts the RF signal to a video signal), and rejection (removes low-level noise). This is the sequence taught throughout standard SPI review references.`,
-
     editorialStatus: "editorially_corrected",
     editorialNote: `CONVENTION DOCUMENTED. Two orderings were in play: the source bank's original "amplification, compensation, compression, demodulation, reject," and an externally supplied correction proposing "amplification, compensation, demodulation, compression, reject" (swapping compression and demodulation). Standard SPI teaching materials place compression before demodulation (amplification -> compensation -> compression -> demodulation -> rejection). The source bank's original order was adopted as the single authoritative sequence and used consistently in the question, options, and explanation; the swapped-order alternative was not used anywhere in the final content.`,
   },
@@ -1619,9 +1596,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     editorialStatus: "editorially_corrected",
     editorialNote: `Fixed an apparent OCR/typo in the source ("10 rise in temperature" corrected to "1C"); original answer (D) already correct.`,
 
-    explanation: `Thermal bioeffects result mainly from absorption (a component of attenuation) raising tissue temperature. A rise of roughly 1C or less under typical diagnostic exposure conditions is generally not considered harmful  though no ultrasound exposure is completely risk-free, which is the basis of the ALARA principle.`,
-    editorialStatus: "editorially_corrected",
-    editorialNote: `Fixed an apparent OCR/typo in the source ("10 rise in temperature" corrected to "1C"); original answer (D) already correct.`,
 
   },
   {
@@ -1666,15 +1640,11 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
 
     explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
 
-    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
-
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified wording; original answer (C) already correct.`,
   },
   {
     id: 109,
-
-    question: `In bio effect studies, the term In Vitro means:`,
 
     question: `In bio effect studies, the term In Vitro means:`,
 
@@ -1990,8 +1960,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
 
     explanation: `All three statements are consistent with the Doppler equation (f = 2fvcos / c): Doppler shift scales linearly with velocity, calculated velocity is independent of transducer frequency once the equation is solved for v, and the observed Doppler shift itself scales linearly with transmitted frequency.`,
 
-    explanation: `All three statements are consistent with the Doppler equation (f = 2fvcos / c): Doppler shift scales linearly with velocity, calculated velocity is independent of transducer frequency once the equation is solved for v, and the observed Doppler shift itself scales linearly with transmitted frequency.`,
-
     editorialStatus: "editorially_corrected",
     editorialNote: `Verified all three sub-statements are independently true and consistent with each other, so "all of the above" (D) is defensible as written; no change made.`,
   },
@@ -2122,8 +2090,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
 
     explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
 
-    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
-
     editorialStatus: "editorially_corrected",
     editorialNote: `Duplicate of Q108 in the source bank; preserved as a separate record per instructions. Clarified wording; original answer (C) already correct.`,
   },
@@ -2152,8 +2118,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 4: Doppler & Hemodynamics",
-
-    explanation: `Color flow Doppler shows the existence of flow, its location, and its direction relative to the transducer, but it displays a mean/estimated velocity per pixel rather than a precise peak velocity  spectral Doppler is needed for that.`,
 
     explanation: `Color flow Doppler shows the existence of flow, its location, and its direction relative to the transducer, but it displays a mean/estimated velocity per pixel rather than a precise peak velocity  spectral Doppler is needed for that.`,
 
@@ -2277,8 +2241,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
 
     question: `Bernoullis Principle?`,
 
-    question: `Bernoullis Principle?`,
-
     options: [
       `Describes the relationship between velocity (kinetic energy) and pressure in a moving fluid`,
       `States that with a steady flow, the sum of all forms of energy remain constant everywhere.`,
@@ -2343,8 +2305,6 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 4: Doppler & Hemodynamics",
-
-    explanation: `Continuous Wave (CW) Doppler uses two crystals transmitting and receiving simultaneously, so it has no way to time-gate returning echoes by depth. This means it lacks range resolution  it cannot isolate a specific sample depth  and cannot apply real-time-adjusted TGC, unlike Pulsed Wave Doppler. Its advantage is that it can measure very high velocities without aliasing.`,
 
     explanation: `Continuous Wave (CW) Doppler uses two crystals transmitting and receiving simultaneously, so it has no way to time-gate returning echoes by depth. This means it lacks range resolution  it cannot isolate a specific sample depth  and cannot apply real-time-adjusted TGC, unlike Pulsed Wave Doppler. Its advantage is that it can measure very high velocities without aliasing.`,
 
@@ -2500,7 +2460,6 @@ export const TOTAL_EXAM_QUESTIONS = EXAM_QUESTIONS.length;
 /** Number of distinct domains actually implemented  use this, not a hardcoded "6". */
 
 /** Total size of the full question bank (derive  never hardcode elsewhere). */
-export const TOTAL_EXAM_QUESTIONS = EXAM_QUESTIONS.length;
 
 /** Number of distinct domains actually implemented  use this, not a hardcoded "6". */
 
