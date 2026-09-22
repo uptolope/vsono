@@ -79,7 +79,10 @@ model User {
   flashcardReviews  FlashcardReview[]
   studyNoteProgress StudyNoteProgress[]
   auditLogs         AuditLog[]
+
   reviews           Review[]
+
+
 
   @@index([email])
   @@index([stripeCustomerId])
@@ -249,6 +252,7 @@ model StudyNoteProgress {
   @@map("study_note_progress")
 }
 
+
 model Review {
   id          String       @id @default(cuid())
   userId      String       @unique
@@ -263,6 +267,8 @@ model Review {
 
   @@index([status, createdAt])
 }
+
+
 
 model Subscriber {
   id           String   @id @default(cuid())
@@ -282,11 +288,14 @@ model RateLimitBucket {
   @@map("rate_limit_buckets")
 }
 
+
 enum ReviewStatus {
   PENDING
   APPROVED
   REJECTED
 }
+
+
 
 enum ProductType {
   FLASHCARDS
