@@ -3,7 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id?: string } | undefined)?.id;
   if (!userId) {
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    let examStats = {
+    const examStats = {
       totalExams: 0,
       averageScore: 0,
       bestScore: 0,
@@ -91,7 +91,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    let flashcardStats = {
+    const flashcardStats = {
       totalCards: flashcardProgress.length,
       masteredCards: 0,
       masteryPercentage: 0,
@@ -111,7 +111,7 @@ export async function GET(req: NextRequest) {
       flashcardStats.accuracy = totalReviewed > 0 ? Math.round((totalCorrect / totalReviewed) * 100 * 100) / 100 : 0;
     }
 
-    let studyNotesStats = {
+    const studyNotesStats = {
       totalChapters: studyNotes.length,
       completedChapters: 0,
       averageProgress: 0,

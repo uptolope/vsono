@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
@@ -9,7 +9,6 @@ import { Footer } from "@/components/layout/footer";
 import { ExamSimulator } from "@/components/app/exam-simulator";
 import { FlashcardViewer } from "@/components/app/flashcard-viewer";
 import { FaqSection } from "@/components/marketing/faq-section";
-import BlurText from "@/components/ui/blur-text";
 
 /* ═══════════════════════════════════════════════════════════════════
    SECTION: Hero — Clean, full-viewport, 1+1 animation
@@ -55,23 +54,10 @@ function Hero() {
           </div>
         </motion.div>
 
-        {/* Headline — React Bits BlurText (ONE hero animation) */}
-        <div className="text-center mb-10 overflow-hidden">
-          <BlurText
-            text="Pass the SPI. Earn your credential."
-
-            className="t-display text-[clamp(3rem,8vw,7.5rem)] text-gradient-accent"
-            delay={80}
-            animateBy="words"
-            direction="bottom"
-            stepDuration={0.4}
-            animationFrom={{ filter: "blur(12px)", opacity: 0, y: 20 }}
-            animationTo={[
-              { filter: "blur(4px)", opacity: 0.6, y: 4 },
-              { filter: "blur(0px)", opacity: 1, y: 0 },
-            ]}
-          />
-        </div>
+        {/* Primary homepage heading */}
+<h1 className="t-display text-center mb-10 text-[clamp(3rem,8vw,7.5rem)] text-white">
+  Pass the ARDMS SPI Exam
+</h1>
 
         {/* Subheadline */}
         <motion.p
@@ -80,12 +66,9 @@ function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.8 }}
         >
-          The SPI exam blocks every ARDMS credential — RDMS, RDCS, RVT, RMSKS.
-          Most students fail not from lack of effort, but because they studied
-          the wrong material at the wrong weight. SonoPrep gives you a
-          domain-weighted 110-question simulator, 200+ flashcards, and 50
-          Physics Pearls — all written by an RDMS instructor to the exact ARDMS
-          blueprint.
+          Prepare for the ARDMS SPI exam with a 110-question practice simulator,
+200+ ultrasound physics flashcards, 50 Physics Pearls, and domain-focused
+feedback developed by an RDMS instructor.
         </motion.p>
 
         {/* CTA pair — static, no magnetic/bouncing effects */}
@@ -127,9 +110,9 @@ function Hero() {
         >
           {[
             { value: "200+", label: "Flashcards" },
-            { value: "111", label: "Question Bank" },
+            { value: "155", label: "Question Bank" },
             { value: "50", label: "Physics Pearls" },
-            { value: "6", label: "SPI Domains Covered" },
+            { value: "5", label: "SPI Domains Covered" },
           ].map(({ value, label }) => (
             <div key={label} className="text-center py-4">
               <div className="t-display text-4xl sm:text-5xl">{value}</div>
@@ -214,9 +197,10 @@ function TheFork() {
               Focus on exactly what ARDMS tests.
             </h3>
             <p className="t-body text-sm">
-              Each exam attempt pulls 110 questions from a 111-question bank —
-              weighted to the real ARDMS domain distribution. You see exactly
-              where you're losing points while there's still time to fix them.
+              Each exam attempt pulls 110 questions from a 155-question bank
+              covering all 5 ARDMS domains, with a per-domain breakdown after
+              every attempt. You see exactly where you're losing points while
+              there's still time to fix them.
             </p>
           </motion.div>
         </div>
@@ -252,7 +236,7 @@ function WhoIsThisFor() {
     {
       tag: "EXAM IN 2–4 WEEKS",
       head: "Most students don't know what they're weak on until they lose points for it.",
-      body: "Retaking the SPI delays every specialty credential. Our domain-weighted simulator shows your weak spots while there's still time to fix them.",
+      body: "Retaking the SPI delays every specialty credential. Our simulator's per-domain breakdown shows your weak spots while there's still time to fix them.",
       cta: "Get the Bundle →",
       href: "/products",
     },
@@ -266,7 +250,7 @@ function WhoIsThisFor() {
     {
       tag: "ALREADY FAILED ONCE",
       head: "The problem wasn't effort. It was coverage.",
-      body: "The SPI tests 6 domains at specific weightings. If you didn't know which questions came from which domain, you couldn't prioritize. Our analytics fix that.",
+      body: "The SPI tests 5 domains at specific weightings. If you didn't know which questions came from which domain, you couldn't prioritize. Our analytics fix that.",
       cta: "See the Simulator →",
       href: "/products",
     },
@@ -324,7 +308,7 @@ function WhyMostFail() {
   const points = [
     {
       head: "The SPI doesn't test evenly.",
-      body: "Six domains. Different weightings. Most students prep like every topic matters equally. It doesn't.",
+      body: "Five domains. Different weightings. Most students prep like every topic matters equally. It doesn't.",
     },
     {
       head: "Blind spots don't surface until test day.",
@@ -385,7 +369,7 @@ function WhyMostFail() {
             The question isn't whether you studied enough. It's whether you know
             where you'd lose points today.
           </p>
-          <Link href="demo" className="premium-cta px-10 py-5 text-sm">
+          <Link href="/demo" className="premium-cta px-10 py-5 text-sm">
             FIND OUT WHERE YOU STAND — FREE →
           </Link>
         </motion.div>
@@ -402,7 +386,6 @@ function WhyMostFail() {
 function DemoSection() {
   const [demoQuestions, setDemoQuestions] = useState([]);
   const [demoFlashcards, setDemoFlashcards] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDemoData = async () => {
@@ -420,8 +403,6 @@ function DemoSection() {
         console.error('Failed to fetch demo data:', error);
         setDemoQuestions([]);
         setDemoFlashcards([]);
-      } finally {
-        setLoading(false);
       }
     };
     fetchDemoData();
@@ -473,7 +454,7 @@ function DemoSection() {
           </h2>
           <p className="t-body text-base mt-6 max-w-xl mx-auto">
             This is the real simulator. The full version draws 110 questions
-            from a 111-question bank — domain-weighted with detailed rationales
+            from a 155-question bank, with detailed rationales
             and per-domain analytics.
           </p>
         </motion.div>
@@ -517,7 +498,7 @@ function DemoSection() {
               transition={{ duration: 0.3 }}
             >
               {activeTab === "exam" ? (
-                <ExamSimulator questions={demoQuestions.slice(0, 5)} />
+                <ExamSimulator questions={demoQuestions} />
               ) : (
                 <FlashcardViewer cards={demoFlashcards} />
               )}
@@ -536,7 +517,7 @@ function DemoSection() {
               See your SPI weak spots before exam day.
             </h3>
             <p className="t-body text-sm mb-8">
-              Get a domain-by-domain breakdown sent to your inbox. No spam.
+              Get a . No spam.
               Unsubscribe anytime.
             </p>
             <form
@@ -549,7 +530,7 @@ function DemoSection() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
                 required
-                className="flex-grow px-6 py-4 bg-[#0B0D10] border border-[#1a1d24] text-white placeholder:text-[#5a554f] text-sm rounded-xl focus:outline-none focus:border-[#c85b3a]/30 transition-colors"
+                className="flex-grow px-6 py-4 bg-[#0B0D10] border border-[#1a1d24] text-white placeholder:text-[#5a554f] text-sm rounded-xl focus:outline-none focus:border-[#c85b3a]/30 focus:ring-2 focus:ring-[#c85b3a]/50 transition-colors"
               />
               <button
                 type="submit"
@@ -632,11 +613,11 @@ function WhatThisIsNot() {
           {[
             {
               not: "Not a textbook.",
-              is: "Structured SPI prep based on how the exam is actually weighted — not everything the field covers.",
+              is: "Structured SPI prep covering all 5 ARDMS domains — not everything the field covers.",
             },
             {
               not: "Not random questions.",
-              is: "111 ARDMS domain-weighted questions. Each exam pulls 110 randomly — so every attempt is unique.",
+              is: "155 ARDMS SPI questions. Each exam pulls 110 randomly — so every attempt is unique.",
             },
             {
               not: "Not a subscription.",
@@ -846,12 +827,12 @@ function TheCost() {
               {
                 label: "SonoPrep flashcards",
                 flag: true,
-                desc: "200+ cards mapped to 6 ARDMS SPI domains",
+                desc: "200+ cards mapped to 5 ARDMS SPI domains",
               },
               {
                 label: "SonoPrep simulator",
                 flag: true,
-                desc: "110-question exams from 111-question bank, domain-weighted",
+                desc: "110-question exams from 155-question bank, covers all 5 domains",
               },
             ].map(({ label, flag, desc }, i) => (
               <motion.div
@@ -954,7 +935,7 @@ function Credibility() {
               {[
                 { stat: "10+ yrs", label: "Clinical & teaching" },
                 { stat: "RDMS", label: "Active credential" },
-                { stat: "6", label: "SPI domains covered" },
+                { stat: "5", label: "SPI domains covered" },
               ].map(({ stat, label }, i) => (
                 <motion.div
                   key={label}
@@ -1012,7 +993,7 @@ function Credibility() {
                 },
                 {
                   head: "Content written to ARDMS specifications",
-                  body: "All 6 SPI domains covered at published weightings. The simulator distributes questions accordingly.",
+                  body: "All 5 SPI domains covered at published weightings. The simulator distributes questions accordingly.",
                 },
                 {
                   head: "10-day refund if it doesn't work",
@@ -1032,20 +1013,7 @@ function Credibility() {
               ))}
             </div>
 
-            <motion.div
-              className="mt-8"
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.7 }}
-            >
-              <Link
-                href="/about"
-                className="t-caption text-[11px] text-[#5a5349] hover:text-[#c85b3a] transition-colors"
-              >
-                Read more about the instructor →
-              </Link>
             </motion.div>
-          </motion.div>
         </div>
 
         <motion.div
@@ -1104,10 +1072,10 @@ const PRODUCTS = [
     name: "Exam Simulator",
     price: "$49.99",
     tag: "TEST YOURSELF",
-    desc: "3 attempts over 30 days. 110 questions from a 111-question bank — domain-weighted, timed, different every time.",
+    desc: "3 attempts over 30 days. 110 questions from a 155-question bank — timed, different every time.",
     features: [
       "3 attempts · 30-day access",
-      "110 Qs from 111-question bank",
+      "110 Qs from 155-question bank",
       "2-hour timer (real SPI format)",
       "Per-domain analytics",
     ],
@@ -1118,8 +1086,8 @@ const PRODUCTS = [
     name: "Study Notes",
     price: "$34",
     tag: "UNDERSTAND THE SYSTEM",
-    desc: "Not just memorize answers. 159-page guide covering all 6 SPI domains across 10 chapters.",
-    features: ["159 pages", "10 chapters", "All 6 domains"],
+    desc: "Not just memorize answers. 159-page guide covering all 5 SPI domains across 15 chapters.",
+    features: ["159 pages", "15 chapters", "All 5 domains"],
     featured: false,
   },
 ];
@@ -1187,7 +1155,7 @@ function ProductsSection() {
                 {[
                   "All 4 products included",
                   "200+ flashcards + 50 Physics Pearls",
-                  "110-question exams from 111-question bank",
+                  "110-question exams from 155-question bank",
                   "159-page study notes",
                   "Every exam attempt is different",
                   "45-day full access",
@@ -1263,7 +1231,7 @@ function ProductsSection() {
             "10-day refund",
             "Instant access",
             "RDMS instructor",
-            "All 6 domains",
+            "All 5 domains",
           ].map((t) => (
             <span key={t} className="t-caption text-[10px] text-[#5a554f]">
               ✓ {t}
@@ -1346,7 +1314,7 @@ export function HomePageClient() {
   return (
     <div className="min-h-screen bg-[#0B0D10]">
       <Header />
-      <main>
+      <main id="main-content">
         <Hero />
         <TheFork />
         <LazySection>
@@ -1382,3 +1350,5 @@ export function HomePageClient() {
     </div>
   );
 }
+
+

@@ -1,27 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "target": "ES2020",
     "lib": [
-      "ES2020",
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "allowJs": false,
+    "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "isolatedModules": true,
-    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
@@ -29,12 +21,19 @@
         "name": "next"
       }
     ],
-    "resolveJsonModule": true
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    ".next/types/**/*.d.ts",
+    "prisma/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],

@@ -1,30 +1,48 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
+
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import type { AccountPurchaseInfo } from "@/lib/types/account";
 
-export async function GET() {
+export async function GET(): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id?: string } | undefined)?.id;
+
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
   }
 
-  // The where clause is hardcoded to the authenticated session's own
-  // id — there is no id parameter accepted from the request anywhere
-  // in this route, so there's no way to ask for someone else's export.
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: {
+      id: userId,
+    },
     select: {
       id: true,
       name: true,
       email: true,
       createdAt: true,
       purchases: {
+        where: {
+          status: "COMPLETED",
+          accessExpiresAt: {
+            gt: new Date(),
+          },
+        },
+        orderBy: {
+          accessExpiresAt: "desc",
+        },
         select: {
-          Product: true,
+          product: {
+            select: {
+              type: true,
+            },
+          },
           status: true,
-          amountInCents: true,  // Changed from amountPaidCents
+          amountInCents: true,
           accessGrantedAt: true,
           accessExpiresAt: true,
           createdAt: true,
@@ -34,8 +52,44 @@ export async function GET() {
   });
 
   if (!user) {
-    return NextResponse.json({ error: "Account not found" }, { status: 404 });
+    return NextResponse.json(
+      { error: "Account not found" },
+      { status: 404 }
+    );
   }
 
-  return NextResponse.json({ export: user, exportedAt: new Date().toISOString() });
+  const purchases: AccountPurchaseInfo[] = user.purchases.flatMap(
+    (purchase) => {
+      if (
+        purchase.accessGrantedAt === null ||
+        purchase.accessExpiresAt === null
+      ) {
+        return [];
+      }
+
+      return [
+        {
+          product: purchase.product.type,
+          status: "COMPLETED" as const,
+          amountPaidCents: purchase.amountInCents,
+          accessGrantedAt:
+            purchase.accessGrantedAt?.toISOString() ?? null,
+          accessExpiresAt:
+            purchase.accessExpiresAt?.toISOString() ?? null,
+          createdAt: purchase.createdAt.toISOString(),
+        },
+      ];
+    }
+  );
+
+  return NextResponse.json({
+    export: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+      purchases,
+    },
+    exportedAt: new Date().toISOString(),
+  });
 }

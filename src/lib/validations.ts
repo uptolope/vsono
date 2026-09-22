@@ -8,7 +8,6 @@ import { z } from "zod";
 export const signupSchema = z.object({
   name: z.string().trim().min(1).max(100),
   email: z.string().trim().toLowerCase().email().max(255),
-  // Length + complexity floor only — do not weaken this without a reason.
   password: z
     .string()
     .min(10, "Password must be at least 10 characters")
@@ -23,9 +22,6 @@ export const loginSchema = z.object({
   password: z.string().min(1).max(200),
 });
 
-// Only a known product key is ever accepted. The price is looked up
-// server-side from PRODUCT_PRICE_MAP in src/lib/stripe.ts — the client
-// can never supply a price ID or amount directly.
 export const checkoutSchema = z.object({
   product: z.enum([
     "FLASHCARDS",
@@ -37,14 +33,18 @@ export const checkoutSchema = z.object({
 });
 
 export const accountDeleteSchema = z.object({
-  // Require the user to re-type their email as a confirmation step,
-  // separate from just being logged in, before we soft-delete.
   confirmEmail: z.string().trim().toLowerCase().email(),
 });
 
 export const examSubmitSchema = z.object({
   answers: z
-    .array(z.object({ id: z.number().int().positive(), selected: z.number().int().min(0) }))
+    .array(
+      z.object({
+        id: z.number().int().positive(),
+        selected: z.number().int().min(0),
+        timeSpentMs: z.number().int().nonnegative().default(0),
+      })
+    )
     .min(1)
     .max(200),
 });
@@ -56,8 +56,6 @@ export const forgotPasswordSchema = z.object({
 export const resetPasswordSchema = z.object({
   token: z.string().min(1).max(200),
   email: z.string().trim().toLowerCase().email().max(255),
-  // Same complexity requirements as signup — user shouldn't be able
-  // to downgrade their password strength via the reset flow.
   password: z
     .string()
     .min(10, "Password must be at least 10 characters")

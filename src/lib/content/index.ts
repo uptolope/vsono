@@ -9,6 +9,8 @@ export type { Flashcard, FlashcardCategory, SM2Result } from "./flashcard-data";
 export {
   EXAM_QUESTIONS,
   EXAM_DOMAIN_INFO,
+  TOTAL_EXAM_QUESTIONS,
+  TOTAL_EXAM_DOMAINS,
   toClientQuestions,
   shuffleQuestions,
 } from "./exam-data";
@@ -39,5 +41,10 @@ export const BUNDLE_INCLUDES: ProductContentKey[] = [
   "STUDY_NOTES",
 ];
 
-/** Number of exam questions per test */
-export const EXAM_QUESTION_COUNT = 110;
+/**
+ * Number of questions drawn per exam attempt.
+ * Intentionally fixed at 110 to mirror the real ARDMS SPI exam format
+ * (110 multiple-choice questions, 2.5-hour time limit — see faq-data.ts),
+ * independent of how large the underlying question bank is.
+ */
+export const QUESTIONS_PER_ATTEMPT = 110;

@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExamSimulator } from "@/components/app/exam-simulator";
@@ -10,7 +10,7 @@ import { trackSignup } from "@/lib/analytics";
 import { DEMO_FLASHCARDS } from "@/lib/demo/flashcard-data";
 
 export default function DemoPage() {
-  const [timeOnPage, setTimeOnPage] = useState(0);
+  const timeOnPageRef = useRef(0);
   const [showCapture, setShowCapture] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -18,11 +18,8 @@ export default function DemoPage() {
   // Surface email capture after 25s of engagement
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeOnPage((prev) => {
-        const next = prev + 1;
-        if (next >= 25) setShowCapture(true);
-        return next;
-      });
+      timeOnPageRef.current += 1;
+      if (timeOnPageRef.current >= 25) setShowCapture(true);
     }, 1000);
     return () => clearInterval(interval);
   }, []);
@@ -65,7 +62,7 @@ export default function DemoPage() {
             <p className="body-readable text-[#c2bab0] text-sm leading-relaxed">
               The ARDMS SPI exam is a prerequisite for every ARDMS credential —
               RDMS, RDCS, RVT, and RMSKS. You cannot register for specialty
-              exams until you pass it. It tests 6 specific physics domains at
+              exams until you pass it. It tests 5 specific physics domains at
               specific weightings. Most students underestimate how targeted you
               need to be with your prep.
             </p>
@@ -80,8 +77,8 @@ export default function DemoPage() {
           </h1>
           <p className="body-readable text-[#8a8279] mt-4 max-w-xl mx-auto">
             This uses the same exam engine as the full version. See exactly
-            which of the 6 ARDMS domains need work. The full version draws 110
-            questions from a 111-question bank — questions are weighted to
+            which of the 5 ARDMS domains need work. The full version draws 110
+            questions from a 155-question bank — questions are weighted to
             match the real exam, with performance tracking and clear
             explanations for every answer, plus 200+ spaced repetition
             flashcards.
@@ -133,7 +130,7 @@ export default function DemoPage() {
               See your SPI weak spots before exam day.
             </p>
             <p className="body-readable text-[#c2bab0] text-sm mb-6 leading-relaxed">
-              Get a domain-by-domain breakdown sent to your inbox. No spam.
+              Get a . No spam.
               Unsubscribe any time.
             </p>
             <form
@@ -146,7 +143,7 @@ export default function DemoPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
                 required
-                className="flex-grow px-4 py-3 bg-[#0B0D10] border border-white/8 text-white placeholder:text-[#3a3530] text-sm focus:outline-none focus:border-[#c85b3a]/40"
+                className="flex-grow px-4 py-3 bg-[#0B0D10] border border-white/8 text-white placeholder:text-[#3a3530] text-sm focus:outline-none focus:border-[#c85b3a]/40 focus:ring-2 focus:ring-[#c85b3a]/50"
               />
               <button
                 type="submit"
@@ -198,9 +195,9 @@ export default function DemoPage() {
                 Premium Bundle — $99
               </h3>
               <p className="body-small text-[#c2bab0] text-sm leading-relaxed flex-grow mb-5">
-                All four products: 200+ flashcards, 110-question exam from a 111-question bank
+                All four products: 200+ flashcards, 110-question exam from a 155-question bank
                 bank, 50 Physics Pearls, 159-page notes. 45-day access. 10-day
-                refund. Covers all 6 ARDMS SPI domains.
+                refund. Covers all 5 ARDMS SPI domains.
               </p>
               <Link
                 href="/products"
@@ -249,3 +246,4 @@ export default function DemoPage() {
     </div>
   );
 }
+

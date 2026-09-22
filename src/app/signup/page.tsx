@@ -3,10 +3,15 @@
 import { useState } from "react";
 import Link from "next/link";
 
+declare global {
+  function gtag(...args: unknown[]): void;
+}
+
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -24,23 +29,53 @@ export default function SignupPage() {
           name: name.trim(),
           email: email.trim().toLowerCase(),
           password,
+          phone: phone.trim(),
         }),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        // Server returns validation errors as { error: { fieldErrors: {...} } }
+
         if (data.error?.fieldErrors) {
           const msgs = Object.values(data.error.fieldErrors).flat();
           setError((msgs as string[]).join(" "));
         } else {
           setError(data.error || "Something went wrong.");
         }
+
         return;
       }
 
-      // Signup succeeded — show "check your email" instead of auto-sign-in.
-      // The user needs to verify their email before they can purchase.
+      // ===== TRACKING CONVERSIONS =====
+
+      // TAG 4: Microsoft UET - Capture user data and track signup conversion
+      if (typeof window !== "undefined") {
+        window.uetq = window.uetq || [];
+
+        window.uetq.push("set", {
+          pid: {
+            em: email.trim().toLowerCase(),
+            ph: phone.trim(),
+          },
+        });
+
+        window.uetq.push("event", "", {
+          revenue_value: 0,
+          currency: "USD",
+        });
+      }
+
+      // Google Analytics - Track signup conversion
+      if (typeof window !== "undefined" && typeof gtag !== "undefined") {
+        gtag("event", "sign_up", {
+          method: "email",
+          email: email.trim().toLowerCase(),
+        });
+      }
+
+      // ===== END TRACKING =====
+
+      // Signup succeeded
       setSuccess(true);
     } catch {
       setError("Something went wrong. Please try again.");
@@ -51,27 +86,51 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6">
+      <main
+        id="main-content"
+        className="min-h-screen flex items-center justify-center px-6"
+      >
         <div className="w-full max-w-sm text-center">
           <div className="w-12 h-12 mx-auto rounded-full bg-[#c85b3a]/10 flex items-center justify-center mb-4">
-            <svg className="w-6 h-6 text-[#c85b3a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+            <svg
+              className="w-6 h-6 text-[#c85b3a]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+              />
             </svg>
           </div>
+
           <h1 className="display-serif text-xl font-semibold text-white mb-2">
             Check your email
           </h1>
+
           <p className="text-[#8a8279] text-sm mb-2">
-            We sent a verification link to <strong className="text-white">{email}</strong>.
+            We sent a verification link to{" "}
+            <strong className="text-white">{email}</strong>.
           </p>
+
           <p className="text-[#8a8279] text-sm mb-6">
-            Click the link in your email to verify your account, then sign in to start studying.
+            Click the link in your email to verify your account, then sign in
+            to start studying.
           </p>
-          <Link href="/login" className="btn-industrial inline-block w-full py-3 text-[11px] text-center">
+
+          <Link
+            href="/login"
+            className="btn-industrial inline-block w-full py-3 text-[11px] text-center"
+          >
             GO TO SIGN IN →
           </Link>
+
           <p className="meta text-[9px] text-[#3a3530] mt-4">
-            Didn't get the email? Check spam, or{" "}
+            Didn&apos;t get the email? Check spam, or{" "}
             <button
               onClick={() => setSuccess(false)}
               className="text-[#4a453f] hover:text-[#8a8279] transition-colors underline"
@@ -80,18 +139,27 @@ export default function SignupPage() {
             </button>
           </p>
         </div>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6">
+    <main
+      id="main-content"
+      className="min-h-screen flex items-center justify-center px-6"
+    >
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <Link href="/" className="display-serif text-2xl font-bold text-white tracking-tight">
+          <Link
+            href="/"
+            className="display-serif text-2xl font-bold text-white tracking-tight"
+          >
             SonoPrep
           </Link>
-          <p className="meta text-[10px] text-[#4a453f] mt-3">CREATE YOUR ACCOUNT</p>
+
+          <p className="meta text-[10px] text-[#4a453f] mt-3">
+            CREATE YOUR ACCOUNT
+          </p>
         </div>
 
         {error && (
@@ -102,9 +170,13 @@ export default function SignupPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="name" className="meta text-[9px] text-[#4a453f] block mb-1.5">
+            <label
+              htmlFor="name"
+              className="meta text-[9px] text-[#4a453f] block mb-1.5"
+            >
               NAME
             </label>
+
             <input
               id="name"
               type="text"
@@ -112,15 +184,19 @@ export default function SignupPage() {
               autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40"
+              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40 focus:ring-2 focus:ring-[#c85b3a]/50"
               placeholder="Your name"
             />
           </div>
 
           <div>
-            <label htmlFor="email" className="meta text-[9px] text-[#4a453f] block mb-1.5">
+            <label
+              htmlFor="email"
+              className="meta text-[9px] text-[#4a453f] block mb-1.5"
+            >
               EMAIL
             </label>
+
             <input
               id="email"
               type="email"
@@ -128,15 +204,38 @@ export default function SignupPage() {
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40"
+              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40 focus:ring-2 focus:ring-[#c85b3a]/50"
               placeholder="your@email.com"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="meta text-[9px] text-[#4a453f] block mb-1.5">
+            <label
+              htmlFor="phone"
+              className="meta text-[9px] text-[#4a453f] block mb-1.5"
+            >
+              PHONE (OPTIONAL)
+            </label>
+
+            <input
+              id="phone"
+              type="tel"
+              autoComplete="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40 focus:ring-2 focus:ring-[#c85b3a]/50"
+              placeholder="+1 (555) 000-0000"
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="password"
+              className="meta text-[9px] text-[#4a453f] block mb-1.5"
+            >
               PASSWORD
             </label>
+
             <input
               id="password"
               type="password"
@@ -145,9 +244,10 @@ export default function SignupPage() {
               minLength={10}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40"
+              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40 focus:ring-2 focus:ring-[#c85b3a]/50"
               placeholder="••••••••••"
             />
+
             <p className="meta text-[9px] text-[#3a3530] mt-1.5">
               At least 10 characters · uppercase · lowercase · number
             </p>
@@ -165,7 +265,10 @@ export default function SignupPage() {
         <div className="mt-6 text-center">
           <p className="text-[#8a8279] text-sm">
             Already have an account?{" "}
-            <Link href="/login" className="text-[#c85b3a] hover:text-[#e06840] transition-colors">
+            <Link
+              href="/login"
+              className="text-[#c85b3a] hover:text-[#e06840] transition-colors"
+            >
               Sign in
             </Link>
           </p>
@@ -174,11 +277,17 @@ export default function SignupPage() {
         <div className="mt-6 text-center">
           <p className="meta text-[9px] text-[#3a3530]">
             By creating an account you agree to our{" "}
-            <Link href="/terms" className="text-[#4a453f] hover:text-[#8a8279] transition-colors">
+            <Link
+              href="/terms"
+              className="text-[#4a453f] hover:text-[#8a8279] transition-colors"
+            >
               Terms of Service
             </Link>{" "}
             and{" "}
-            <Link href="/privacy" className="text-[#4a453f] hover:text-[#8a8279] transition-colors">
+            <Link
+              href="/privacy"
+              className="text-[#4a453f] hover:text-[#8a8279] transition-colors"
+            >
               Privacy Policy
             </Link>
             .
@@ -194,6 +303,6 @@ export default function SignupPage() {
           </Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

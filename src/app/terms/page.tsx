@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "SonoPrep's terms of service: license terms, refund policy, acceptable use, and limitations of liability.",
   keywords: ["SonoPrep terms of service", "SonoPrep refund policy"],
   alternates: {
-    canonical: "https://sonoprep.com/terms",
+    canonical: "https://www.sonoprep.com/terms",
   },
 };
 
@@ -232,9 +232,6 @@ export default function TermsPage() {
         <div className="mt-16 flex gap-6 text-sm text-[#8a8279] meta border-t border-white/8 pt-8">
           <Link href="/privacy" className="hover:text-[#c85b3a]">
             Privacy Policy
-          </Link>
-          <Link href="/accessibility" className="hover:text-[#c85b3a]">
-            Accessibility
           </Link>
         </div>
       </div>

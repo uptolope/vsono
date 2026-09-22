@@ -59,12 +59,12 @@ export default async function BlogPostLayout({
         author: {
           "@type": "Organization",
           name: "SonoPrep",
-          url: "https://sonoprep.com",
+          url: "https://www.sonoprep.com",
         },
         publisher: {
           "@type": "Organization",
           name: "SonoPrep",
-          url: "https://sonoprep.com",
+          url: "https://www.sonoprep.com",
         },
         mainEntityOfPage: {
           "@type": "WebPage",

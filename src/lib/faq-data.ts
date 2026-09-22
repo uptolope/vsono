@@ -17,7 +17,7 @@ export const FAQS = [
   },
   {
     q: "How much does SonoPrep cost?",
-    a: "Individual products range from $9 to $49.99. The Premium Bundle is $99 for all 4 products (save $17 vs buying individually). Individual products include 30-day access; the Premium Bundle includes 45 days — no subscription. You can start free with 20 flashcards and a 10-question quiz. No credit card required for the free tier.",
+    a: "Individual products range from $9 to $49.99. The Premium Bundle is $99 for all 4 products (save $17 vs buying individually). Individual products include 30-day access; the Premium Bundle includes 45 days — no subscription. You can start free with 10 flashcards and a 10-question quiz. No credit card required for the free tier.",
   },
   {
     q: "What is the first-attempt pass rate for SonoPrep students?",

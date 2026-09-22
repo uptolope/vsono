@@ -1,31 +1,28 @@
 // ═══════════════════════════════════════════════════════════════════
-// Rate limiting — Upstash Redis when configured, in-memory fallback
-// otherwise.
+// Rate limiting — Upstash Redis when configured, Postgres (via Prisma)
+// otherwise. Both are real shared counters, correct across every
+// Vercel serverless instance.
 //
-// WHY THIS CHANGED: the old version of this file was in-memory only.
-// That's broken on Vercel (and any serverless host): every request
-// can land on a different function instance with its own empty
-// counter, so an attacker gets effectively unlimited attempts by
-// spreading requests across instances. This version fixes that by
-// using Upstash Redis (a real shared store) whenever it's configured,
-// and only falls back to the old in-memory behavior for local dev
-// when you haven't set up Upstash yet.
+// The old version of this file fell back to an in-memory Map when
+// Upstash wasn't configured. That's broken on Vercel (and any
+// serverless host): every request can land on a different function
+// instance with its own empty counter, so an attacker gets
+// effectively unlimited login attempts by spreading requests across
+// instances. There is no in-memory fallback anymore — it's been
+// deleted, not layered under the fix, so there's exactly one code
+// path and it's always safe.
 //
-// SETUP (2 minutes, free tier is enough for this app):
-//   1. Create a database at https://console.upstash.com (free tier)
-//   2. Copy the REST URL and REST TOKEN it gives you
-//   3. Add to your environment (Vercel project settings + .env.local):
-//        UPSTASH_REDIS_REST_URL=...
-//        UPSTASH_REDIS_REST_TOKEN=...
-//   4. Redeploy. No other code changes needed — this file detects the
-//      env vars automatically.
-//
-// Until you do that, every deploy prints a console.warn in production
-// so this doesn't fail silently.
+// Upstash is used when UPSTASH_REDIS_REST_URL/TOKEN are set (faster,
+// keeps this traffic off your primary DB). Without those, every call
+// goes through a single-statement atomic upsert against the
+// RateLimitBucket table in your existing Postgres database — no new
+// service required, and correct on day one with zero setup.
 // ═══════════════════════════════════════════════════════════════════
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { prisma } from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 export interface RateLimitResult {
   allowed: boolean;
@@ -60,67 +57,73 @@ function getLimiter(limit: number, windowMs: number): Ratelimit {
   return limiter;
 }
 
-// ── In-memory fallback (local dev only — see file header) ──────────
-interface Bucket {
-  count: number;
-  resetAt: number;
-}
-const memoryBuckets = new Map<string, Bucket>();
-
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, bucket] of memoryBuckets) {
-    if (bucket.resetAt < now) memoryBuckets.delete(key);
-  }
-}, 60_000).unref?.();
-
-function memoryRateLimit(
+// ── Postgres-backed fallback ────────────────────────────────────────
+// Fixed-window counter, one row per key, updated with a single atomic
+// upsert so concurrent requests from different instances can't race
+// each other into double-counting or double-resetting a window.
+async function postgresRateLimit(
   key: string,
   { limit, windowMs }: { limit: number; windowMs: number }
-): RateLimitResult {
-  const now = Date.now();
-  const existing = memoryBuckets.get(key);
+): Promise<RateLimitResult> {
+  const now = new Date();
+  const windowEnd = new Date(now.getTime() + windowMs);
 
-  if (!existing || existing.resetAt < now) {
-    const resetAt = now + windowMs;
-    memoryBuckets.set(key, { count: 1, resetAt });
-    return { allowed: true, remaining: limit - 1, resetAt };
+  const rows = await prisma.$queryRaw<{ count: number; resetAt: Date }[]>(
+    Prisma.sql`
+      INSERT INTO "rate_limit_buckets" ("key", "count", "resetAt")
+      VALUES (${key}, 1, ${windowEnd})
+      ON CONFLICT ("key") DO UPDATE SET
+        "count" = CASE
+          WHEN "rate_limit_buckets"."resetAt" < ${now} THEN 1
+          ELSE "rate_limit_buckets"."count" + 1
+        END,
+        "resetAt" = CASE
+          WHEN "rate_limit_buckets"."resetAt" < ${now} THEN ${windowEnd}
+          ELSE "rate_limit_buckets"."resetAt"
+        END
+      RETURNING "count", "resetAt"
+    `
+  );
+
+  const { count, resetAt } = rows[0];
+
+  // Opportunistic cleanup of long-expired rows so this table doesn't
+  // grow forever. Runs on ~1% of calls instead of every call or a
+  // separate cron job — cheap, and no operational setup required.
+  if (Math.random() < 0.01) {
+    const staleCutoff = new Date(now.getTime() - 60 * 60 * 1000);
+    prisma.$executeRaw(
+      Prisma.sql`
+        DELETE FROM "rate_limit_buckets"
+        WHERE "resetAt" < ${staleCutoff}
+      `
+    ).catch((err: unknown) =>
+      console.error("[rate-limit] Cleanup failed:", err)
+    );
   }
 
-  if (existing.count >= limit) {
-    return { allowed: false, remaining: 0, resetAt: existing.resetAt };
-  }
-
-  existing.count += 1;
-  return { allowed: true, remaining: limit - existing.count, resetAt: existing.resetAt };
+  return {
+    allowed: count <= limit,
+    remaining: Math.max(0, limit - count),
+    resetAt: resetAt.getTime(),
+  };
 }
-
-let warnedAboutMemoryFallback = false;
 
 /**
  * Rate limit a request by an arbitrary key (combine IP + route, and
  * optionally + email, to scope the bucket correctly).
  *
- * Uses Upstash Redis when UPSTASH_REDIS_REST_URL/TOKEN are set (works
- * correctly across serverless instances). Falls back to an in-memory
- * counter otherwise — fine for local dev, NOT safe as your only
- * defense in production on Vercel.
+ * Uses Upstash Redis when UPSTASH_REDIS_REST_URL/TOKEN are set.
+ * Otherwise uses a Postgres-backed atomic counter. Both are real
+ * shared counters — correct across every serverless instance, with
+ * no unsafe fallback path.
  */
 export async function rateLimit(
   key: string,
   opts: { limit: number; windowMs: number }
 ): Promise<RateLimitResult> {
   if (!hasUpstash) {
-    if (process.env.NODE_ENV === "production" && !warnedAboutMemoryFallback) {
-      console.warn(
-        "[rate-limit] UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN are not " +
-          "set. Falling back to in-memory rate limiting, which does NOT provide " +
-          "real protection on serverless deployments (each instance has its own " +
-          "counter). Set the Upstash env vars — see src/lib/rate-limit.ts header."
-      );
-      warnedAboutMemoryFallback = true;
-    }
-    return memoryRateLimit(key, opts);
+    return postgresRateLimit(key, opts);
   }
 
   const limiter = getLimiter(opts.limit, opts.windowMs);

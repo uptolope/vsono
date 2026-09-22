@@ -1,100 +1,80 @@
 ---
-title: "SonoPrep Products — SPI Exam Prep Tools"
-description: "Four focused SPI exam prep products: Physics Pearls ($9), Flashcards ($24), Study Notes ($34), Exam Simulator ($49.99), or the Full Bundle ($99). All with a 14-day refund guarantee."
+title: "SonoPrep Products — ARDMS SPI Exam Preparation"
+description: "Choose from individual SPI prep tools or get the complete Premium Bundle for $99. All content is aligned to the official 5-domain ARDMS SPI content outline."
 url: "https://sonoprep.com/products"
 ---
 
 # SonoPrep Products
 
-All products are built around the official ARDMS SPI content outline. Every question, flashcard, and note is mapped to one of the five exam domains and weighted by how heavily that domain appears on the exam.
-
-90-day access. 14-day money-back guarantee on all products. One-time purchase — no subscription.
+All materials are built directly to the current **5-domain ARDMS SPI content outline**. Choose individual tools or the Premium Bundle.
 
 ---
 
-## Physics Pearls — $9
+## Premium Bundle — Best Value
 
-**50 concise physics summaries** covering the formulas, definitions, and relationships the ARDMS SPI actually tests.
+**$99** (45-day access)  
+~~$116.99~~ → Save **$17.99**
 
-- Organized by concept (not by chapter)
-- Written to the level the exam tests — not textbook depth
-- Covers: frequency/wavelength/velocity relationships, resolution types, attenuation, piezoelectric effect, PRF/PRP/duty factor, intensity, bioeffects
-- Instant digital download (PDF)
+Get everything you need to pass the SPI exam in one package.
 
-Best for: candidates who want a quick-reference cheat sheet for the physics fundamentals.
+- Physics Pearls (50 high-yield summaries)
+- SPI Flashcards (200+ cards with spaced repetition)
+- Complete Study Notes (159-page PDF, 15 chapters)
+- Full Exam Simulator (155-question bank, 3 full timed attempts)
+- Per-domain performance tracking
+- Detailed clinical rationales
 
----
+**This is the smartest choice for most students.** One bad exam attempt usually costs more than the entire bundle.
 
-## Flashcards — $24
+**GET THE PREMIUM BUNDLE — $99 →**
 
-**200+ digital flashcards** organized by SPI domain.
-
-- Domain 1: Perform Ultrasound Examinations
-- Domain 2: Manage Ultrasound Transducers
-- Domain 3: Optimize Sonographic Images
-- Domain 4: Apply Doppler Concepts
-- Domain 5: Clinical Safety & Quality Assurance
-- Spaced-repetition friendly format
-- Works on mobile and desktop
-- 90-day access
-
-Best for: candidates who learn by active recall and want to drill individual concepts.
+**10-day full refund** — No subscriptions. Instant access.
 
 ---
 
-## Study Notes — $34
+## Individual Products
 
-**159-page PDF study guide** written to the ARDMS SPI content outline.
+**Physics Pearls — $9** (30-day access)  
+50 concise, high-yield physics summaries organized by concept. Ideal for quick review of the formulas, relationships, and principles that appear most often on the SPI.
 
-- Covers all five domains in full
-- Artifact identification with descriptions
-- Doppler analysis: Nyquist limit, aliasing, spectral Doppler, PRF, wall filter
-- Transducer types, frequencies, and clinical applications
-- Quality assurance procedures
-- Bioeffects and ALARA principle
-- Printable for offline study
-- 90-day access
+**GET PHYSICS PEARLS →**
 
-Best for: candidates who want a comprehensive written reference they can annotate and study offline.
+**SPI Flashcards — $24** (30-day access)  
+200+ digital flashcards mapped to all 5 SPI domains. Built for active recall and spaced repetition — the most effective way to master instrumentation and Doppler concepts.
 
----
+**GET SPI FLASHCARDS →**
 
-## Exam Simulator — $49.99
+**Study Notes — $34** (30-day access)  
+159-page comprehensive PDF covering all 5 domains across 15 chapters. Excellent for deep understanding and offline study. Includes key diagrams and tables.
 
-**170+ ARDMS-style practice questions** in timed exam format.
+**GET STUDY NOTES →**
 
-- Multiple-choice questions matching ARDMS SPI question style and difficulty
-- Timed exam mode (2.5-hour simulation)
-- Immediate answer explanations after each question
-- Domain-level performance tracking: see exactly which domains need more work
-- Unlimited attempts during 90-day access period
+**Exam Simulator — $49.99** (30-day access)  
+Full-length 110-question timed mock exams drawn from a 155-question ARDMS-style bank. Includes detailed explanations, distractor analysis, and performance analytics broken down by 5 study domains (3 attempts).
 
-Best for: candidates who want to identify weak domains before exam day and practice under realistic conditions.
+**GET EXAM SIMULATOR →**
 
 ---
 
-## Full Bundle — $99
+## Free Demo
 
-All four products above at one price.
+Not ready to buy yet? Test the quality yourself.
 
-- Physics Pearls ($9 value)
-- Flashcards ($24 value)
-- Study Notes ($34 value)
-- Exam Simulator ($49.99 value)
-- Total value: $116.99 — bundled at $99
-- 90-day access on all products
-- 14-day money-back guarantee
+- 10 realistic SPI-style questions with full explanations
+- 10 sample flashcards from the complete deck
 
-Best for: candidates who want complete coverage without gaps and are committing to a full study program.
+[Try the Free Demo →](https://sonoprep.com/demo)
 
 ---
 
-## Refund Policy
+## Why Students Choose SonoPrep
 
-14-day money-back guarantee on all purchases. If SonoPrep isn't the right fit, email for a full refund within 14 days of purchase. No questions asked.
+- Content aligned to the **current 5-domain ARDMS SPI outline**
+- No subscriptions — one-time purchase only
+- 10-day full refund policy
+- Focused exclusively on the SPI (physics & instrumentation)
+- Clear, clinical rationales that actually teach
 
----
+Ready to pass the SPI on your next attempt?
 
-## Try Before You Buy
-
-The free demo at [sonoprep.com/demo](https://sonoprep.com/demo) includes 5 real SPI-style practice questions and 20 sample flashcards. No account required.
+**GET THE PREMIUM BUNDLE — $99 →**

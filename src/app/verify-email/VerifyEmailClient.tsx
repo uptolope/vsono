@@ -30,13 +30,13 @@ export default function VerifyEmailClient(): React.ReactNode {
         if (response.ok) {
           setStatus('success');
           setMessage('Email verified! Redirecting to login...');
-          setTimeout(() => router.push('/auth/login'), 2000);
+          setTimeout(() => router.push('/login'), 2000);
         } else {
           const data = await response.json();
           setStatus('error');
           setMessage(data.message || 'Verification failed');
         }
-      } catch (error) {
+      } catch {
         setStatus('error');
         setMessage('An error occurred during verification');
       }

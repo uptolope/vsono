@@ -3,17 +3,31 @@ export interface FlashcardReviewResult {
   easeFactor: number;
   interval: number;
   nextReview: Date;
+  isMastered: boolean;
 }
 
-export function calculateNextReview(
-  quality: number,
-  previousBox: number,
-  previousEaseFactor: number,
-  previousInterval: number
-): FlashcardReviewResult {
+export function calculateNextReview({
+  box: previousBox,
+  easeFactor: previousEaseFactor,
+  interval: previousInterval,
+  repetitions,
+  isCorrect,
+}: {
+  box: number;
+  easeFactor: number;
+  interval: number;
+  repetitions: number;
+  isCorrect: boolean;
+}): FlashcardReviewResult {
+  // Convert isCorrect to quality score (0-5)
+  // Easy = correct answer (quality 4)
+  // Difficult = incorrect answer (quality 1)
+  const quality = isCorrect ? 4 : 1;
+
   let easeFactor = previousEaseFactor;
   let box = previousBox;
   let interval = previousInterval;
+  let isMastered = false;
 
   if (quality < 3) {
     box = 1;
@@ -40,6 +54,9 @@ export function calculateNextReview(
       box = 5;
       interval = Math.ceil(interval * easeFactor);
     }
+
+    // Mastery: box 5 + 5+ repetitions + correct answers
+    isMastered = box === 5 && repetitions >= 4 && isCorrect;
   }
 
   const nextReview = new Date();
@@ -50,5 +67,6 @@ export function calculateNextReview(
     easeFactor: Math.round(easeFactor * 100) / 100,
     interval,
     nextReview,
+    isMastered,
   };
 }

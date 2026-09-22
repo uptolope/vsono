@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth';
 import { checkContentAccess } from '@/lib/content/access-check';
 import { prisma } from '@/lib/prisma';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id?: string } | undefined)?.id;
   if (!userId) {
@@ -31,13 +31,21 @@ export async function GET(req: NextRequest) {
         reviewCount: true,
         correctCount: true,
         incorrectCount: true,
+        timeSpentMs: true,           // Added for consistency with schema
       },
     });
 
+    const now = new Date();
     const totalCards = progress.length;
     const masteredCards = progress.filter((p) => p.isMastered).length;
-    const dueForReview = progress.filter((p) => p.nextReview <= new Date()).length;
-    const averageEase = totalCards > 0 ? progress.reduce((sum, p) => sum + p.easeFactor, 0) / totalCards : 0;
+    const dueForReview = progress.filter((p) => 
+      p.nextReview && p.nextReview <= now
+    ).length;
+    
+    const averageEase = totalCards > 0 
+      ? progress.reduce((sum, p) => sum + p.easeFactor, 0) / totalCards 
+      : 0;
+    
     const totalReviews = progress.reduce((sum, p) => sum + p.reviewCount, 0);
 
     return NextResponse.json({
@@ -45,7 +53,7 @@ export async function GET(req: NextRequest) {
       stats: {
         totalCards,
         masteredCards,
-        masteryPercentage: (masteredCards / totalCards) * 100,
+        masteryPercentage: totalCards > 0 ? (masteredCards / totalCards) * 100 : 0,
         dueForReview,
         averageEase: Math.round(averageEase * 100) / 100,
         totalReviews,

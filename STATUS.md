@@ -88,9 +88,9 @@ Last updated: August 2026
   only file that matters.
 
 ### Content
-- 111 exam questions, 200 flashcards, 50 Physics Pearls, 10 study note chapters
-  — all server-side only.
-- 5 demo exam questions + 10 demo flashcards — original, client-safe.
+- 155 exam questions (110 drawn per paid attempt), 200 flashcards, 50 Physics
+  Pearls, 15 study note chapters — all server-side only.
+- 10 demo exam questions + 10 demo flashcards — original, client-safe.
 
 ## Known gaps — not yet built
 1. **No CSRF middleware**: relies on NextAuth's default SameSite cookie.
@@ -113,10 +113,10 @@ NEXTAUTH_URL=https://sonoprep.com
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PRICE_FLASHCARDS=price_...
-STRIPE_PRICE_EXAM=price_...
-STRIPE_PRICE_PEARLS=price_...
-STRIPE_PRICE_NOTES=price_...
-STRIPE_PRICE_BUNDLE=price_...
+STRIPE_PRICE_EXAM_SIMULATOR=price_...
+STRIPE_PRICE_PHYSICS_PEARLS=price_...
+STRIPE_PRICE_STUDY_NOTES=price_...
+STRIPE_PRICE_PREMIUM_BUNDLE=price_...
 RESEND_API_KEY=re_...
 EMAIL_FROM=SonoPrep <noreply@sonoprep.com>
 UPSTASH_REDIS_REST_URL=...
@@ -136,11 +136,8 @@ In your Stripe dashboard → Webhooks, register these events:
 - Purchase rows are retained on account deletion (for tax/legal). Confirm
   retention policy.
 - **Premium Bundle = 45-day access. Individual products = 30-day access.**
-  (This previously said 120/90 days here — that was wrong; it never matched
-  the actual code in `PRODUCT_PRICE_MAP`, which has always been 45/30. The
-  live `/products` page copy was already correct at 30/45 — only this doc
-  was wrong.) Worth reconsidering deliberately: ARDMS SPI candidates
-  typically study over 6–12 weeks, so a 30-day window on a $24–50 product
-  risks people losing access mid-study-plan, which shows up as refund
-  requests and bad reviews rather than a code problem. Decide with real
-  usage data if you have it, not by default.
+  Confirmed deliberately (2026-08-24) at the current 30/45 values — not a
+  default, a decision. Revisit if refund reasons or support tickets start
+  citing "ran out of access before the exam" as a pattern; ARDMS SPI
+  candidates typically study 6–12 weeks, so that's the risk to watch for
+  on the 30-day individual-product tier specifically.

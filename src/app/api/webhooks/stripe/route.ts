@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { stripe, PRODUCT_PRICE_MAP } from "@/lib/stripe";
-import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
-// Validate webhook secret at startup
-if (!process.env.STRIPE_WEBHOOK_SECRET) {
+import { getStripe } from "@/lib/stripe";
+import { prisma } from "@/lib/prisma";
+
+export const runtime = "nodejs";
+
+if (
+  !process.env.STRIPE_WEBHOOK_SECRET &&
+  process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD
+) {
   throw new Error("STRIPE_WEBHOOK_SECRET is not set");
 }
 
@@ -13,71 +19,167 @@ const REFUND_WINDOW_DAYS = 10;
 
 const checkoutMetadataSchema = z.object({
   userId: z.string().min(1, "userId is required"),
+  productId: z.string().min(1, "productId is required"),
   product: z.string().min(1, "product is required"),
   stackAfter: z.string().datetime().optional(),
 });
 
 function extractPaymentIntentId(
-  paymentIntent: string | Stripe.PaymentIntent | null | undefined
+  paymentIntent: string | Stripe.PaymentIntent | null | undefined,
 ): string | undefined {
-  if (typeof paymentIntent === "string") return paymentIntent;
-  if (paymentIntent && typeof paymentIntent === "object" && "id" in paymentIntent) {
-    return (paymentIntent as Stripe.PaymentIntent).id;
+  if (typeof paymentIntent === "string") {
+    return paymentIntent;
   }
+
+  if (
+    paymentIntent &&
+    typeof paymentIntent === "object" &&
+    "id" in paymentIntent
+  ) {
+    return paymentIntent.id;
+  }
+
   return undefined;
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawBody = await req.text();
   const signature = req.headers.get("stripe-signature");
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   if (!signature) {
     return NextResponse.json({ error: "Missing signature" }, { status: 400 });
   }
 
-  let event: Stripe.Event;
-  try {
-    event = stripe.webhooks.constructEvent(
-      rawBody,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+  if (!webhookSecret) {
+    console.error("[webhook] STRIPE_WEBHOOK_SECRET is not configured");
+
+    return NextResponse.json(
+      { error: "Webhook secret is not configured" },
+      { status: 500 },
     );
-  } catch (err) {
-    console.error("[webhook] Stripe signature verification failed:", err);
+  }
+
+  const stripe = getStripe();
+
+  let event: Stripe.Event;
+
+  try {
+    event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+  } catch (error) {
+    console.error("[webhook] Stripe signature verification failed:", error);
+
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
   }
 
   const eventId = event.id;
 
   try {
+    /*
+     * Idempotency protection prevents the same Stripe event from
+     * being processed more than once.
+     */
+    const existingEvent = await prisma.stripeWebhookEvent.findUnique({
+      where: {
+        id: eventId,
+      },
+    });
+
+    if (existingEvent) {
+      console.info(`[webhook:${eventId}] Event already processed`);
+
+      return NextResponse.json({
+        received: true,
+        duplicate: true,
+      });
+    }
+
     switch (event.type) {
-      case "checkout.session.completed": {
+      case "checkout.session.completed":
+      case "checkout.session.async_payment_succeeded": {
         const checkoutSession = event.data.object as Stripe.Checkout.Session;
+
+        /*
+         * handleCheckoutCompleted checks payment_status === "paid"
+         * before granting access.
+         */
         await handleCheckoutCompleted(checkoutSession, eventId);
+        break;
+      }
+
+      case "checkout.session.async_payment_failed": {
+        const checkoutSession = event.data.object as Stripe.Checkout.Session;
+
+        console.warn(
+          `[webhook:${eventId}] Async payment failed for checkout ` +
+            `session ${checkoutSession.id}. No access was granted.`,
+          {
+            paymentStatus: checkoutSession.payment_status,
+            paymentIntentId: extractPaymentIntentId(
+              checkoutSession.payment_intent,
+            ),
+          },
+        );
+
+        /*
+         * Do not create or complete a Purchase for a failed payment.
+         */
         break;
       }
 
       case "charge.refunded": {
         const charge = event.data.object as Stripe.Charge;
+
         await handleRefund(charge, eventId);
         break;
       }
 
-      case "charge.dispute.created": {
+      case "charge.dispute.created":
+      case "charge.dispute.updated": {
         const dispute = event.data.object as Stripe.Dispute;
-        await handleDispute(dispute, eventId);
+
+        await handleDispute(dispute, eventId, stripe);
         break;
       }
 
-      default:
-        console.info(`[webhook:${eventId}] Unhandled event type: ${event.type}`);
+      case "payment_intent.succeeded": {
+        /*
+         * Do not fulfill purchases here. Checkout Session events are
+         * responsible for fulfillment so purchases are not fulfilled twice.
+         */
+        console.info(
+          `[webhook:${eventId}] PaymentIntent succeeded. ` +
+            `Fulfillment is handled by Checkout Session events.`,
+        );
+
         break;
+      }
+
+      default: {
+        console.info(
+          `[webhook:${eventId}] Unhandled event type: ${event.type}`,
+        );
+
+        break;
+      }
     }
-  } catch (err) {
-    console.error(`[webhook:${eventId}] Error processing event:`, err);
+
+    /*
+     * Record the event only after its processing has completed.
+     * If processing fails, Stripe receives HTTP 500 and can retry.
+     */
+    await prisma.stripeWebhookEvent.create({
+      data: {
+        id: eventId,
+        type: event.type,
+      },
+    });
+  } catch (error) {
+    console.error(`[webhook:${eventId}] Error processing event:`, error);
+
     return NextResponse.json(
       { error: "Webhook processing failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -86,110 +188,191 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 async function handleCheckoutCompleted(
   checkoutSession: Stripe.Checkout.Session,
-  eventId: string
+  eventId: string,
 ): Promise<void> {
-  const existingPurchase = await prisma.purchase.findFirst({
-    where: { stripeSessionId: checkoutSession.id },
-  });
-
-  if (existingPurchase?.status === "COMPLETED") {
-    console.info(
-      `[webhook:${eventId}] Checkout already processed, skipping: ${checkoutSession.id}`
+  /*
+   * Some payment methods are delayed. Do not grant access until
+   * Stripe confirms that the Checkout Session payment is paid.
+   */
+  if (checkoutSession.payment_status !== "paid") {
+    console.warn(
+      `[webhook:${eventId}] Checkout session is not paid yet: ` +
+        `${checkoutSession.id}`,
+      {
+        paymentStatus: checkoutSession.payment_status,
+      },
     );
+
     return;
   }
 
   const metadataResult = checkoutMetadataSchema.safeParse(
-    checkoutSession.metadata
+    checkoutSession.metadata ?? {},
   );
+
   if (!metadataResult.success) {
     console.error(
-      `[webhook:${eventId}] Invalid metadata on session ${checkoutSession.id}:`,
-      metadataResult.error.flatten()
+      `[webhook:${eventId}] Invalid metadata on session ` +
+        `${checkoutSession.id}:`,
+      metadataResult.error.flatten(),
     );
-    return;
+
+    throw new Error(
+      `Invalid checkout metadata for session ${checkoutSession.id}`,
+    );
   }
 
-  const { userId, product, stackAfter } = metadataResult.data;
+  const { userId, productId, product, stackAfter } = metadataResult.data;
 
-  if (!(product in PRODUCT_PRICE_MAP)) {
-    console.error(
-      `[webhook:${eventId}] Unknown product in metadata: ${product}`
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!user) {
+    throw new Error(
+      `Cannot fulfill session ${checkoutSession.id}: ` +
+        `user ${userId} does not exist`,
     );
-    return;
   }
+
+  const productRecord = await prisma.product.findUnique({
+    where: {
+      id: productId,
+    },
+    select: {
+      id: true,
+      type: true,
+      accessDurationDays: true,
+    },
+  });
+
+  if (!productRecord) {
+    throw new Error(
+      `Cannot fulfill session ${checkoutSession.id}: ` +
+        `product ${productId} does not exist`,
+    );
+  }
+
+  if (productRecord.type !== product) {
+    throw new Error(
+      `Product metadata mismatch for session ${checkoutSession.id}: ` +
+        `metadata=${product}, database=${productRecord.type}`,
+    );
+  }
+
+  const paymentIntentId = extractPaymentIntentId(
+    checkoutSession.payment_intent,
+  );
 
   const now = new Date();
-  const accessDays = (PRODUCT_PRICE_MAP[product as keyof typeof PRODUCT_PRICE_MAP]).accessDays;
-  let windowStart = now;
+  let accessGrantedAt = now;
 
   if (stackAfter) {
     const stackAfterDate = new Date(stackAfter);
-    if (stackAfterDate > now) {
-      windowStart = stackAfterDate;
+
+    if (!Number.isNaN(stackAfterDate.getTime()) && stackAfterDate > now) {
+      accessGrantedAt = stackAfterDate;
     }
   }
 
-  const accessGrantedAt = windowStart;
   const accessExpiresAt = new Date(
-    windowStart.getTime() + accessDays * 24 * 60 * 60 * 1000
+    accessGrantedAt.getTime() +
+      productRecord.accessDurationDays * 24 * 60 * 60 * 1000,
   );
 
-  await prisma.purchase.updateMany({
-    where: { stripeSessionId: checkoutSession.id },
-    data: {
+  const purchase = await prisma.purchase.upsert({
+    where: {
+      stripeSessionId: checkoutSession.id,
+    },
+    create: {
+      userId,
+      productId: productRecord.id,
       status: "COMPLETED",
-      stripePaymentIntentId: extractPaymentIntentId(
-        checkoutSession.payment_intent
-      ),
+      stripeSessionId: checkoutSession.id,
+      stripePaymentIntentId: paymentIntentId,
+      amountInCents: checkoutSession.amount_total ?? 0,
+      currency: checkoutSession.currency ?? "usd",
+      accessGrantedAt,
+      accessExpiresAt,
+    },
+    update: {
+      userId,
+      productId: productRecord.id,
+      status: "COMPLETED",
+      stripePaymentIntentId: paymentIntentId,
       amountInCents: checkoutSession.amount_total ?? undefined,
+      currency: checkoutSession.currency ?? undefined,
       accessGrantedAt,
       accessExpiresAt,
     },
   });
 
   console.info(
-    `[webhook:${eventId}] Purchase completed: user ${userId}, product ${product}, expires ${accessExpiresAt.toISOString()}`
+    `[webhook:${eventId}] Purchase completed: ${purchase.id}; ` +
+      `user=${userId}; product=${product}; ` +
+      `expires=${accessExpiresAt.toISOString()}`,
   );
 }
 
 async function handleRefund(
   charge: Stripe.Charge,
-  eventId: string
+  eventId: string,
 ): Promise<void> {
   const paymentIntentId = extractPaymentIntentId(charge.payment_intent);
 
   if (!paymentIntentId) {
     console.error(
-      `[webhook:${eventId}] Refund charge has no payment_intent: ${charge.id}`
+      `[webhook:${eventId}] Refund charge has no payment_intent: ` +
+        `${charge.id}`,
     );
+
     return;
   }
 
-  const purchase = await prisma.purchase.findFirst({
-    where: { stripePaymentIntentId: paymentIntentId },
+  const purchase = await prisma.purchase.findUnique({
+    where: {
+      stripePaymentIntentId: paymentIntentId,
+    },
   });
 
   if (!purchase) {
-    console.error(
-      `[webhook:${eventId}] CRITICAL: No purchase found for refunded payment_intent ${paymentIntentId}`
+    throw new Error(
+      `Purchase not found for refunded payment intent ` + `${paymentIntentId}`,
     );
+  }
+
+  if (purchase.status === "REFUNDED") {
+    console.info(
+      `[webhook:${eventId}] Refund already processed for purchase ` +
+        `${purchase.id}`,
+    );
+
     return;
   }
 
   if (purchase.accessGrantedAt) {
     const daysSincePurchase = Math.floor(
-      (Date.now() - purchase.accessGrantedAt.getTime()) / (1000 * 60 * 60 * 24)
+      (Date.now() - purchase.accessGrantedAt.getTime()) / (1000 * 60 * 60 * 24),
     );
+
     if (daysSincePurchase > REFUND_WINDOW_DAYS) {
       console.warn(
-        `[webhook:${eventId}] Refund processed ${daysSincePurchase} days after purchase (policy: ${REFUND_WINDOW_DAYS} days), purchase: ${purchase.id}`
+        `[webhook:${eventId}] Refund processed ${daysSincePurchase} ` +
+          `days after purchase; refund window is ` +
+          `${REFUND_WINDOW_DAYS} days`,
       );
     }
   }
 
   await prisma.purchase.update({
-    where: { id: purchase.id },
+    where: {
+      id: purchase.id,
+    },
     data: {
       status: "REFUNDED",
       accessExpiresAt: new Date(),
@@ -197,61 +380,64 @@ async function handleRefund(
   });
 
   console.info(
-    `[webhook:${eventId}] Access revoked for refunded purchase: ${purchase.id}`
+    `[webhook:${eventId}] Access revoked for refunded purchase ` +
+      `${purchase.id}`,
   );
 }
 
 async function handleDispute(
   dispute: Stripe.Dispute,
-  eventId: string
+  eventId: string,
+  stripe: Stripe,
 ): Promise<void> {
   const chargeId =
     typeof dispute.charge === "string" ? dispute.charge : dispute.charge?.id;
 
   if (!chargeId) {
-    console.error(`[webhook:${eventId}] Dispute has no charge: ${dispute.id}`);
-    return;
+    throw new Error(`Dispute ${dispute.id} has no charge`);
   }
 
-  let paymentIntentId: string | undefined;
-  try {
-    const charge = await stripe.charges.retrieve(chargeId);
-    paymentIntentId = extractPaymentIntentId(charge.payment_intent);
-  } catch (err) {
-    console.error(
-      `[webhook:${eventId}] Failed to retrieve charge for dispute ${chargeId}:`,
-      err
-    );
-    throw err;
-  }
+  const charge = await stripe.charges.retrieve(chargeId);
+  const paymentIntentId = extractPaymentIntentId(charge.payment_intent);
 
   if (!paymentIntentId) {
-    console.error(
-      `[webhook:${eventId}] Disputed charge has no payment_intent: ${chargeId}`
-    );
-    return;
+    throw new Error(`Disputed charge ${chargeId} has no payment intent`);
   }
 
-  const purchase = await prisma.purchase.findFirst({
-    where: { stripePaymentIntentId: paymentIntentId },
+  const purchase = await prisma.purchase.findUnique({
+    where: {
+      stripePaymentIntentId: paymentIntentId,
+    },
   });
 
   if (!purchase) {
-    console.error(
-      `[webhook:${eventId}] CRITICAL: No purchase found for disputed payment_intent ${paymentIntentId}`
+    throw new Error(
+      `Purchase not found for disputed payment intent ${paymentIntentId}`,
     );
+  }
+
+  if (purchase.status === "DISPUTED") {
+    console.info(
+      "[webhook:" +
+        eventId +
+        "] Dispute already processed for purchase " +
+        purchase.id,
+    );
+
     return;
   }
 
   await prisma.purchase.update({
-    where: { id: purchase.id },
+    where: {
+      id: purchase.id,
+    },
     data: {
-      status: "REFUNDED",
+      status: "DISPUTED",
       accessExpiresAt: new Date(),
     },
   });
 
   console.info(
-    `[webhook:${eventId}] Access revoked for disputed purchase: ${purchase.id}`
+    `[webhook:${eventId}] Access revoked for disputed purchase ${purchase.id}`,
   );
 }

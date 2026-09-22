@@ -6,7 +6,7 @@
 
 SonoPrep helps candidates pass the ARDMS Sonography Principles and Instrumentation (SPI) exam — the mandatory prerequisite for all ARDMS specialty credentials: RDMS, RDCS, RVT, and RMSKS.
 
-The SPI exam covers 6 domains: ultrasound physics, transducer technology, image optimization, Doppler principles, clinical safety, and quality assurance. The exam draws 110 questions from a question bank, weighted to the actual ARDMS domain distribution.
+The SPI exam covers 5 domains: perform ultrasound examinations, manage ultrasound transducers, optimize sonographic images, apply Doppler concepts, and provide clinical safety and quality assurance. The exam draws 110 questions from a question bank, weighted to the actual ARDMS domain distribution.
 
 SonoPrep is not a generic test-prep site. Every product — questions, flashcards, Physics Pearls, and study notes — is mapped to the official ARDMS SPI content outline and weighted by how heavily each domain appears on the exam.
 
@@ -19,10 +19,10 @@ SonoPrep is not a generic test-prep site. Every product — questions, flashcard
 200+ digital flashcards organized by SPI domain. SM-2 spaced-repetition algorithm. Per-card tracking. Works on mobile and desktop. 30-day access.
 
 ### Study Notes ($34)
-159-page study guide covering all 6 SPI domains across 10 chapters. Written to the ARDMS content outline. Printable. 30-day access.
+159-page study guide covering all 5 SPI domains across 15 chapters. Written to the ARDMS content outline. Printable. 30-day access.
 
 ### Exam Simulator ($49.99)
-111-question bank — each exam attempt draws 110 questions, domain-weighted, timed to the real 2-hour SPI format. Per-domain analytics show exactly where you're losing points. 3 attempts. 30-day access.
+155-question bank — each exam attempt draws 110 questions, domain-weighted, timed to the real 2-hour SPI format. Per-domain analytics show exactly where you're losing points. 3 attempts. 30-day access.
 
 ### Premium Bundle ($99)
 All four products included. 45-day access. 10-day full refund, no questions asked.
@@ -37,13 +37,13 @@ All four products included. 45-day access. 10-day full refund, no questions aske
 
 ## Key Facts
 
-- 6 SPI domains covered at published ARDMS weightings
-- 200+ flashcards, 111-question exam bank, 50 Physics Pearls, 159-page study notes
+- 5 SPI domains covered at published ARDMS weightings
+- 200+ flashcards, 155-question exam bank, 50 Physics Pearls, 159-page study notes
 - 30-day access on individual products, 45-day on Premium Bundle
 - 10-day full refund policy — no hoops, no questions
 - Built by an RDMS instructor at Houston International Cardiotech Ultrasound School (HICUS)
 - No subscription — one-time purchase per product
-- Free demo: 5 exam questions + 20 flashcards, no account required
+- Free demo: 10 exam questions + 10 flashcards, no account required
 
 ## About the SPI Exam
 
@@ -58,7 +58,7 @@ All four products included. 45-day access. 10-day full refund, no questions aske
 
 - / — Homepage (free demo available)
 - /products — Full product listing and pricing
-- /demo — Free 5-question exam demo + 20 flashcards (no account required)
+- /demo — Free 10-question exam demo + 10 flashcards (no account required)
 - /blog — Free SPI study guides and articles
 
 ## Blog Articles

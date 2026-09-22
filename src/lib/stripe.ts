@@ -1,24 +1,34 @@
-// ═══════════════════════════════════════════════════════════════════
-// SonoPrep — Stripe Configuration (SERVER-SIDE ONLY)
-// Stripe API client, price IDs, and webhook secret validation
-// ═══════════════════════════════════════════════════════════════════
+import "server-only";
 
 import Stripe from "stripe";
+import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
-// ── ENVIRONMENT VARIABLE VALIDATION ────────────────────────────────
-// Validate all required Stripe environment variables at module load time
+const STRIPE_API_VERSION = "2026-08-26.dahlia" as const;
+
+const REQUIRED_STRIPE_ENV_VARS = [
+  "STRIPE_SECRET_KEY",
+  "STRIPE_PRICE_FLASHCARDS",
+  "STRIPE_PRICE_EXAM_SIMULATOR",
+  "STRIPE_PRICE_PHYSICS_PEARLS",
+  "STRIPE_PRICE_STUDY_NOTES",
+  "STRIPE_PRICE_PREMIUM_BUNDLE",
+  "STRIPE_WEBHOOK_SECRET",
+] as const;
+
+function getMissingStripeEnvVars(): string[] {
+  return REQUIRED_STRIPE_ENV_VARS.filter(
+    (key) => !process.env[key]?.trim()
+  );
+}
+
 function validateStripeEnvVars(): void {
-  const required = [
-    "STRIPE_SECRET_KEY",
-    "STRIPE_PRICE_FLASHCARDS",
-    "STRIPE_PRICE_EXAM_SIMULATOR",
-    "STRIPE_PRICE_PHYSICS_PEARLS",
-    "STRIPE_PRICE_STUDY_NOTES",
-    "STRIPE_PRICE_PREMIUM_BUNDLE",
-    "STRIPE_WEBHOOK_SECRET",
-  ];
+  // Do not fail during next build, because build environments may not
+  // contain production secrets.
+  if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
+    return;
+  }
 
-  const missing = required.filter((key) => !process.env[key]);
+  const missing = getMissingStripeEnvVars();
 
   if (missing.length > 0 && process.env.NODE_ENV === "production") {
     throw new Error(
@@ -27,50 +37,64 @@ function validateStripeEnvVars(): void {
   }
 }
 
-// Run validation at module load
 validateStripeEnvVars();
 
-// ── STRIPE CLIENT ──────────────────────────────────────────────────
-// Initialize Stripe with secret key and pinned API version
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
-  apiVersion: "2026-07-29.dahlia",
-});
+let stripe: Stripe | null = null;
 
-// ── PRODUCT PRICE MAP ──────────────────────────────────────────────
-// Maps product keys to their Stripe price IDs and access duration
-// All price IDs come from environment variables (validated above)
+export function getStripe(): Stripe {
+  if (stripe) {
+    return stripe;
+  }
+
+  const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
+
+  if (!secretKey) {
+    throw new Error("STRIPE_SECRET_KEY is not configured");
+  }
+
+  stripe = new Stripe(secretKey, {
+    apiVersion: STRIPE_API_VERSION,
+  });
+
+  return stripe;
+}
+
 export const PRODUCT_PRICE_MAP = {
   FLASHCARDS: {
-    priceId: process.env.STRIPE_PRICE_FLASHCARDS || "",
-    accessDays: 365,
+    priceId: process.env.STRIPE_PRICE_FLASHCARDS?.trim() ?? "",
+    accessDays: 30,
   },
   EXAM_SIMULATOR: {
-    priceId: process.env.STRIPE_PRICE_EXAM_SIMULATOR || "",
-    accessDays: 365,
+    priceId: process.env.STRIPE_PRICE_EXAM_SIMULATOR?.trim() ?? "",
+    accessDays: 30,
   },
   PHYSICS_PEARLS: {
-    priceId: process.env.STRIPE_PRICE_PHYSICS_PEARLS || "",
-    accessDays: 365,
+    priceId: process.env.STRIPE_PRICE_PHYSICS_PEARLS?.trim() ?? "",
+    accessDays: 30,
   },
   STUDY_NOTES: {
-    priceId: process.env.STRIPE_PRICE_STUDY_NOTES || "",
-    accessDays: 365,
+    priceId: process.env.STRIPE_PRICE_STUDY_NOTES?.trim() ?? "",
+    accessDays: 30,
   },
   PREMIUM_BUNDLE: {
-    priceId: process.env.STRIPE_PRICE_PREMIUM_BUNDLE || "",
-    accessDays: 365,
+    priceId: process.env.STRIPE_PRICE_PREMIUM_BUNDLE?.trim() ?? "",
+    accessDays: 45,
   },
 } as const;
 
-// Type-safe product key
 export type ProductKey = keyof typeof PRODUCT_PRICE_MAP;
 
-// ── WEBHOOK SECRET ────────────────────────────────────────────────
-// Stripe webhook secret for signature verification
-export const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET || "";
+export const STRIPE_WEBHOOK_SECRET =
+  process.env.STRIPE_WEBHOOK_SECRET?.trim() ?? "";
 
-// ── HELPER FUNCTION ───────────────────────────────────────────────
-// Get price entry for a product
 export function getPriceEntry(productKey: ProductKey) {
-  return PRODUCT_PRICE_MAP[productKey];
+  const entry = PRODUCT_PRICE_MAP[productKey];
+
+  if (!entry.priceId) {
+    throw new Error(
+      `Missing Stripe price ID for product: ${productKey}`
+    );
+  }
+
+  return entry;
 }

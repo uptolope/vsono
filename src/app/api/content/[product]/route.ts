@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { checkContentAccess } from "@/lib/content/access-check";
-import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { rateLimit } from "@/lib/rate-limit";
 import {
   FLASHCARDS,
   EXAM_QUESTIONS,
@@ -10,8 +10,14 @@ import {
   STUDY_SECTIONS,
   toClientQuestions,
   shuffleQuestions,
+  QUESTIONS_PER_ATTEMPT,
   type ProductContentKey,
 } from "@/lib/content";
+import {
+  EXAM_ATTEMPT_COOKIE,
+  EXAM_ATTEMPT_COOKIE_MAX_AGE_SECONDS,
+  parseExamAttemptCookie,
+} from "@/lib/content/exam-attempt-cookie";
 
 const VALID_PRODUCTS: ProductContentKey[] = [
   "FLASHCARDS",
@@ -19,8 +25,6 @@ const VALID_PRODUCTS: ProductContentKey[] = [
   "PHYSICS_PEARLS",
   "STUDY_NOTES",
 ];
-
-const EXAM_QUESTION_COUNT = 110;
 
 export async function GET(
   req: NextRequest,
@@ -36,8 +40,6 @@ export async function GET(
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-
-  const ip = getClientIp(req.headers);
 
   // Rate-limit: 100 content requests per user per minute
   const limit = await rateLimit(`content:${userId}`, {
@@ -93,9 +95,9 @@ export async function GET(
     }
 
     case "EXAM_SIMULATOR": {
-      if (!EXAM_QUESTIONS || EXAM_QUESTIONS.length < EXAM_QUESTION_COUNT) {
+      if (!EXAM_QUESTIONS || EXAM_QUESTIONS.length < QUESTIONS_PER_ATTEMPT) {
         console.error(
-          `[content] Only ${EXAM_QUESTIONS?.length ?? 0} exam questions available (expected ${EXAM_QUESTION_COUNT}+)`
+          `[content] Only ${EXAM_QUESTIONS?.length ?? 0} exam questions available (expected ${QUESTIONS_PER_ATTEMPT}+)`
         );
         return NextResponse.json(
           { error: "Content not available" },
@@ -103,17 +105,53 @@ export async function GET(
         );
       }
 
+      const validIds = new Set(EXAM_QUESTIONS.map((q) => q.id));
+      const existing = parseExamAttemptCookie(
+        req.cookies.get(EXAM_ATTEMPT_COOKIE)?.value,
+        validIds,
+        QUESTIONS_PER_ATTEMPT
+      );
+
+      let orderedQuestions;
+      let cookieToSet: string | null = null;
+
+      if (existing) {
+        // Active attempt already in progress — reuse its exact order so a
+        // refresh, navigation, or review never reshuffles or drops progress.
+        const byId = new Map(EXAM_QUESTIONS.map((q) => [q.id, q]));
+        orderedQuestions = existing.orderedIds
+          .map((id) => byId.get(id))
+          .filter((q): q is (typeof EXAM_QUESTIONS)[number] => Boolean(q));
+      } else {
+        // No active attempt (first load, or the previous one was just
+        // submitted and its cookie cleared) — start a fresh randomized one.
+        orderedQuestions = shuffleQuestions(EXAM_QUESTIONS).slice(0, QUESTIONS_PER_ATTEMPT);
+        cookieToSet = JSON.stringify({
+          orderedIds: orderedQuestions.map((q) => q.id),
+          startedAt: Date.now(),
+        });
+      }
+
       // correctAnswer and explanation MUST NOT reach the client before
       // submission — toClientQuestions() strips them. Do not bypass
       // this by returning EXAM_QUESTIONS directly.
-      const shuffled = shuffleQuestions(EXAM_QUESTIONS);
       console.info(
-        `[content] Serving EXAM_SIMULATOR (${EXAM_QUESTION_COUNT} questions) to user ${userId}`
+        `[content] Serving EXAM_SIMULATOR (${QUESTIONS_PER_ATTEMPT} of ${EXAM_QUESTIONS.length} questions) to user ${userId}`
       );
-      return NextResponse.json({
-        questions: toClientQuestions(shuffled.slice(0, EXAM_QUESTION_COUNT)),
+      const response = NextResponse.json({
+        questions: toClientQuestions(orderedQuestions),
         expiresAt: access.expiresAt,
       });
+      if (cookieToSet) {
+        response.cookies.set(EXAM_ATTEMPT_COOKIE, cookieToSet, {
+          httpOnly: true,
+          sameSite: "lax",
+          secure: process.env.NODE_ENV === "production",
+          path: "/",
+          maxAge: EXAM_ATTEMPT_COOKIE_MAX_AGE_SECONDS,
+        });
+      }
+      return response;
     }
 
     case "PHYSICS_PEARLS": {

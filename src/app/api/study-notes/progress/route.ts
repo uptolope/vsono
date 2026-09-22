@@ -6,9 +6,10 @@ import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
 const updateProgressSchema = z.object({
-  chapterId: z.number(),
+  chapterId: z.number().int().positive(),
   progress: z.number().min(0).max(100),
-  bookmarks: z.array(z.number()).optional(),
+  timeSpentMs: z.number().int().nonnegative().optional().default(0),
+  bookmarks: z.array(z.number().int().positive()).optional().default([]),
 });
 
 export async function POST(req: NextRequest) {
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
   }
 
-  const { chapterId, progress, bookmarks } = parsed.data;
+  const { chapterId, progress, timeSpentMs = 0, bookmarks = [] } = parsed.data;
 
   try {
     const updated = await prisma.studyNoteProgress.upsert({
@@ -50,10 +51,14 @@ export async function POST(req: NextRequest) {
         chapterId,
         progress,
         bookmarks,
+        timeSpentMs,
+        lastStudied: new Date(),
       },
       update: {
         progress,
-        bookmarks,
+        bookmarks: bookmarks.length > 0 ? bookmarks : undefined,
+        timeSpentMs: { increment: timeSpentMs },
+        lastStudied: new Date(),
       },
     });
 
@@ -67,7 +72,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id?: string } | undefined)?.id;
   if (!userId) {
@@ -80,26 +85,33 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const progress = await prisma.studyNoteProgress.findMany({
+    const records = await prisma.studyNoteProgress.findMany({
       where: { userId },
       select: {
         chapterId: true,
         progress: true,
         bookmarks: true,
+        timeSpentMs: true,
+        lastStudied: true,
       },
     });
 
-    const totalChapters = progress.length;
-    const averageProgress = totalChapters > 0 ? progress.reduce((sum, p) => sum + p.progress, 0) / totalChapters : 0;
-    const completedChapters = progress.filter((p) => p.progress === 100).length;
+    const totalChapters = records.length;
+    const totalProgress = records.reduce((sum, p) => sum + (p.progress || 0), 0);
+    const completedChapters = records.filter((p) => p.progress === 100).length;
+    const averageProgress = totalChapters > 0 ? totalProgress / totalChapters : 0;
+    const totalTimeMs = records.reduce((sum, r) => sum + (r.timeSpentMs || 0), 0);
 
     return NextResponse.json({
-      progress,
+      progress: records,
       stats: {
         totalChapters,
         completedChapters,
         averageProgress: Math.round(averageProgress * 100) / 100,
-        completionPercentage: (completedChapters / totalChapters) * 100,
+        completionPercentage: totalChapters > 0 
+          ? Math.round((completedChapters / totalChapters) * 10000) / 100 
+          : 0,
+        totalStudyTimeMinutes: Math.round(totalTimeMs / 60000),
       },
     });
   } catch (error) {

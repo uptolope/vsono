@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendVerificationEmail } from "@/lib/email";
-import { forgotPasswordSchema } from "@/lib/validations";
-import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { resend } from "@/lib/resend";
 
 async function verifyEmail(token: string, email: string) {
   const normalizedEmail = email.trim().toLowerCase();
@@ -40,7 +36,7 @@ async function verifyEmail(token: string, email: string) {
   }
 
   // Mark the user's email as verified and delete the used token
-  await prisma["\$transaction"]([
+  await prisma["$transaction"]([
     prisma.user.update({
       where: { email: normalizedEmail },
       data: { emailVerified: new Date() },
@@ -78,7 +74,7 @@ export async function GET(req: NextRequest) {
   }
 
   // Redirect to success page
-  return NextResponse.redirect(new URL("/auth/verified", req.url));
+  return NextResponse.redirect(new URL("/login?verified=true", req.url));
 }
 
 // Handle POST requests (from API calls)

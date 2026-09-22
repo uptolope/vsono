@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -16,12 +16,12 @@ export const metadata: Metadata = {
     title: "SonoPrep Blog — SPI Exam Study Tips & ARDMS Guides",
     description:
       "Free study resources for the ARDMS SPI exam. Physics, Doppler, test strategies, and credential guides.",
-    url: "https://sonoprep.com/blog",
+    url: "https://www.sonoprep.com/blog",
     siteName: "SonoPrep",
     type: "website",
   },
   alternates: {
-    canonical: "https://sonoprep.com/blog",
+    canonical: "https://www.sonoprep.com/blog",
   },
 };
 
@@ -30,7 +30,7 @@ const POSTS = [
     slug: "complete-spi-exam-guide",
     tag: "COMPLETE GUIDE",
     title: "The Complete ARDMS SPI Exam Guide: Everything You Need to Pass",
-    desc: "Domain weightings, a proven 6-week study plan, common mistakes, and how to pass on your first attempt.",
+    desc: "Domain weightings, a proven 6-week study plan, common mistakes, and how to .",
     date: "May 12, 2026",
     read: "25 min read",
   },
@@ -175,3 +175,4 @@ export default function BlogIndexPage() {
     </div>
   );
 }
+

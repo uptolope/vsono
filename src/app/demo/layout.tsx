@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Free SPI Exam Demo — Try Before You Buy | SonoPrep",
   description:
-    "Try SonoPrep free. 5 real SPI exam questions and 20 flashcards — no account, no credit card. See exactly what the full simulator feels like before you decide.",
+    "Try SonoPrep free. 10 real SPI exam questions and 10 flashcards — no account, no credit card. See exactly what the full simulator feels like before you decide.",
   keywords: [
     "SPI exam demo",
     "free SPI practice questions",
@@ -14,13 +14,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Free SPI Exam Demo — Try Before You Buy | SonoPrep",
     description:
-      "5 real SPI questions. 20 flashcards. No account required. Find out what you'd get wrong if you took the SPI today.",
-    url: "https://sonoprep.com/demo",
+      "10 real SPI questions. 10 flashcards. No account required. Find out what you'd get wrong if you took the SPI today.",
+    url: "https://www.sonoprep.com/demo",
     siteName: "SonoPrep",
     type: "website",
   },
   alternates: {
-    canonical: "https://sonoprep.com/demo",
+    canonical: "https://www.sonoprep.com/demo",
   },
 };
 

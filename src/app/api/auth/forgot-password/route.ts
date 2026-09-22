@@ -1,73 +1,181 @@
 import { NextRequest, NextResponse } from "next/server";
-import { randomBytes } from "crypto";
+import { createHash, randomBytes } from "node:crypto";
+
 import { prisma } from "@/lib/prisma";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { forgotPasswordSchema } from "@/lib/validations";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+const RESET_TOKEN_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+const GENERIC_RESPONSE = {
+  message: "If an account with that email exists, a reset link has been sent.",
+};
+
+function hashResetToken(token: string): string {
+  return createHash("sha256")
+    .update(token, "utf8")
+    .digest("hex");
+}
+
+function getEmailDomain(email: string): string {
+  return email.split("@")[1] ?? "unknown";
+}
+
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req.headers);
 
-  // Tight rate limit — this endpoint sends email and is an
-  // enumeration/spam vector if unbounded.
-  const limit = await rateLimit(`forgot:${ip}`, { limit: 3, windowMs: 15 * 60 * 1000 });
-  if (!limit.allowed) {
-    // Return the same 200 message to avoid leaking rate-limit status
-    // per email address. The attacker still gets a 429 per IP though.
-    return NextResponse.json(
-      { message: "If an account with that email exists, a reset link has been sent." },
-      { status: 429 }
-    );
+  /*
+   * Rate-limit requests by IP.
+   */
+  const ipLimit = await rateLimit(`forgot:ip:${ip}`, {
+    limit: 3,
+    windowMs: 15 * 60 * 1000,
+  });
+
+  if (!ipLimit.allowed) {
+    return NextResponse.json(GENERIC_RESPONSE, {
+      status: 429,
+    });
   }
 
+  /*
+   * Parse the request body.
+   */
   let body: unknown;
+
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid request." },
+      { status: 400 },
+    );
   }
 
+  /*
+   * Validate the email address.
+   */
   const parsed = forgotPasswordSchema.safeParse(body);
+
   if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
+    return NextResponse.json(
+      { error: "Enter a valid email address." },
+      { status: 400 },
+    );
   }
 
-  const { email } = parsed.data;
+  /*
+   * Normalize the email so lookup, rate limiting, and token identifiers
+   * use the same value.
+   */
+  const email = parsed.data.email.trim().toLowerCase();
+  const emailDomain = getEmailDomain(email);
 
-  // Always return the same response whether the email exists or not —
-  // do not let the response leak whether this is a valid account.
-  const GENERIC_RESPONSE = {
-    message: "If an account with that email exists, a reset link has been sent.",
-  };
+  /*
+   * Rate-limit requests by email address.
+   */
+  const emailLimit = await rateLimit(`forgot:email:${email}`, {
+    limit: 3,
+    windowMs: 15 * 60 * 1000,
+  });
 
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || user.deletedAt) {
+  if (!emailLimit.allowed) {
+    return NextResponse.json(GENERIC_RESPONSE, {
+      status: 429,
+    });
+  }
+
+  /*
+   * Look up the account without revealing whether it exists.
+   */
+  const user = await prisma.user.findUnique({
+    where: { email },
+    select: {
+      id: true,
+      email: true,
+      deletedAt: true,
+    },
+  });
+
+  if (!user || user.deletedAt || !user.email) {
     return NextResponse.json(GENERIC_RESPONSE);
   }
 
-  // Generate a secure random token and store it in VerificationToken.
-  // The "identifier" field uses "pwd-reset:" prefix to distinguish
-  // password reset tokens from email verification tokens.
-  const token = randomBytes(32).toString("hex");
-  const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
+  /*
+   * Generate a new token and timestamp for this request.
+   *
+   * Date objects are stored by Prisma in UTC. This is correct and
+   * works consistently on Vercel.
+   */
+  const resetRequestedAt = new Date();
+  const expires = new Date(
+    resetRequestedAt.getTime() + RESET_TOKEN_TTL_MS,
+  );
 
-  // Delete any existing reset tokens for this email first
+  const rawToken = randomBytes(32).toString("hex");
+  const tokenHash = hashResetToken(rawToken);
+  const identifier = `pwd-reset:${email}`;
+
+  console.log("Password reset token created", {
+    emailDomain,
+    resetRequestedAt: resetRequestedAt.toISOString(),
+    expiresAt: expires.toISOString(),
+  });
+
+  /*
+   * Keep only the newest reset token for this email address.
+   */
   await prisma.verificationToken.deleteMany({
-    where: { identifier: `pwd-reset:${email}` },
+    where: { identifier },
   });
 
   await prisma.verificationToken.create({
     data: {
-      identifier: `pwd-reset:${email}`,
-      token,
+      identifier,
+      token: tokenHash,
       expires,
     },
   });
 
-  const baseUrl = process.env.NEXTAUTH_URL ?? "https://sonoprep.com";
-  const resetUrl = `${baseUrl}/reset-password?token=${token}&email=${encodeURIComponent(email)}`;
+  /*
+   * Send the raw token by email.
+   * Only the hash is stored in the database.
+   */
+  console.log("Sending password reset email", {
+    emailDomain,
+    startedAt: new Date().toISOString(),
+  });
 
-  await sendPasswordResetEmail(email, resetUrl);
+  const emailResult = await sendPasswordResetEmail(email, rawToken);
 
+  console.log("Password reset email function completed", {
+    emailDomain,
+    completedAt: new Date().toISOString(),
+    success: emailResult.success,
+  });
+
+  /*
+   * Remove the token if the email could not be sent.
+   */
+  if (!emailResult.success) {
+    await prisma.verificationToken.deleteMany({
+      where: {
+        identifier,
+        token: tokenHash,
+      },
+    });
+
+    console.error("Password reset email delivery failed.", {
+      emailDomain,
+    });
+  }
+
+  /*
+   * Always return the same response so account existence is not exposed.
+   */
   return NextResponse.json(GENERIC_RESPONSE);
 }

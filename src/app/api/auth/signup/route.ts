@@ -100,9 +100,15 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Signup error:", error);
+    console.error("SIGNUP_ERROR:", error);
+
     return NextResponse.json(
-      { error: "Internal server error" },
+      {
+        error:
+          error instanceof Error
+            ? error.message
+            : "Unknown signup error",
+      },
       { status: 500 }
     );
   }

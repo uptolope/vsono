@@ -1,57 +1,111 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { DemoQuestion } from "@/lib/demo/exam-data";
+import {
+  clearAttempt,
+  createNewAttempt,
+  loadOrStartAttempt,
+  saveAttempt,
+  type DemoAttemptState,
+} from "@/lib/demo/demo-attempt";
 
 interface ExamSimulatorProps {
   questions: DemoQuestion[];
 }
 
 export function ExamSimulator({ questions }: ExamSimulatorProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  // Look up full question objects by their source ID (Q1..Q10) so the
+  // component can render them in whatever order the active attempt uses.
+  const byId = useMemo(() => {
+    const map: Record<string, DemoQuestion> = {};
+    for (const q of questions) map[q.id] = q;
+    return map;
+  }, [questions]);
+
+  // Gate rendering on hydration: the randomized order is client-only
+  // (localStorage), so we render nothing meaningful until mounted to
+  // avoid a server/client markup mismatch.
+  const [hydrated, setHydrated] = useState(false);
+  const [attempt, setAttempt] = useState<DemoAttemptState | null>(null);
   const [selected, setSelected] = useState<number | null>(null);
-  const [answers, setAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
 
-  // Guard: if no questions, show loading state
+  useEffect(() => {
+    const loaded = loadOrStartAttempt();
+    setAttempt(loaded);
+    // A freshly-answered question already selected (e.g. returning mid-attempt)
+    const currentId = loaded.orderedIds[loaded.currentIndex];
+    setSelected(currentId in loaded.answers ? loaded.answers[currentId] : null);
+    setHydrated(true);
+  }, []);
+
   if (!questions || questions.length === 0) {
     return <div className="text-center text-white p-8">Loading questions...</div>;
   }
 
-  const question = questions[currentIndex];
+  if (!hydrated || !attempt) {
+    return <div className="text-center text-white p-8">Loading demo...</div>;
+  }
+
+  const total = attempt.orderedIds.length;
+  const currentId = attempt.orderedIds[attempt.currentIndex];
+  const question = byId[currentId];
   const isAnswered = selected !== null;
   const isCorrect = selected === question?.correctAnswer;
-  const total = questions.length;
-  
+
+  const persist = (next: DemoAttemptState) => {
+    setAttempt(next);
+    saveAttempt(next);
+  };
+
   const handleSelect = (optionIndex: number) => {
-    if (isAnswered || !question) return;  // ← Add this check
+    if (isAnswered || !question) return;
     setSelected(optionIndex);
-    setAnswers((prev) => ({ ...prev, [question.id]: optionIndex }));
+    persist({
+      ...attempt,
+      answers: { ...attempt.answers, [currentId]: optionIndex },
+    });
   };
 
   const handleNext = () => {
-    if (currentIndex < total - 1) {
-      setCurrentIndex((i) => i + 1);
-      setSelected(null);
+    if (attempt.currentIndex < total - 1) {
+      const next = { ...attempt, currentIndex: attempt.currentIndex + 1 };
+      persist(next);
+      const nextId = next.orderedIds[next.currentIndex];
+      setSelected(nextId in next.answers ? next.answers[nextId] : null);
       setShowExplanation(false);
     } else {
+      // Successful submission: mark completed and clear the active attempt.
+      persist({ ...attempt, status: "completed" });
+      clearAttempt();
       setShowResults(true);
     }
   };
 
+  const handleRestart = () => {
+    const fresh = createNewAttempt(attempt.orderedIds);
+    saveAttempt(fresh);
+    setAttempt(fresh);
+    setSelected(null);
+    setShowResults(false);
+    setShowExplanation(false);
+  };
+
   if (showResults) {
-    const correctCount = questions.filter(
-      (q) => answers[q.id] === q.correctAnswer
+    const orderedQuestions = attempt.orderedIds.map((id) => byId[id]);
+    const correctCount = orderedQuestions.filter(
+      (q) => attempt.answers[q.id] === q.correctAnswer
     ).length;
     const percentage = Math.round((correctCount / total) * 100);
 
     // Group by domain
     const byDomain: Record<string, { correct: number; total: number }> = {};
-    for (const q of questions) {
+    for (const q of orderedQuestions) {
       byDomain[q.domain] ??= { correct: 0, total: 0 };
       byDomain[q.domain].total += 1;
-      if (answers[q.id] === q.correctAnswer) {
+      if (attempt.answers[q.id] === q.correctAnswer) {
         byDomain[q.domain].correct += 1;
       }
     }
@@ -66,7 +120,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
           <p className="body-readable text-[#8a8279] text-sm">
             {percentage >= 75
               ? "Strong foundation — the full simulator will show you exactly where to sharpen."
-              : "The full exam covers all 6 ARDMS domains with 110 questions. Targeted prep makes the difference."}
+              : "The full exam covers all 5 ARDMS domains with 110 questions. Targeted prep makes the difference."}
           </p>
         </div>
 
@@ -98,13 +152,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
         </div>
 
         <button
-          onClick={() => {
-            setCurrentIndex(0);
-            setSelected(null);
-            setAnswers({});
-            setShowResults(false);
-            setShowExplanation(false);
-          }}
+          onClick={handleRestart}
           className="btn-industrial w-full py-3 text-[11px]"
         >
           RETAKE DEMO →
@@ -118,14 +166,14 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
       {/* Progress */}
       <div className="flex items-center justify-between mb-6">
         <span className="meta text-[10px] text-[#4a453f]">
-          QUESTION {currentIndex + 1} OF {total}
+          Question {attempt.currentIndex + 1} of {total}
         </span>
         <span className="meta text-[9px] text-[#4a453f]">{question?.domain}</span>
       </div>
       <div className="h-1 bg-white/5 rounded-full mb-8 overflow-hidden">
         <div
           className="h-full bg-[#c85b3a] rounded-full transition-all duration-300"
-          style={{ width: `${((currentIndex + 1) / total) * 100}%` }}
+          style={{ width: `${((attempt.currentIndex + 1) / total) * 100}%` }}
         />
       </div>
 
@@ -195,7 +243,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
           onClick={handleNext}
           className="btn-industrial w-full py-3 text-[11px]"
         >
-          {currentIndex < total - 1 ? "NEXT QUESTION →" : "SEE RESULTS →"}
+          {attempt.currentIndex < total - 1 ? "NEXT QUESTION →" : "SEE RESULTS →"}
         </button>
       )}
     </div>
