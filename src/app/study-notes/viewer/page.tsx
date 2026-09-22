@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
@@ -54,9 +54,7 @@ export default function SonographicPhysicsViewerPage() {
           },
         });
 
-        if (cancelled) {
-          return;
-        }
+        if (cancelled) return;
 
         if (response.status === 401) {
           setState({ status: "unauthenticated" });
@@ -125,11 +123,7 @@ export default function SonographicPhysicsViewerPage() {
   if (state.status === "loading") {
     return (
       <Centered>
-
-        <p className="text-[#8a8279] text-sm">Loading viewer...</p>
-
-        <p className="text-[#8a8279] text-sm">Loading viewer</p>
-
+        <p className="text-sm text-[#8a8279]">Loading viewer...</p>
       </Centered>
     );
   }
@@ -145,12 +139,11 @@ export default function SonographicPhysicsViewerPage() {
           Please log in to access Sonographic Physics.
         </p>
 
-        <Link href="/login" className="btn-industrial px-6 py-3 text-[10px]">
-
-          SIGN IN 
-
-          SIGN IN 
-
+        <Link
+          href="/login"
+          className="btn-industrial px-6 py-3 text-[10px]"
+        >
+          SIGN IN →
         </Link>
       </Centered>
     );
@@ -171,11 +164,7 @@ export default function SonographicPhysicsViewerPage() {
           href="/products"
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-
-          VIEW PRODUCTS 
-
-          VIEW PRODUCTS 
-
+          VIEW PRODUCTS →
         </Link>
       </Centered>
     );
@@ -218,11 +207,7 @@ export default function SonographicPhysicsViewerPage() {
             }
             aria-label="Zoom out"
           >
-
-            
-
-            
-
+            −
           </button>
 
           <span className="w-12 text-center text-xs text-[#8a8279]">
@@ -244,7 +229,10 @@ export default function SonographicPhysicsViewerPage() {
         </div>
       </header>
 
-      <main id="main-content" className="relative flex flex-1 flex-col items-center justify-center overflow-auto p-4">
+      <main
+        id="main-content"
+        className="relative flex flex-1 flex-col items-center justify-center overflow-auto p-4"
+      >
         <div className="mb-4 w-full max-w-4xl rounded border border-[#c85b3a]/30 bg-[#c85b3a]/5 px-4 py-3 text-sm leading-6 text-[#c2bab0]">
           <strong className="text-white">Licensed study material:</strong>{" "}
           This content is for your personal use during your active access
@@ -261,11 +249,7 @@ export default function SonographicPhysicsViewerPage() {
         >
           {imgLoading && !imgError && (
             <div className="absolute inset-0 z-10 flex items-center justify-center">
-
               <p className="text-sm text-[#8a8279]">Loading page...</p>
-
-              <p className="text-sm text-[#8a8279]">Loading page</p>
-
             </div>
           )}
 
@@ -281,15 +265,17 @@ export default function SonographicPhysicsViewerPage() {
           <img
             key={page}
             src={pageImageSource}
-
             alt={`${meta.shortTitle} - page ${page}`}
-
             draggable={false}
             onLoad={() => {
               setImgLoading(false);
               setImgError(false);
             }}
-            onError={() => {
+            onError={(event) => {
+              console.error("[study-notes] Page image failed", {
+                page,
+                src: event.currentTarget.src,
+              });
               setImgLoading(false);
               setImgError(true);
             }}
@@ -304,12 +290,9 @@ export default function SonographicPhysicsViewerPage() {
           className="btn-industrial px-4 py-2 text-[10px]"
           onClick={() => goTo(page - 1, meta.pageCount)}
           disabled={page <= 1}
+          aria-label="Previous page"
         >
-
-           PREV
-
-           PREV
-
+          ← PREV
         </button>
 
         <label htmlFor="study-notes-page" className="sr-only">
@@ -337,19 +320,16 @@ export default function SonographicPhysicsViewerPage() {
           className="btn-industrial px-4 py-2 text-[10px]"
           onClick={() => goTo(page + 1, meta.pageCount)}
           disabled={page >= meta.pageCount}
+          aria-label="Next page"
         >
-
-          NEXT 
-
-          NEXT 
-
+          NEXT →
         </button>
       </footer>
     </div>
   );
 }
 
-function Centered({ children }: { children: React.ReactNode }) {
+function Centered({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#0c0b0a] px-6 text-center">
       {children}
