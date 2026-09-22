@@ -1,35 +1,18 @@
-import "server-only";
-
-// 
-// SonoPrep  Exam Questions (SERVER-SIDE ONLY)
+﻿import "server-only";
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// SonoPrep â€” Exam Questions (SERVER-SIDE ONLY)
 // 155 SPI exam questions, sourced verbatim (content-wise) from the
-// "Sonographic Physics  SonoPrep For Board Exams" question bank
+// "Sonographic Physics â€” SonoPrep For Board Exams" question bank
 // (source: Sonographic_Physics__SonoPrep_For_Board_Exams_copy.pdf).
 // Every record preserves the source's original question order and ID
-// (1155), including source duplicates, which are kept as separate
+// (1â€“155), including source duplicates, which are kept as separate
 // records rather than deduplicated.
 // 14 records were editorially corrected (typos, garbled formulas, or
-// answer-choice/order ambiguity)  see EDITORIALLY_CORRECTED_IDS below
+// answer-choice/order ambiguity) â€” see EDITORIALLY_CORRECTED_IDS below
 // and each record's editorialNote for the specific rationale.
 // SECURITY: correctAnswer field must NEVER be sent to the client
 // DO NOT IMPORT THIS FILE IN CLIENT COMPONENTS
-// 
-
-// 
-// SonoPrep  Exam Questions (SERVER-SIDE ONLY)
-// 155 SPI exam questions, sourced verbatim (content-wise) from the
-// "Sonographic Physics  SonoPrep For Board Exams" question bank
-// (source: Sonographic_Physics__SonoPrep_For_Board_Exams_copy.pdf).
-// Every record preserves the source's original question order and ID
-// (1155), including source duplicates, which are kept as separate
-// records rather than deduplicated.
-// 14 records were editorially corrected (typos, garbled formulas, or
-// answer-choice/order ambiguity)  see EDITORIALLY_CORRECTED_IDS below
-// and each record's editorialNote for the specific rationale.
-// SECURITY: correctAnswer field must NEVER be sent to the client
-// DO NOT IMPORT THIS FILE IN CLIENT COMPONENTS
-// 
-
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 import { randomInt } from "node:crypto";
 
@@ -37,11 +20,7 @@ export interface ExamQuestion {
   id: number;
   question: string;
   options: string[];
-
-  correctAnswer: number; // Index of correct option  NEVER expose to client
-
-  correctAnswer: number; // Index of correct option  NEVER expose to client
-
+  correctAnswer: number; // Index of correct option â€” NEVER expose to client
   domain: string;
   explanation: string; // Only shown AFTER answer submission
   /** Editorial review status against the source question bank. */
@@ -57,11 +36,7 @@ export type ExamDomain =
   | "Domain 4: Doppler & Hemodynamics"
   | "Domain 5: Bioeffects & Safety";
 
-
-// Supported domains  exactly 5. Marketing/UI copy must match this
-
-// Supported domains  exactly 5. Marketing/UI copy must match this
-
+// Supported domains â€” exactly 5. Marketing/UI copy must match this
 // count; do not describe the exam as covering "6 domains" anywhere.
 const DOMAINS: ExamDomain[] = [
   "Domain 1: Physics Principles",
@@ -73,23 +48,14 @@ const DOMAINS: ExamDomain[] = [
 
 /**
  * The 14 question IDs that received a mandatory editorial review pass.
-
- * Used by the validator below to assert that exactly this set  no
- * more, no fewer  carries editorialStatus "editorially_corrected".
-
- * Used by the validator below to assert that exactly this set  no
- * more, no fewer  carries editorialStatus "editorially_corrected".
-
+ * Used by the validator below to assert that exactly this set â€” no
+ * more, no fewer â€” carries editorialStatus "editorially_corrected".
  */
 const EDITORIALLY_CORRECTED_IDS = [
   43, 61, 70, 83, 84, 91, 103, 105, 108, 130, 136, 139, 141, 154,
 ] as const;
 
-
-/** All 155 exam questions  SERVER USE ONLY */
-
-/** All 155 exam questions  SERVER USE ONLY */
-
+/** All 155 exam questions â€” SERVER USE ONLY */
 export const EXAM_QUESTIONS: ExamQuestion[] = [
   {
     id: 1,
@@ -703,11 +669,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 1: Physics Principles",
-
-    explanation: `Attenuation in tissue results from a combination of reflection, absorption, and scattering  so "all of the above" is correct.`,
-
-    explanation: `Attenuation in tissue results from a combination of reflection, absorption, and scattering  so "all of the above" is correct.`,
-
+    explanation: `Attenuation in tissue results from a combination of reflection, absorption, and scattering â€” so "all of the above" is correct.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified wording; original answer (D) already correct, no letter change.`,
   },
@@ -961,15 +923,9 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 0,
     domain: "Domain 1: Physics Principles",
-
-    explanation: `Total attenuation in soft tissue scales with both the distance the beam travels through tissue (path length/thickness) and the operating frequency  soft tissue attenuates roughly 0.5 dB per centimeter per MHz. Propagation speed, period, beam width, focal depth, PRF, and duty factor do not determine how much a beam attenuates.`,
+    explanation: `Total attenuation in soft tissue scales with both the distance the beam travels through tissue (path length/thickness) and the operating frequency â€” soft tissue attenuates roughly 0.5 dB per centimeter per MHz. Propagation speed, period, beam width, focal depth, PRF, and duty factor do not determine how much a beam attenuates.`,
     editorialStatus: "editorially_corrected",
-    editorialNote: `REWRITTEN. The source question ("Attenuation in soft tissue [increases with]") was single-factor and its source-key answer (frequency) was correct, but an externally supplied correction proposed changing the answer to "propagation speed," which is not an established acoustic relationship  propagation speed is not a determinant of attenuation. Rather than silently keep the old wording or adopt an incorrect answer, the question was rewritten as a two-factor item ("tissue thickness and frequency"), which is the scientifically precise, single-best-answer version of the same learning objective (what governs total attenuation). Correct answer: A.`,
-
-    explanation: `Total attenuation in soft tissue scales with both the distance the beam travels through tissue (path length/thickness) and the operating frequency  soft tissue attenuates roughly 0.5 dB per centimeter per MHz. Propagation speed, period, beam width, focal depth, PRF, and duty factor do not determine how much a beam attenuates.`,
-    editorialStatus: "editorially_corrected",
-    editorialNote: `REWRITTEN. The source question ("Attenuation in soft tissue [increases with]") was single-factor and its source-key answer (frequency) was correct, but an externally supplied correction proposed changing the answer to "propagation speed," which is not an established acoustic relationship  propagation speed is not a determinant of attenuation. Rather than silently keep the old wording or adopt an incorrect answer, the question was rewritten as a two-factor item ("tissue thickness and frequency"), which is the scientifically precise, single-best-answer version of the same learning objective (what governs total attenuation). Correct answer: A.`,
-
+    editorialNote: `REWRITTEN. The source question ("Attenuation in soft tissue [increases with]") was single-factor and its source-key answer (frequency) was correct, but an externally supplied correction proposed changing the answer to "propagation speed," which is not an established acoustic relationship â€” propagation speed is not a determinant of attenuation. Rather than silently keep the old wording or adopt an incorrect answer, the question was rewritten as a two-factor item ("tissue thickness and frequency"), which is the scientifically precise, single-best-answer version of the same learning objective (what governs total attenuation). Correct answer: A.`,
   },
   {
     id: 62,
@@ -1089,21 +1045,12 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     options: [
       `(Z2 + Z1 /Z2 + Z1 )2 X 100`,
       `(Z2 + Z1 /Z2 - Z1 )2 X 100`,
-
-      `(Z2  Z1 /Z2 + Z1 )2 X 100`,
-      `(Z2  Z1 /Z2 - Z1 )2 X 100`,
+      `(Z2 â€“ Z1 /Z2 + Z1 )2 X 100`,
+      `(Z2 â€“ Z1 /Z2 - Z1 )2 X 100`,
     ],
     correctAnswer: 2,
     domain: "Domain 3: Principles of Imaging",
-    explanation: `Incident Reflection Coefficient (IRC) = [(Z2  Z1) / (Z2 + Z1)]  100, where Z1 and Z2 are the acoustic impedances of the two media.`,
-
-      `(Z2  Z1 /Z2 + Z1 )2 X 100`,
-      `(Z2  Z1 /Z2 - Z1 )2 X 100`,
-    ],
-    correctAnswer: 2,
-    domain: "Domain 3: Principles of Imaging",
-    explanation: `Incident Reflection Coefficient (IRC) = [(Z2  Z1) / (Z2 + Z1)]  100, where Z1 and Z2 are the acoustic impedances of the two media.`,
-
+    explanation: `Incident Reflection Coefficient (IRC) = [(Z2 âˆ’ Z1) / (Z2 + Z1)]Â² Ã— 100, where Z1 and Z2 are the acoustic impedances of the two media.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Corrected garbled formula formatting from the source text; original answer (C) was already correct.`,
   },
@@ -1286,11 +1233,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 3: Principles of Imaging",
-
-    explanation: `The scan converter digitizes incoming echo/image data, organizes it into a format suitable for display, and outputs the assembled frames  all three functions apply.`,
-
-    explanation: `The scan converter digitizes incoming echo/image data, organizes it into a format suitable for display, and outputs the assembled frames  all three functions apply.`,
-
+    explanation: `The scan converter digitizes incoming echo/image data, organizes it into a format suitable for display, and outputs the assembled frames â€” all three functions apply.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified wording; original answer (D) already correct.`,
   },
@@ -1305,11 +1248,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 1,
     domain: "Domain 3: Principles of Imaging",
-
-    explanation: `PACS (Picture Archiving and Communications System) is the network and storage infrastructure used to store, retrieve, distribute, and display medical images within a facility  distinct from DICOM, which is the communication standard/protocol the devices use.`,
-
-    explanation: `PACS (Picture Archiving and Communications System) is the network and storage infrastructure used to store, retrieve, distribute, and display medical images within a facility  distinct from DICOM, which is the communication standard/protocol the devices use.`,
-
+    explanation: `PACS (Picture Archiving and Communications System) is the network and storage infrastructure used to store, retrieve, distribute, and display medical images within a facility â€” distinct from DICOM, which is the communication standard/protocol the devices use.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified definition to avoid confusion with the adjacent DICOM question; original answer (B) already correct.`,
   },
@@ -1408,11 +1347,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 0,
     domain: "Domain 3: Principles of Imaging",
-
-    explanation: `Dynamic range is the range of signal amplitudes (expressed in dB) a system can process and display accurately. The other options describe things that are false  dynamic range is adjustable, it directly affects the number of displayable gray shades, and it is conventionally expressed in decibels.`,
-
-    explanation: `Dynamic range is the range of signal amplitudes (expressed in dB) a system can process and display accurately. The other options describe things that are false  dynamic range is adjustable, it directly affects the number of displayable gray shades, and it is conventionally expressed in decibels.`,
-
+    explanation: `Dynamic range is the range of signal amplitudes (expressed in dB) a system can process and display accurately. The other options describe things that are false â€” dynamic range is adjustable, it directly affects the number of displayable gray shades, and it is conventionally expressed in decibels.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Rewrote the answer choices: the original wording made "all of the above" defensible because two of the three sub-statements were also arguably true, creating ambiguity. Rewritten so there is exactly one unambiguous correct answer (A) on the same topic (definition of dynamic range).`,
   },
@@ -1581,11 +1516,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 3: Principles of Imaging",
-
-    explanation: `The receiver processes the returning echo signal in this order: amplification (boosts the weak returning signal), compensation/TGC (corrects for depth-dependent attenuation), compression (reduces the dynamic range to fit the display), demodulation (envelope detection  converts the RF signal to a video signal), and rejection (removes low-level noise). This is the sequence taught throughout standard SPI review references.`,
-
-    explanation: `The receiver processes the returning echo signal in this order: amplification (boosts the weak returning signal), compensation/TGC (corrects for depth-dependent attenuation), compression (reduces the dynamic range to fit the display), demodulation (envelope detection  converts the RF signal to a video signal), and rejection (removes low-level noise). This is the sequence taught throughout standard SPI review references.`,
-
+    explanation: `The receiver processes the returning echo signal in this order: amplification (boosts the weak returning signal), compensation/TGC (corrects for depth-dependent attenuation), compression (reduces the dynamic range to fit the display), demodulation (envelope detection â€” converts the RF signal to a video signal), and rejection (removes low-level noise). This is the sequence taught throughout standard SPI review references.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `CONVENTION DOCUMENTED. Two orderings were in play: the source bank's original "amplification, compensation, compression, demodulation, reject," and an externally supplied correction proposing "amplification, compensation, demodulation, compression, reject" (swapping compression and demodulation). Standard SPI teaching materials place compression before demodulation (amplification -> compensation -> compression -> demodulation -> rejection). The source bank's original order was adopted as the single authoritative sequence and used consistently in the question, options, and explanation; the swapped-order alternative was not used anywhere in the final content.`,
   },
@@ -1614,15 +1545,9 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 5: Bioeffects & Safety",
-
-    explanation: `Thermal bioeffects result mainly from absorption (a component of attenuation) raising tissue temperature. A rise of roughly 1C or less under typical diagnostic exposure conditions is generally not considered harmful  though no ultrasound exposure is completely risk-free, which is the basis of the ALARA principle.`,
+    explanation: `Thermal bioeffects result mainly from absorption (a component of attenuation) raising tissue temperature. A rise of roughly 1Â°C or less under typical diagnostic exposure conditions is generally not considered harmful â€” though no ultrasound exposure is completely risk-free, which is the basis of the ALARA principle.`,
     editorialStatus: "editorially_corrected",
-    editorialNote: `Fixed an apparent OCR/typo in the source ("10 rise in temperature" corrected to "1C"); original answer (D) already correct.`,
-
-    explanation: `Thermal bioeffects result mainly from absorption (a component of attenuation) raising tissue temperature. A rise of roughly 1C or less under typical diagnostic exposure conditions is generally not considered harmful  though no ultrasound exposure is completely risk-free, which is the basis of the ALARA principle.`,
-    editorialStatus: "editorially_corrected",
-    editorialNote: `Fixed an apparent OCR/typo in the source ("10 rise in temperature" corrected to "1C"); original answer (D) already correct.`,
-
+    editorialNote: `Fixed an apparent OCR/typo in the source ("10 rise in temperature" corrected to "1Â°C"); original answer (D) already correct.`,
   },
   {
     id: 106,
@@ -1663,21 +1588,13 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 2,
     domain: "Domain 4: Doppler & Hemodynamics",
-
-    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
-
-    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
-
+    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0Â°.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified wording; original answer (C) already correct.`,
   },
   {
     id: 109,
-
-    question: `In bio effect studies, the term In Vitro means:`,
-
-    question: `In bio effect studies, the term In Vitro means:`,
-
+    question: `In bio effect studies, the term â€œIn Vitroâ€ means:`,
     options: [
       `Zombie tissues replacing human tissues`,
       `Tissue cultures in a test tube`,
@@ -1819,17 +1736,10 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     id: 119,
     question: `The principle that describes the relationship between velocity (kinetic energy) and pressure in a moving fluid is called?`,
     options: [
-
-      `Ohms Principle`,
+      `Ohmâ€™s Principle`,
       `Doppler Principle`,
       `Bernoulli Principle`,
-      `Huygens Principle`,
-
-      `Ohms Principle`,
-      `Doppler Principle`,
-      `Bernoulli Principle`,
-      `Huygens Principle`,
-
+      `Huygensâ€™ Principle`,
     ],
     correctAnswer: 2,
     domain: "Domain 4: Doppler & Hemodynamics",
@@ -1987,11 +1897,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 4: Doppler & Hemodynamics",
-
-    explanation: `All three statements are consistent with the Doppler equation (f = 2fvcos / c): Doppler shift scales linearly with velocity, calculated velocity is independent of transducer frequency once the equation is solved for v, and the observed Doppler shift itself scales linearly with transmitted frequency.`,
-
-    explanation: `All three statements are consistent with the Doppler equation (f = 2fvcos / c): Doppler shift scales linearly with velocity, calculated velocity is independent of transducer frequency once the equation is solved for v, and the observed Doppler shift itself scales linearly with transmitted frequency.`,
-
+    explanation: `All three statements are consistent with the Doppler equation (Î”f = 2Â·fâ‚€Â·vÂ·cosÎ¸ / c): Doppler shift scales linearly with velocity, calculated velocity is independent of transducer frequency once the equation is solved for v, and the observed Doppler shift itself scales linearly with transmitted frequency.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Verified all three sub-statements are independently true and consistent with each other, so "all of the above" (D) is defensible as written; no change made.`,
   },
@@ -2119,11 +2025,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 2,
     domain: "Domain 4: Doppler & Hemodynamics",
-
-    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
-
-    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0.`,
-
+    explanation: `The Doppler shift is largest when the ultrasound beam is more parallel to flow (smaller angle of insonation), because the Doppler equation includes a cosine-of-angle term that approaches its maximum value (1) as the angle approaches 0Â°.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Duplicate of Q108 in the source bank; preserved as a separate record per instructions. Clarified wording; original answer (C) already correct.`,
   },
@@ -2152,11 +2054,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 4: Doppler & Hemodynamics",
-
-    explanation: `Color flow Doppler shows the existence of flow, its location, and its direction relative to the transducer, but it displays a mean/estimated velocity per pixel rather than a precise peak velocity  spectral Doppler is needed for that.`,
-
-    explanation: `Color flow Doppler shows the existence of flow, its location, and its direction relative to the transducer, but it displays a mean/estimated velocity per pixel rather than a precise peak velocity  spectral Doppler is needed for that.`,
-
+    explanation: `Color flow Doppler shows the existence of flow, its location, and its direction relative to the transducer, but it displays a mean/estimated velocity per pixel rather than a precise peak velocity â€” spectral Doppler is needed for that.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Clarified wording; original answer (D) already correct.`,
   },
@@ -2274,11 +2172,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
   },
   {
     id: 150,
-
-    question: `Bernoullis Principle?`,
-
-    question: `Bernoullis Principle?`,
-
+    question: `Bernoulliâ€™s Principle?`,
     options: [
       `Describes the relationship between velocity (kinetic energy) and pressure in a moving fluid`,
       `States that with a steady flow, the sum of all forms of energy remain constant everywhere.`,
@@ -2343,11 +2237,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
     ],
     correctAnswer: 3,
     domain: "Domain 4: Doppler & Hemodynamics",
-
-    explanation: `Continuous Wave (CW) Doppler uses two crystals transmitting and receiving simultaneously, so it has no way to time-gate returning echoes by depth. This means it lacks range resolution  it cannot isolate a specific sample depth  and cannot apply real-time-adjusted TGC, unlike Pulsed Wave Doppler. Its advantage is that it can measure very high velocities without aliasing.`,
-
-    explanation: `Continuous Wave (CW) Doppler uses two crystals transmitting and receiving simultaneously, so it has no way to time-gate returning echoes by depth. This means it lacks range resolution  it cannot isolate a specific sample depth  and cannot apply real-time-adjusted TGC, unlike Pulsed Wave Doppler. Its advantage is that it can measure very high velocities without aliasing.`,
-
+    explanation: `Continuous Wave (CW) Doppler uses two crystals transmitting and receiving simultaneously, so it has no way to time-gate returning echoes by depth. This means it lacks range resolution â€” it cannot isolate a specific sample depth â€” and cannot apply real-time-adjusted TGC, unlike Pulsed Wave Doppler. Its advantage is that it can measure very high velocities without aliasing.`,
     editorialStatus: "editorially_corrected",
     editorialNote: `Expanded explanation to lead with range resolution (the primary tested distinction between CW and PW Doppler) in addition to the TGC point already in the source; original answer (D) already correct.`,
   },
@@ -2367,11 +2257,7 @@ export const EXAM_QUESTIONS: ExamQuestion[] = [
   },
 ];
 
-
-//  VALIDATION / CONTENT AUDIT 
-
-//  VALIDATION / CONTENT AUDIT 
-
+// â”€â”€ VALIDATION / CONTENT AUDIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Validate all questions at module load time. This also functions as
 // the automated content audit required for this feature: it fails
 // loudly (throws) if the bank drifts from spec.
@@ -2443,11 +2329,7 @@ function validateExamQuestions(): void {
     }
   });
 
-
-  // The corrected-ID set must match EDITORIALLY_CORRECTED_IDS exactly 
-
-  // The corrected-ID set must match EDITORIALLY_CORRECTED_IDS exactly 
-
+  // The corrected-ID set must match EDITORIALLY_CORRECTED_IDS exactly â€”
   // no more, no fewer. This is the check that resolves the "14 vs 12"
   // ambiguity: it fails the build if any of the 14 mandatory IDs is
   // missing its correction, or if an ID outside that list is
@@ -2482,28 +2364,17 @@ function validateExamQuestions(): void {
 // Run validation at module load
 validateExamQuestions();
 
-
-//  COMPUTED DOMAIN INFO 
-
-//  COMPUTED DOMAIN INFO 
-
+// â”€â”€ COMPUTED DOMAIN INFO â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export const EXAM_DOMAIN_INFO = DOMAINS.map((domain) => ({
   value: domain,
   label: domain.split(": ")[1] || domain,
   count: EXAM_QUESTIONS.filter((q) => q.domain === domain).length,
 }));
 
-
-/** Total size of the full question bank (derive  never hardcode elsewhere). */
+/** Total size of the full question bank (derive â€” never hardcode elsewhere). */
 export const TOTAL_EXAM_QUESTIONS = EXAM_QUESTIONS.length;
 
-/** Number of distinct domains actually implemented  use this, not a hardcoded "6". */
-
-/** Total size of the full question bank (derive  never hardcode elsewhere). */
-export const TOTAL_EXAM_QUESTIONS = EXAM_QUESTIONS.length;
-
-/** Number of distinct domains actually implemented  use this, not a hardcoded "6". */
-
+/** Number of distinct domains actually implemented â€” use this, not a hardcoded "6". */
 export const TOTAL_EXAM_DOMAINS = DOMAINS.length;
 
 /** Client-safe question (no correct answer) */
@@ -2523,11 +2394,7 @@ export function toClientQuestions(
   }
 
   return questions.map(({ id, question, options, domain }) => {
-
-    //  FIXED: check that options IS an array (was incorrectly inverted)
-
-    //  FIXED: check that options IS an array (was incorrectly inverted)
-
+    // âœ… FIXED: check that options IS an array (was incorrectly inverted)
     if (!id || !question || !Array.isArray(options) || !domain) {
       throw new Error("toClientQuestions: malformed question object");
     }

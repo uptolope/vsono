@@ -57,8 +57,13 @@ function createWatermarkSvg(
     SONOGRAPHIC_PHYSICS_META.watermarkText,
   );
 
+
+  const patternWidth = Math.max(900, Math.round(width * 0.75));
+  const patternHeight = Math.max(520, Math.round(height * 0.30));
+
   const patternWidth = Math.max(520, Math.round(width * 0.45));
   const patternHeight = Math.max(260, Math.round(height * 0.16));
+
 
   const mainFontSize = Math.max(22, Math.round(width * 0.023));
   const secondaryFontSize = Math.max(18, Math.round(width * 0.018));
@@ -85,23 +90,31 @@ function createWatermarkSvg(
             x="20"
             y="${Math.round(patternHeight * 0.5)}"
             fill="#222222"
+
+            fill-opacity="0.055"
+
             fill-opacity="0.18"
+
             font-family="Arial, Helvetica, sans-serif"
             font-size="${mainFontSize}"
             font-weight="600"
           >
-            Licensed access · ${safeIdentifier}
+            Licensed access  ${safeIdentifier}
           </text>
 
           <text
             x="20"
             y="${Math.round(patternHeight * 0.68)}"
             fill="#222222"
+
+            fill-opacity="0.055"
+
             fill-opacity="0.18"
+
             font-family="Arial, Helvetica, sans-serif"
             font-size="${secondaryFontSize}"
           >
-            Page ${safePage} · ${safeDate}
+            Page ${safePage}  ${safeDate}
           </text>
         </pattern>
       </defs>
@@ -119,7 +132,11 @@ function createWatermarkSvg(
         y="${footerY}"
         text-anchor="middle"
         fill="#222222"
+
+        fill-opacity="0.28"
+
         fill-opacity="0.68"
+
         font-family="Arial, Helvetica, sans-serif"
         font-size="${footerFontSize}"
       >

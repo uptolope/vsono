@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -125,7 +125,11 @@ export default function SonographicPhysicsViewerPage() {
   if (state.status === "loading") {
     return (
       <Centered>
-        <p className="text-[#8a8279] text-sm">Loading viewerâ€¦</p>
+
+        <p className="text-[#8a8279] text-sm">Loading viewer...</p>
+
+        <p className="text-[#8a8279] text-sm">Loading viewer</p>
+
       </Centered>
     );
   }
@@ -142,7 +146,11 @@ export default function SonographicPhysicsViewerPage() {
         </p>
 
         <Link href="/login" className="btn-industrial px-6 py-3 text-[10px]">
-          SIGN IN â†’
+
+          SIGN IN 
+
+          SIGN IN 
+
         </Link>
       </Centered>
     );
@@ -163,7 +171,11 @@ export default function SonographicPhysicsViewerPage() {
           href="/products"
           className="btn-industrial px-6 py-3 text-[10px]"
         >
-          VIEW PRODUCTS â†’
+
+          VIEW PRODUCTS 
+
+          VIEW PRODUCTS 
+
         </Link>
       </Centered>
     );
@@ -206,7 +218,11 @@ export default function SonographicPhysicsViewerPage() {
             }
             aria-label="Zoom out"
           >
-            âˆ’
+
+            
+
+            
+
           </button>
 
           <span className="w-12 text-center text-xs text-[#8a8279]">
@@ -245,7 +261,11 @@ export default function SonographicPhysicsViewerPage() {
         >
           {imgLoading && !imgError && (
             <div className="absolute inset-0 z-10 flex items-center justify-center">
-              <p className="text-sm text-[#8a8279]">Loading pageâ€¦</p>
+
+              <p className="text-sm text-[#8a8279]">Loading page...</p>
+
+              <p className="text-sm text-[#8a8279]">Loading page</p>
+
             </div>
           )}
 
@@ -261,7 +281,11 @@ export default function SonographicPhysicsViewerPage() {
           <img
             key={page}
             src={pageImageSource}
-            alt={`${meta.shortTitle} â€” page ${page}`}
+
+            alt={`${meta.shortTitle} - page ${page}`}
+
+            alt={`${meta.shortTitle}  page ${page}`}
+
             draggable={false}
             onLoad={() => {
               setImgLoading(false);
@@ -283,7 +307,11 @@ export default function SonographicPhysicsViewerPage() {
           onClick={() => goTo(page - 1, meta.pageCount)}
           disabled={page <= 1}
         >
-          â† PREV
+
+           PREV
+
+           PREV
+
         </button>
 
         <label htmlFor="study-notes-page" className="sr-only">
@@ -312,7 +340,11 @@ export default function SonographicPhysicsViewerPage() {
           onClick={() => goTo(page + 1, meta.pageCount)}
           disabled={page >= meta.pageCount}
         >
-          NEXT â†’
+
+          NEXT 
+
+          NEXT 
+
         </button>
       </footer>
     </div>
