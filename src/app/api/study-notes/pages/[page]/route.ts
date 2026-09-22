@@ -44,42 +44,15 @@ function escapeXml(value: string): string {
 }
 
 function createWatermarkSvg(
-  identifier: string,
-  pageNumber: number,
-  accessDate: string,
   width: number,
   height: number,
 ): Buffer {
-  const safeIdentifier = escapeXml(identifier);
-  const safeDate = escapeXml(accessDate);
-  const safePage = escapeXml(String(pageNumber));
-  const safeWatermarkText = escapeXml(
-    SONOGRAPHIC_PHYSICS_META.watermarkText,
-  );
+  // Simple semi-transparent footer bar only (no text rendering issues)
+  const barHeight = Math.max(40, Math.round(height * 0.04));
 
-  // Footer positioning
-  const footerY = Math.max(60, height - Math.round(height * 0.035));
-  const footerFontSize = Math.max(16, Math.round(width * 0.016));
-
-  // Simple footer-only watermark (no diagonal pattern)
   return Buffer.from(`
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="${width}"
-      height="${height}"
-      viewBox="0 0 ${width} ${height}"
-    >
-      <text
-        x="${Math.round(width / 2)}"
-        y="${footerY}"
-        text-anchor="middle"
-        fill="#666666"
-        fill-opacity="0.5"
-        font-family="serif"
-        font-size="${footerFontSize}"
-      >
-        ${safeWatermarkText}
-      </text>
+    <svg xmlns="http://www.w3.org/2000/svg" width="\${width}" height="\${height}" viewBox="0 0 \${width} \${height}">
+      <rect x="0" y="\${height - barHeight}" width="\${width}" height="\${barHeight}" fill="#f0f0f0" opacity="0.08"/>
     </svg>
   `);
 }
@@ -110,7 +83,7 @@ export async function GET(
     return jsonError({ error: "Invalid page number" }, 400);
   }
 
-  const limit = await rateLimit(`study-notes-pages:${userId}`, {
+  const limit = await rateLimit(`study-notes-pages:\${userId}`, {
     limit: 300,
     windowMs: 60_000,
   });
@@ -194,17 +167,7 @@ export async function GET(
       return jsonError({ error: "Invalid image" }, 500);
     }
 
-    /*
-     * Use the verified session identity.
-     * Never use a client-supplied identifier for the watermark.
-     */
-    const accountIdentifier = user.email ?? userId;
-    const accessDate = new Date().toISOString().slice(0, 10);
-
     const watermarkSvg = createWatermarkSvg(
-      accountIdentifier,
-      pageNum,
-      accessDate,
       metadata.width,
       metadata.height,
     );
