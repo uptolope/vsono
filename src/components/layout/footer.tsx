@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import { Linkedin, Instagram } from "lucide-react";
 
 const FOOTER_LINKS = [
   { href: "/products", label: "Products" },
@@ -6,6 +7,19 @@ const FOOTER_LINKS = [
   { href: "/blog", label: "Blog" },
   { href: "/terms", label: "Terms" },
   { href: "/privacy", label: "Privacy" },
+];
+
+const SOCIAL_LINKS = [
+  {
+    href: "https://www.linkedin.com/groups/42841070/",
+    label: "LinkedIn",
+    icon: Linkedin,
+  },
+  {
+    href: "https://www.instagram.com/sonoprep/",
+    label: "Instagram",
+    icon: Instagram,
+  },
 ];
 
 export function Footer() {
@@ -34,12 +48,28 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="border-t border-white/[0.04] pt-6 text-center">
-          <p className="meta text-[9px] text-[#2e2b27]">
-            © {new Date().getFullYear()} SonoPrep. All content is original and
-            copyright protected. SonoPrep is not affiliated with or endorsed by
-            ARDMS. SPI® is a registered trademark of ARDMS.
-          </p>
+        <div className="border-t border-white/[0.04] pt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <p className="meta text-[9px] text-[#2e2b27]">
+              © {new Date().getFullYear()} SonoPrep. All content is original and
+              copyright protected. SonoPrep is not affiliated with or endorsed by
+              ARDMS. SPI® is a registered trademark of ARDMS.
+            </p>
+            <div className="flex gap-4">
+              {SOCIAL_LINKS.map(({ href, label, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="text-[#8a8279] hover:text-white transition-colors"
+                >
+                  <Icon size={18} />
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </footer>
