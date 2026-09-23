@@ -1,7 +1,7 @@
-﻿import { ImageResponse } from "next/og";
+import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "SonoPrep — Pass the ARDMS SPI Exam";
+export const alt = "SonoPrep — ARDMS SPI Exam Preparation";
 export const size = {
   width: 1200,
   height: 630,
@@ -56,8 +56,7 @@ export default function Image() {
             maxWidth: 850,
           }}
         >
-          Built specifically to help sonography students pass on their first
-          attempt.
+          Comprehensive ARDMS SPI exam preparation tools for sonography students.
         </div>
       </div>
     ),

@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Providers from "./providers";
 import StructuredData from "@/components/StructuredData";
 import "./globals.css";
@@ -6,7 +6,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://sonoprep.com"),
   title: {
-    default: "SonoPrep - Pass the ARDMS SPI Exam on Your First Attempt",
+    default: "SonoPrep - ARDMS SPI Exam Preparation",
     template: "%s | SonoPrep",
   },
   description:
@@ -19,12 +19,12 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://sonoprep.com",
     siteName: "SonoPrep",
-    title: "SonoPrep - Pass the ARDMS SPI Exam on Your First Attempt",
+    title: "SonoPrep - ARDMS SPI Exam Preparation",
     description:
       "Master the ARDMS SPI exam with high-yield physics questions, mock exams, flashcards, and ultrasound physics study tools.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "SonoPrep ARDMS SPI Exam Preparation",
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SonoPrep - Pass the ARDMS SPI Exam",
+    title: "SonoPrep - ARDMS SPI Exam Preparation",
     description: "Prepare for the ARDMS SPI exam with SonoPrep study tools.",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image.png"],
   },
 };
 
