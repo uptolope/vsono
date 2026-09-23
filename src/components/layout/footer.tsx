@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Linkedin, Instagram } from "lucide-react";
+import { Linkedin, Instagram as InstagramIcon } from "lucide-react";
 
 const FOOTER_LINKS = [
   { href: "/products", label: "Products" },
@@ -18,7 +18,7 @@ const SOCIAL_LINKS = [
   {
     href: "https://www.instagram.com/sonoprep/",
     label: "Instagram",
-    icon: Instagram,
+    icon: InstagramIcon,
   },
 ];
 
