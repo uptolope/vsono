@@ -1,102 +1,86 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-interface ProtectedContentState<T> {
-  status: 'idle' | 'loading' | 'success' | 'error' | 'unauthenticated' | 'unauthorized';
-  data: T;
-  message?: string;
-}
+export type ContentState<T> =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { status: 'unauthenticated' }
+  | { status: 'unauthorized' }
+  | { status: 'error'; message: string }
+  | { status: 'success'; data: T };
 
-/**
- * Hook to fetch and manage protected content with access control.
- * Handles authentication, authorization, and access logging.
- */
 export function useProtectedContent<T>(
-  contentType: 'EXAM_SIMULATOR' | 'STUDY_NOTES' | 'FLASHCARDS',
-  shouldFetch: boolean = true,
+  product: string,
+  enabled = true,
 ) {
-  const { data: session, status: sessionStatus } = useSession();
-  const [state, setState] = useState<ProtectedContentState<T>>({
+  const { status: sessionStatus } = useSession();
+
+  const [state, setState] = useState<ContentState<T>>({
     status: 'idle',
-    data: {} as T,
   });
 
-  const refetch = () => {
-    if (shouldFetch && session?.user) {
-      fetchProtectedContent();
-    }
-  };
+  const hasFetchedRef = useRef(false);
 
-  const fetchProtectedContent = async () => {
-    if (!session?.user) {
-      setState({
-        status: 'unauthenticated',
-        data: {} as T,
-        message: 'Please sign in to access this content.',
-      });
-      return;
-    }
-
-    setState({ status: 'loading', data: {} as T });
+  const fetchContent = useCallback(async () => {
+    hasFetchedRef.current = true;
+    setState({ status: 'loading' });
 
     try {
-      const endpoint = `/api/protected/\${contentType.toLowerCase()}`;
-      const res = await fetch(endpoint, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      });
-
-      // Log access for audit trail
-      console.log(`[Protected Content] Fetching \${contentType} for \${session.user.email}`);
+      const res = await fetch(`/api/content/${product}`);
 
       if (res.status === 401) {
-        setState({
-          status: 'unauthenticated',
-          data: {} as T,
-          message: 'Your session has expired. Please sign in again.',
-        });
+        setState({ status: 'unauthenticated' });
         return;
       }
 
       if (res.status === 403) {
-        setState({
-          status: 'unauthorized',
-          data: {} as T,
-          message: 'You do not have access to this content.',
-        });
+        setState({ status: 'unauthorized' });
         return;
       }
 
       if (!res.ok) {
-        throw new Error(`HTTP \${res.status}`);
+        setState({
+          status: 'error',
+          message: 'Failed to load content. Please try again.',
+        });
+        return;
       }
 
       const data = (await res.json()) as T;
-      setState({
-        status: 'success',
-        data,
-      });
-    } catch (error) {
+      setState({ status: 'success', data });
+    } catch {
       setState({
         status: 'error',
-        data: {} as T,
-        message: error instanceof Error ? error.message : 'Failed to load content.',
+        message:
+          'Network error. Please check your connection and try again.',
       });
     }
-  };
+  }, [product]);
 
   useEffect(() => {
-    if (shouldFetch && session?.user) {
-      fetchProtectedContent();
+    if (!enabled) {
+      hasFetchedRef.current = false;
+      return;
     }
-  }, [shouldFetch, session?.user]);
+
+    if (sessionStatus === 'unauthenticated') {
+      setState({ status: 'unauthenticated' });
+      return;
+    }
+
+    if (
+      sessionStatus === 'authenticated' &&
+      !hasFetchedRef.current
+    ) {
+      fetchContent();
+    }
+  }, [sessionStatus, enabled, fetchContent]);
 
   return {
     state,
-    refetch,
+    refetch: fetchContent,
     sessionStatus,
-    user: session?.user,
   };
 }
