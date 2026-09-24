@@ -10,6 +10,7 @@ interface ProtectedContentProps {
   disableSelection?: boolean;
   disableRightClick?: boolean;
   showWatermark?: boolean;
+  watermarkText?: string;
 }
 
 export function ProtectedContent({
@@ -20,6 +21,7 @@ export function ProtectedContent({
   disableSelection = true,
   disableRightClick = true,
   showWatermark = true,
+  watermarkText = 'SONOPREP LICENSED CONTENT',
 }: ProtectedContentProps) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -83,9 +85,7 @@ export function ProtectedContent({
             lineHeight: '1.2',
           }}
         >
-          {userName}
-          <br />
-          {userId}
+          {watermarkText}
         </div>
       )}
 

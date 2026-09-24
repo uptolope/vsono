@@ -1,7 +1,5 @@
 'use client';
 
-'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -228,6 +226,7 @@ export default function StudyNotesPage() {
             contentType="STUDY_NOTES"
             userId={session?.user?.email || 'user'}
             userName={session?.user?.name || 'User'}
+            watermarkText="SONOPREP LICENSED CONTENT"
             showWatermark={true}
             disableRightClick={true}
             disableSelection={true}
