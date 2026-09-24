@@ -6,13 +6,27 @@ import styles from './ProtectedContent.module.css';
 interface ProtectedContentProps {
   children: React.ReactNode;
   watermarkText?: string;
+  contentType?: string;
+  userId?: string;
+  userName?: string;
+  showWatermark?: boolean;
+  disableRightClick?: boolean;
+  disableSelection?: boolean;
 }
 
 export const ProtectedContent: React.FC<ProtectedContentProps> = ({
   children,
   watermarkText = 'PROTECTED CONTENT',
+  contentType,
+  userId,
+  userName,
+  showWatermark = true,
+  disableRightClick = true,
+  disableSelection = true,
 }) => {
   useEffect(() => {
+    if (!disableRightClick) return;
+
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
       return false;
@@ -51,12 +65,19 @@ export const ProtectedContent: React.FC<ProtectedContentProps> = ({
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('dragstart', handleDragStart);
     };
-  }, []);
+  }, [disableRightClick]);
 
   return (
     <div className={styles.protectedContainer}>
-      <div className={styles.watermark}>{watermarkText}</div>
-      <div className={styles.content} onContextMenu={(e) => e.preventDefault()}>
+      {showWatermark && (
+        <div className={styles.watermark}>{watermarkText}</div>
+      )}
+      <div 
+        className={disableSelection ? styles.contentNoSelect : styles.content}
+        onContextMenu={(e) => {
+          if (disableRightClick) e.preventDefault();
+        }}
+      >
         {children}
       </div>
       <div className={styles.antiScreenshotOverlay} />
