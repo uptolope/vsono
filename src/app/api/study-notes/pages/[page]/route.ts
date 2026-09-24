@@ -51,9 +51,9 @@ function createWatermarkSvg(
   const barHeight = Math.max(40, Math.round(height * 0.04));
 
   return Buffer.from(`
-    <svg xmlns="http://www.w3.org/2000/svg" width="\${width}" height="\${height}" viewBox="0 0 \${width} \${height}">
-      <rect x="0" y="\${height - barHeight}" width="\${width}" height="\${barHeight}" fill="#f0f0f0" opacity="0.08"/>
-    </svg>
+<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="${height - barHeight}" width="${width}" height="${barHeight}" fill="rgba(0,0,0,0.05)"/>
+  </svg>
   `);
 }
 
@@ -75,7 +75,6 @@ export async function GET(
   if (!userId) {
     return jsonError({ error: "Unauthorized" }, 401);
   }
-
   const { page: rawPage } = await params;
   const pageNum = parsePageParam(rawPage);
 
@@ -83,7 +82,7 @@ export async function GET(
     return jsonError({ error: "Invalid page number" }, 400);
   }
 
-  const limit = await rateLimit(`study-notes-pages:\${userId}`, {
+  const limit = await rateLimit(`study-notes-pages:${userId}`, {
     limit: 300,
     windowMs: 60_000,
   });
