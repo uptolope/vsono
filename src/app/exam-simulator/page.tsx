@@ -1,9 +1,9 @@
-﻿
-
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { ProtectedContent } from '@/components/protected-content';
 import { useProtectedContent } from '@/lib/hooks/useProtectedContent';
 import type { ClientExamQuestion } from '@/lib/content/exam-types';
 
@@ -83,6 +83,7 @@ function clearStoredProgress(): void {
 }
 
 export default function ExamSimulatorPage() {
+  const { data: session } = useSession();
   const [hasConfirmedExamStart, setHasConfirmedExamStart] = useState(false);
   const [acknowledgedExamWarning, setAcknowledgedExamWarning] =
     useState(false);
@@ -562,31 +563,44 @@ useEffect(() => {
           </p>
         </div>
 
-        <div className="depth-border corner-arch p-8">
-          <h2 className="display-serif text-lg font-semibold text-white mb-6 leading-relaxed">
-            {question.question}
-          </h2>
+        {/* PROTECTED CONTENT WRAPPER - START */}
+        <ProtectedContent
+          contentType="EXAM"
+          userId={session?.user?.email || 'user'}
+          userName={session?.user?.name || 'User'}
+          showWatermark={true}
+          disableRightClick={true}
+          disableSelection={true}
+        >
+          <div className="depth-border corner-arch p-8">
+            <h2 className="display-serif text-lg font-semibold text-white mb-6 leading-relaxed">
+              {question.question}
+            </h2>
 
-          <div className="space-y-3 mb-6">
-            {question.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleSelect(index)}
-                className={`w-full text-left px-5 py-4 border rounded transition-colors text-sm text-[#c2bab0] hover:border-[#c85b3a]/30 ${
-                  selected === index
-                    ? 'border-[#c85b3a]/50 bg-[#c85b3a]/[0.08]'
-                    : 'border-white/[0.06] bg-transparent'
-                }`}
-              >
-                <span className="text-[#4a453f] mr-3 meta text-[10px]">
-                  {String.fromCharCode(65 + index)}
-                </span>
+            <div className="space-y-3 mb-6">
+              {question.options.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSelect(index)}
+                  className={`w-full text-left px-5 py-4 border rounded transition-colors text-sm text-[#c2bab0] hover:border-[#c85b3a]/30 ${
+                    selected === index
+                      ? 'border-[#c85b3a]/50 bg-[#c85b3a]/[0.08]'
+                      : 'border-white/[0.06] bg-transparent'
+                  }`}
+                >
+                  <span className="text-[#4a453f] mr-3 meta text-[10px]">
+                    {String.fromCharCode(65 + index)}
+                  </span>
 
-                {option}
-              </button>
-            ))}
+                  {option}
+                </button>
+              ))}
+            </div>
           </div>
+        </ProtectedContent>
+        {/* PROTECTED CONTENT WRAPPER - END */}
 
+        <div className="depth-border corner-arch p-8 mt-6">
           <div className="flex items-center justify-between gap-3">
             <button
               onClick={() => goTo(currentIndex - 1)}
@@ -746,4 +760,3 @@ function Centered({
     </div>
   );
 }
-

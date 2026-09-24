@@ -1,9 +1,11 @@
-﻿'use client';
+'use client';
 
 'use client';
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { ProtectedContent } from '@/components/protected-content';
 import { useProtectedContent } from '@/lib/hooks/useProtectedContent';
 import type { StudySection } from '@/lib/content/study-notes-data';
 import { SONOGRAPHIC_PHYSICS_META } from '@/lib/content/sonographic-physics';
@@ -14,6 +16,7 @@ interface StudyNotesResponse {
 }
 
 export default function StudyNotesPage() {
+  const { data: session } = useSession();
   const { state, refetch } =
     useProtectedContent<StudyNotesResponse>('STUDY_NOTES');
 
@@ -209,7 +212,7 @@ export default function StudyNotesPage() {
               <button
                 key={section.id}
                 onClick={() => setActiveSectionId(section.id)}
-                className={`text-left px-4 py-2.5 rounded text-sm whitespace-nowrap md:whitespace-normal transition-colors ${
+                className={`text-left px-4 py-2.5 rounded text-sm whitespace-nowrap md:whitespace-normal transition-colors \${
                   activeSection.id === section.id
                     ? 'bg-[#c85b3a]/10 text-[#c85b3a]'
                     : 'text-[#8a8279] hover:text-white'
@@ -220,87 +223,98 @@ export default function StudyNotesPage() {
             ))}
           </nav>
 
-          <div className="space-y-6 min-w-0">
-            {activeSection.cards.map((card, index) => (
-              <div key={index} className="border border-white/[0.06] rounded p-6">
-                <h3 className="display-serif text-lg font-semibold text-white mb-1">
-                  {card.title}
-                </h3>
+          {/* PROTECTED CONTENT WRAPPER - START */}
+          <ProtectedContent
+            contentType="STUDY_NOTES"
+            userId={session?.user?.email || 'user'}
+            userName={session?.user?.name || 'User'}
+            showWatermark={true}
+            disableRightClick={true}
+            disableSelection={true}
+          >
+            <div className="space-y-6 min-w-0">
+              {activeSection.cards.map((card, index) => (
+                <div key={index} className="border border-white/[0.06] rounded p-6">
+                  <h3 className="display-serif text-lg font-semibold text-white mb-1">
+                    {card.title}
+                  </h3>
 
-                <p className="meta text-[9px] text-[#4a453f] mb-4">
-                  {card.subtitle}
-                </p>
+                  <p className="meta text-[9px] text-[#4a453f] mb-4">
+                    {card.subtitle}
+                  </p>
 
-                <ul className="space-y-2 mb-4">
-                  {card.bullets.map((bullet, bulletIndex) => (
-                    <li
-                      key={bulletIndex}
-                      className="body-small text-[#c2bab0] text-sm leading-relaxed flex gap-2"
+                  <ul className="space-y-2 mb-4">
+                    {card.bullets.map((bullet, bulletIndex) => (
+                      <li
+                        key={bulletIndex}
+                        className="body-small text-[#c2bab0] text-sm leading-relaxed flex gap-2"
+                      >
+                        <span className="text-[#c85b3a] shrink-0"></span>
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {card.formulas.map((formula, formulaIndex) => (
+                    <div
+                      key={formulaIndex}
+                      className="bg-white/[0.02] border border-white/[0.06] rounded p-4 mb-3"
                     >
-                      <span className="text-[#c85b3a] shrink-0"></span>
-                      <span>{bullet}</span>
-                    </li>
+                      <p className="meta text-[9px] text-[#c85b3a] mb-1">
+                        {formula.title}
+                      </p>
+
+                      <p className="text-white text-sm font-mono mb-2">
+                        {formula.formula}
+                      </p>
+
+                      <p className="body-small text-[#8a8279] text-xs leading-relaxed">
+                        {formula.explanation}
+                      </p>
+                    </div>
                   ))}
-                </ul>
 
-                {card.formulas.map((formula, formulaIndex) => (
-                  <div
-                    key={formulaIndex}
-                    className="bg-white/[0.02] border border-white/[0.06] rounded p-4 mb-3"
-                  >
-                    <p className="meta text-[9px] text-[#c85b3a] mb-1">
-                      {formula.title}
-                    </p>
-
-                    <p className="text-white text-sm font-mono mb-2">
-                      {formula.formula}
-                    </p>
-
-                    <p className="body-small text-[#8a8279] text-xs leading-relaxed">
-                      {formula.explanation}
-                    </p>
-                  </div>
-                ))}
-
-                {card.tables.map((table, tableIndex) => (
-                  <div key={tableIndex} className="overflow-x-auto">
-                    <table className="w-full text-sm mt-2">
-                      <thead>
-                        <tr>
-                          {table.headers.map((header, headerIndex) => (
-                            <th
-                              key={headerIndex}
-                              className="text-left meta text-[9px] text-[#4a453f] pb-2 pr-4"
-                            >
-                              {header}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-
-                      <tbody>
-                        {table.rows.map((row, rowIndex) => (
-                          <tr
-                            key={rowIndex}
-                            className="border-t border-white/[0.06]"
-                          >
-                            {row.map((cell, cellIndex) => (
-                              <td
-                                key={cellIndex}
-                                className="text-[#c2bab0] py-2 pr-4"
+                  {card.tables.map((table, tableIndex) => (
+                    <div key={tableIndex} className="overflow-x-auto">
+                      <table className="w-full text-sm mt-2">
+                        <thead>
+                          <tr>
+                            {table.headers.map((header, headerIndex) => (
+                              <th
+                                key={headerIndex}
+                                className="text-left meta text-[9px] text-[#4a453f] pb-2 pr-4"
                               >
-                                {cell}
-                              </td>
+                                {header}
+                              </th>
                             ))}
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
+                        </thead>
+
+                        <tbody>
+                          {table.rows.map((row, rowIndex) => (
+                            <tr
+                              key={rowIndex}
+                              className="border-t border-white/[0.06]"
+                            >
+                              {row.map((cell, cellIndex) => (
+                                <td
+                                  key={cellIndex}
+                                  className="text-[#c2bab0] py-2 pr-4"
+                                >
+                                  {cell}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </ProtectedContent>
+          {/* PROTECTED CONTENT WRAPPER - END */}
         </div>
       </div>
     </div>

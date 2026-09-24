@@ -1,86 +1,102 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-export type ContentState<T> =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { status: 'unauthenticated' }
-  | { status: 'unauthorized' }
-  | { status: 'error'; message: string }
-  | { status: 'success'; data: T };
+interface ProtectedContentState<T> {
+  status: 'idle' | 'loading' | 'success' | 'error' | 'unauthenticated' | 'unauthorized';
+  data: T;
+  message?: string;
+}
 
+/**
+ * Hook to fetch and manage protected content with access control.
+ * Handles authentication, authorization, and access logging.
+ */
 export function useProtectedContent<T>(
-  product: string,
-  enabled = true,
+  contentType: 'EXAM_SIMULATOR' | 'STUDY_NOTES' | 'FLASHCARDS',
+  shouldFetch: boolean = true,
 ) {
-  const { status: sessionStatus } = useSession();
-
-  const [state, setState] = useState<ContentState<T>>({
+  const { data: session, status: sessionStatus } = useSession();
+  const [state, setState] = useState<ProtectedContentState<T>>({
     status: 'idle',
+    data: {} as T,
   });
 
-  const hasFetchedRef = useRef(false);
+  const refetch = () => {
+    if (shouldFetch && session?.user) {
+      fetchProtectedContent();
+    }
+  };
 
-  const fetchContent = useCallback(async () => {
-    hasFetchedRef.current = true;
-    setState({ status: 'loading' });
+  const fetchProtectedContent = async () => {
+    if (!session?.user) {
+      setState({
+        status: 'unauthenticated',
+        data: {} as T,
+        message: 'Please sign in to access this content.',
+      });
+      return;
+    }
+
+    setState({ status: 'loading', data: {} as T });
 
     try {
-      const res = await fetch(`/api/content/${product}`);
+      const endpoint = `/api/protected/\${contentType.toLowerCase()}`;
+      const res = await fetch(endpoint, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      // Log access for audit trail
+      console.log(`[Protected Content] Fetching \${contentType} for \${session.user.email}`);
 
       if (res.status === 401) {
-        setState({ status: 'unauthenticated' });
-        return;
-      }
-
-      if (res.status === 403) {
-        setState({ status: 'unauthorized' });
-        return;
-      }
-
-      if (!res.ok) {
         setState({
-          status: 'error',
-          message: 'Failed to load content. Please try again.',
+          status: 'unauthenticated',
+          data: {} as T,
+          message: 'Your session has expired. Please sign in again.',
         });
         return;
       }
 
+      if (res.status === 403) {
+        setState({
+          status: 'unauthorized',
+          data: {} as T,
+          message: 'You do not have access to this content.',
+        });
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(`HTTP \${res.status}`);
+      }
+
       const data = (await res.json()) as T;
-      setState({ status: 'success', data });
-    } catch {
+      setState({
+        status: 'success',
+        data,
+      });
+    } catch (error) {
       setState({
         status: 'error',
-        message:
-          'Network error. Please check your connection and try again.',
+        data: {} as T,
+        message: error instanceof Error ? error.message : 'Failed to load content.',
       });
     }
-  }, [product]);
+  };
 
   useEffect(() => {
-    if (!enabled) {
-      hasFetchedRef.current = false;
-      return;
+    if (shouldFetch && session?.user) {
+      fetchProtectedContent();
     }
-
-    if (sessionStatus === 'unauthenticated') {
-      setState({ status: 'unauthenticated' });
-      return;
-    }
-
-    if (
-      sessionStatus === 'authenticated' &&
-      !hasFetchedRef.current
-    ) {
-      fetchContent();
-    }
-  }, [sessionStatus, enabled, fetchContent]);
+  }, [shouldFetch, session?.user]);
 
   return {
     state,
-    refetch: fetchContent,
+    refetch,
     sessionStatus,
+    user: session?.user,
   };
 }

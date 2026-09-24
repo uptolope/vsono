@@ -1,0 +1,1 @@
+export { ProtectedContent } from './ProtectedContent';
