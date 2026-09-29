@@ -10,7 +10,7 @@ read: "20 min read"
 
 _April 18, 2026 · 20 min read_
 
-Apply Doppler Concepts is the largest domain on the SPI exam, accounting for roughly 34% of the test — more than a third of all 110 questions. If you're going to over-invest your study time anywhere, this is where. This guide walks through the concepts that show up most often, in the order they tend to build on each other.
+Apply Doppler Concepts is the largest domain on the SPI exam, accounting for roughly 34% of the test — more than a third of the exam's questions. If you're going to over-invest your study time anywhere, this is where. This guide walks through the concepts that show up most often, in the order they tend to build on each other.
 
 ## The Doppler equation and Doppler shift
 

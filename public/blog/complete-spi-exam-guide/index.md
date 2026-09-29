@@ -18,7 +18,7 @@ The SPI exam covers the physics and instrumentation that underlie all diagnostic
 
 ## Exam format at a glance
 
-- 110 multiple-choice questions, administered over a two-hour session that includes a short tutorial and a brief post-exam survey.
+- approximately 110 multiple-choice questions, administered over a two-hour session that includes a short tutorial and a brief post-exam survey.
 - Scores are reported on a scaled range, with a passing score of approximately 555 out of 700.
 - The exam is administered at Pearson VUE testing centers, with online proctoring available for candidates who meet the technical and environmental requirements.
 - A basic on-screen calculator is provided — you cannot bring your own calculator into the testing room.
@@ -37,7 +37,7 @@ ARDMS publishes a content outline that breaks the exam into five domains, each w
 | 26% |
 | 4. Apply Doppler Concepts |
 | 34% |
-| 5. Provide Clinical Safety &amp; Quality Assurance |
+| 5. Clinical Safety &amp; Quality Assurance |
 | 10% |
 Notice that Domains 3 and 4 — image optimization and Doppler — together make up 60% of the exam. For a deeper breakdown of each domain, see our
 
@@ -62,7 +62,7 @@ Artifacts appear primarily within Domain 1 (Perform Ultrasound Examinations) but
 
 ## Clinical safety and quality assurance
 
-At 10%, Provide Clinical Safety & Quality Assurance is the smallest domain after transducers, and it's also the most memorization-friendly — infection control protocols, QA documentation, transducer and machine integrity checks, gray-scale QA testing with tissue-mimicking phantoms, and statistical concepts like sensitivity and specificity. This domain is a strong candidate for flashcard-based review rather than deep conceptual study.
+At 10%, Clinical Safety & Quality Assurance is the smallest domain after transducers, and it's also the most memorization-friendly — infection control protocols, QA documentation, transducer and machine integrity checks, gray-scale QA testing with tissue-mimicking phantoms, and statistical concepts like sensitivity and specificity. This domain is a strong candidate for flashcard-based review rather than deep conceptual study.
 
 ## A study plan that matches the exam's actual weighting
 

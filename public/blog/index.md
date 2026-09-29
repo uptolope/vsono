@@ -18,11 +18,11 @@ The definitive guide to the SPI exam. Covers what the exam tests, the five domai
 
 ---
 
-## [ARDMS SPI Exam Blueprint: Domain Weightings Explained](https://sonoprep.com/blog/ardms-exam-blueprint)
+## [ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained](https://sonoprep.com/blog/ardms-exam-blueprint)
 
 _April 26, 2026 · 17 min read_
 
-A deep dive into the official ARDMS SPI content outline — exactly how many questions come from each domain, what subtopics within each domain are tested, and how to weight your study time accordingly.
+A deep dive into the official ARDMS SPI Content Outline V24.1 — domain weightings, tested subtopics, and how to weight your study time accordingly.
 
 ---
 
@@ -70,7 +70,7 @@ The neuroscience of spaced repetition and why it works better than re-reading fo
 
 _March 14, 2026 · 11 min read_
 
-Practical strategies for the exam itself: how to parse ARDMS-style question stems, how to systematically eliminate distractor answers, pacing through 110 questions in 2.5 hours, and how to handle questions where two answers look equally correct.
+Practical strategies for the exam itself: how to parse ARDMS-style question stems, how to systematically eliminate distractor answers, pacing through approximately 110 questions over two hours, and how to handle questions where two answers look equally correct.
 
 ---
 

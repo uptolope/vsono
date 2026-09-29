@@ -1,6 +1,6 @@
 ---
 title: "SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time"
-description: "How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage 110 questions in two hours."
+description: "How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage approximately 110 questions over two hours."
 url: "https://sonoprep.com/blog/test-taking-strategies-spi"
 date: "March 14, 2026"
 read: "11 min read"
@@ -14,7 +14,7 @@ Knowing the physics is necessary but not sufficient. The SPI exam is also a test
 
 ## Know the format going in
 
-The SPI exam consists of **110 multiple-choice questions**, administered over a **two-hour** window that includes a brief tutorial and a post-exam survey. That works out to roughly a minute per question on average — but not every question takes the same amount of time, so averages can be misleading if you plan around them too literally.
+The SPI exam consists of **approximately 110 multiple-choice questions**, administered over a **two-hour** window that includes a brief tutorial and a post-exam survey. That works out to roughly a minute per question on average — but not every question takes the same amount of time, so averages can be misleading if you plan around them too literally.
 Note: a small number of questions on any given exam form may be unscored pretest items. You won't know which ones, so treat every question as if it counts.
 
 ## Pace in passes, not question-by-question
@@ -47,4 +47,4 @@ It's a well-documented pattern across standardized tests: when students change a
 ## Manage the clock without obsessing over it
 
 Checking the clock constantly creates its own anxiety and eats into your actual thinking time. A reasonable approach is to do a small number of time checks — for example, confirming you've completed roughly a third of the exam by the time a third of your time has passed, and again at the halfway and two-thirds marks. If you're behind at one of these checkpoints, that's the signal to move faster on remaining questions in your current pass, not to panic.
-The most reliable way to internalize pacing is to practice it — taking full-length, timed practice exams under realistic conditions builds the instinct for how long a "first pass" question should take versus a "final pass" question, so it becomes automatic rather than something you're consciously managing on test day. SonoPrep's exam simulator runs on the same 110-question, two-hour format so your practice pacing matches the real thing.
+The most reliable way to internalize pacing is to practice it — taking full-length, timed practice exams under realistic conditions builds the instinct for how long a "first pass" question should take versus a "final pass" question, so it becomes automatic rather than something you're consciously managing on test day. SonoPrep's exam simulator runs on the same approximately 110-question, two-hour format so your practice pacing matches the real thing.

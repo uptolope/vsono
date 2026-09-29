@@ -98,7 +98,7 @@ export default function Page() {
         Week 6: Clinical Safety &amp; QA, plus full review
       </h2>
       <p>
-        Start the week with Domain 5 (Provide Clinical Safety &amp; Quality
+        Start the week with Domain 5 (Clinical Safety &amp; Quality
         Assurance, 10%) — infection control, QA documentation, transducer and
         machine integrity checks, phantom testing, and statistical concepts like
         sensitivity and specificity. This domain tends to be more

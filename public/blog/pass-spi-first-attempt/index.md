@@ -10,7 +10,7 @@ read: "14 min read"
 
 _March 28, 2026 · 14 min read_
 
-Six weeks is enough time to build real command of the SPI content outline if your study time is structured around how the exam is actually weighted — not spread evenly across topics regardless of how often they appear. This plan follows the official domain weightings: 23% Perform Ultrasound Examinations, 7% Manage Ultrasound Transducers, 26% Optimize Sonographic Images, 34% Apply Doppler Concepts, and 10% Provide Clinical Safety & Quality Assurance.
+Six weeks is enough time to build real command of the SPI content outline if your study time is structured around how the exam is actually weighted — not spread evenly across topics regardless of how often they appear. This plan follows the official domain weightings: 23% Perform Ultrasound Examinations, 7% Manage Ultrasound Transducers, 26% Optimize Sonographic Images, 34% Apply Doppler Concepts, and 10% Clinical Safety & Quality Assurance.
 Adjust the pacing to your own schedule — this assumes roughly 10-15 hours of study per week, which is a reasonable target for someone studying alongside clinical rotations or a job, but not the only way to structure it.
 
 ## Week 1: Foundations
@@ -32,7 +32,7 @@ Given the weight of this domain, if you find yourself short on time in week 5, i
 
 ## Week 6: Clinical Safety & QA, plus full review
 
-Start the week with Domain 5 (Provide Clinical Safety & Quality Assurance, 10%) — infection control, QA documentation, transducer and machine integrity checks, phantom testing, and statistical concepts like sensitivity and specificity. This domain tends to be more memorization-based and is a good fit for a focused couple of days.
+Start the week with Domain 5 (Clinical Safety & Quality Assurance, 10%) — infection control, QA documentation, transducer and machine integrity checks, phantom testing, and statistical concepts like sensitivity and specificity. This domain tends to be more memorization-based and is a good fit for a focused couple of days.
 Spend the remainder of the week on full-length, timed practice exams under realistic conditions — ideally at least two or three across the week, with review sessions after each to identify any remaining weak areas. In the final 1-2 days before your exam, shift focus toward the highest-weighted domains (Doppler and image optimization) for a final review pass, since these represent the largest share of points and are worth the extra attention right up to test day.
 
 ## A note on pacing across the six weeks

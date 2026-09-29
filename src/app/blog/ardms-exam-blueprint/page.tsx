@@ -4,9 +4,9 @@ import BlogCTA from "@/components/marketing/BlogCTA";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "ARDMS SPI Exam Blueprint: Domain Weightings Explained | SonoPrep",
+  title: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained | SonoPrep",
   description:
-    "A breakdown of the official ARDMS SPI content outline — exactly how many questions come from each domain and how to allocate your study time.",
+    "A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation.",
   keywords: [
     "ARDMS SPI exam blueprint",
     "SPI content outline",
@@ -21,9 +21,9 @@ function BlogPostingSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: "ARDMS SPI Exam Blueprint: Domain Weightings Explained",
+    headline: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained",
     description:
-      "A breakdown of the official ARDMS SPI content outline — exactly how many questions come from each domain and how to allocate your study time.",
+      "A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation.",
     url: "https://sonoprep.com/blog/ardms-exam-blueprint",
     datePublished: "2026-04-26",
     dateModified: "2026-04-26",
@@ -73,11 +73,11 @@ export default function Page() {
 
       <BlogPostLayout
         tag="EXAM BLUEPRINT"
-        title="ARDMS SPI Exam Blueprint: Domain Weightings Explained"
+        title="ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained"
         date="April 26, 2026"
         read="17 min read"
         url="https://sonoprep.com/blog/ardms-exam-blueprint"
-        description="A breakdown of the official ARDMS SPI content outline — exactly how many questions come from each domain, and how to weight your study time accordingly."
+        description="A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation, and how to weight your study time accordingly."
       >
         <p>
           Every SPI exam question comes from one of five domains in the official
@@ -101,9 +101,6 @@ export default function Page() {
             <tr>
               <th className={proseClasses.th}>Domain</th>
               <th className={proseClasses.th}>Weight</th>
-              <th className={proseClasses.th}>
-                Approx. questions (of 110)
-              </th>
             </tr>
           </thead>
 
@@ -113,7 +110,6 @@ export default function Page() {
                 1. Perform Ultrasound Examinations
               </td>
               <td className={proseClasses.td}>23%</td>
-              <td className={proseClasses.td}>~25</td>
             </tr>
 
             <tr>
@@ -121,7 +117,6 @@ export default function Page() {
                 2. Manage Ultrasound Transducers
               </td>
               <td className={proseClasses.td}>7%</td>
-              <td className={proseClasses.td}>~8</td>
             </tr>
 
             <tr>
@@ -129,7 +124,6 @@ export default function Page() {
                 3. Optimize Sonographic Images
               </td>
               <td className={proseClasses.td}>26%</td>
-              <td className={proseClasses.td}>~29</td>
             </tr>
 
             <tr>
@@ -137,15 +131,13 @@ export default function Page() {
                 4. Apply Doppler Concepts
               </td>
               <td className={proseClasses.td}>34%</td>
-              <td className={proseClasses.td}>~37</td>
             </tr>
 
             <tr>
               <td className={proseClasses.td}>
-                5. Provide Clinical Safety &amp; Quality Assurance
+                5. Clinical Safety &amp; Quality Assurance
               </td>
               <td className={proseClasses.td}>10%</td>
-              <td className={proseClasses.td}>~11</td>
             </tr>
           </tbody>
         </table>
@@ -247,7 +239,7 @@ export default function Page() {
         </p>
 
         <h2 className={proseClasses.h2}>
-          Domain 5: Provide Clinical Safety &amp; Quality Assurance (10%)
+          Domain 5: Clinical Safety &amp; Quality Assurance (10%)
         </h2>
 
         <p>
