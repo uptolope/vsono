@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
             <li>200+ spaced-repetition flashcards</li>
             <li>110-question exam from a 155-question bank</li>
             <li>50 high-yield Physics Pearls</li>
-            <li>159-page study notes (all 5 domains)</li>
+            <li>159-page study notes (five study areas aligned to the current published SPI content outline)</li>
             <li>Per-domain performance analytics</li>
           </ul>
 

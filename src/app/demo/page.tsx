@@ -73,11 +73,11 @@ export default function DemoPage() {
         <div className="text-center mb-12">
           <span className="meta">FREE PREVIEW</span>
           <h1 className="display-serif text-4xl sm:text-5xl mt-3 font-semibold tracking-tight">
-            Find out what you'd get wrong if you took the SPI today.
+            Get a quick snapshot of which practice areas deserve more review after a short practice session.
           </h1>
           <p className="body-readable text-[#8a8279] mt-4 max-w-xl mx-auto">
-            This uses the same exam engine as the full version. See exactly
-            which of the 5 ARDMS domains need work. The full version draws 110
+            This demo uses the same question interface and scoring engine as the full SonoPrep simulator. See exactly
+            which of the five study areas aligned to the current published SPI content outline need work. The full version draws 110
             questions from a 155-question bank — questions are weighted to
             match the real exam, with performance tracking and clear
             explanations for every answer, plus 200+ spaced repetition
@@ -130,7 +130,7 @@ export default function DemoPage() {
               See your SPI weak spots before exam day.
             </p>
             <p className="body-readable text-[#c2bab0] text-sm mb-6 leading-relaxed">
-              Get a . No spam.
+              Get a short study summary and recommended review topics. No spam.
               Unsubscribe any time.
             </p>
             <form

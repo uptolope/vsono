@@ -45,13 +45,13 @@ const PRODUCTS: Product[] = [
       "Everything you need to pass — in one system. The flashcard deck, the full exam simulator, Physics Pearls, and the 159-page study notes. All 5 ARDMS SPI domains. No piecing resources together.",
     features: [
       "200+ flashcards with SM-2 spaced repetition",
-      "3 exam attempts · 110 Qs from 155-question bank",
+      "3 exam attempts · 110 independently written questions from SonoPrep’s 155-question bank",
       "50 high-yield Physics Pearls",
       "159-page study notes (15 chapters)",
       "All 5 ARDMS SPI domains covered",
       "Per-domain performance analytics",
       "Detailed clinical rationales",
-      "One bad exam costs more than everything you need to pass",
+      "One payment · no recurring subscription",
     ],
     bundle: true,
     featured: true,
@@ -66,7 +66,7 @@ const PRODUCTS: Product[] = [
     features: [
       "50 concept summaries",
       "Clinical application examples",
-      "ARDMS domain mapped",
+      "SPI outline aligned",
       "Quick reference format",
     ],
     bundle: false,
@@ -115,7 +115,7 @@ const PRODUCTS: Product[] = [
     features: [
       "3 attempts · 30-day access",
       "155-question bank · 110 questions per exam",
-      "2-hour timer (real SPI format)",
+      "Two-hour practice timer",
       "Randomized each time",
       "Detailed clinical rationales",
       "Per-domain performance analytics",
@@ -251,7 +251,7 @@ export default function ProductsPage() {
 
         {/* Bundle */}
         <p className="meta mb-3 text-center text-[10px] font-medium text-[#c85b3a]/80">
-          Most students choose this
+          Complete preparation in one purchase
         </p>
 
         <div
@@ -337,7 +337,7 @@ export default function ProductsPage() {
               </button>
 
               <p className="meta mt-2 text-center text-[10px] text-[#8a8279]">
-                One bad exam costs more than everything you need to pass
+                One payment · no recurring subscription
               </p>
 
               <p className="meta mt-1 text-center text-[9px] text-[#3a3530]">

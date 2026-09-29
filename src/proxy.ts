@@ -6,7 +6,7 @@ export async function proxy(request: NextRequest) {
   // Only apply rate limiting to API routes
   if (request.nextUrl.pathname.startsWith("/api/")) {
     const ip = request.headers.get("x-forwarded-for") ?? "127.0.0.1";
-    const { success, limit, reset, remaining } = await ratelimit.limit(`proxy_\${ip}`);
+    const { success, limit, reset, remaining } = await ratelimit.limit(`proxy_${ip}`);
 
     if (!success) {
       return new NextResponse(

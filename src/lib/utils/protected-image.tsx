@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { generateSignedImageUrl } from './image-signing';
 
 interface ProtectedImageProps {
@@ -20,7 +21,7 @@ export function ProtectedImage({
   const signedUrl = generateSignedImageUrl(imageId, 30); // 30 min expiry
 
   return (
-    <img
+    <Image
       src={signedUrl}
       alt={alt}
       width={width}
@@ -32,6 +33,7 @@ export function ProtectedImage({
       }}
       onContextMenu={(e) => e.preventDefault()}
       draggable={false}
+      unoptimized
     />
   );
 }

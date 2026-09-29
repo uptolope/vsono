@@ -17,9 +17,6 @@ interface ProtectedContentProps {
 export const ProtectedContent: React.FC<ProtectedContentProps> = ({
   children,
   watermarkText = 'PROTECTED CONTENT',
-  contentType,
-  userId,
-  userName,
   showWatermark = true,
   disableRightClick = true,
   disableSelection = true,

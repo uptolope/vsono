@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle2, Shield, Zap } from "lucide-react";
 
 const INCLUSIONS = [
   "200+ RDMS-written flashcards",
-  "3 exam attempts · 110 Qs from 155-question bank",
+  "3 exam attempts · 110 independently written questions from SonoPrep’s 155-question bank",
   "50 Physics Pearls",
   "Domain performance analytics",
   "Detailed clinical rationales",
@@ -69,7 +69,7 @@ export function CtaSection() {
 
             <div className="mt-4 flex items-center gap-2 justify-center">
               <span className="t-label text-sm text-[#5a5349] line-through">
-                $116
+                $116.99
               </span>
               <span className="t-label text-xs text-[#7a7269]">
                 vs buying separately

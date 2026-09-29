@@ -12,16 +12,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = (session.user as any).id || session.user.email;
+    const userId = (session.user as { id?: string | null }).id || session.user.email;
 
     // 2. Layer 2: Per-User Rate Limit
-    const rateCheck = await checkRateLimit(mutationLimiter, `user:\${userId}:checkout`);
+    const rateCheck = await checkRateLimit(mutationLimiter, `user:${userId}:checkout`);
     if (!rateCheck.success) {
       return rateCheck.response!;
     }
 
     // 3. Layer 3: Idempotency Check (prevent duplicate checkout sessions within 10 seconds)
-    const isUnique = await checkIdempotency(`checkout-lock:\${userId}`, 10);
+    const isUnique = await checkIdempotency(`checkout-lock:${userId}`, 10);
     if (!isUnique) {
       return NextResponse.json(
         { error: "A checkout request is already in progress. Please wait a moment." },
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     }
 
     // 4. Parse request body & execute Stripe session creation
-    const body = await req.json();
+    await req.json();
 
     // TODO: Insert your Stripe session creation logic here
 

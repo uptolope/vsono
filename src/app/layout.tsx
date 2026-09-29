@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | SonoPrep",
   },
   description:
-    "Master the ARDMS SPI exam with high-yield physics questions, interactive mock exams, spaced-repetition flashcards, and physics pearls.",
+    "Prepare for the ARDMS SPI exam with independently written practice questions, timed simulator attempts, spaced-repetition flashcards, and ultrasound physics study tools.",
   alternates: {
     canonical: "/",
   },
