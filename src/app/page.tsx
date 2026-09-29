@@ -2,9 +2,9 @@
 import { HomePageClient } from "./page-client";
 
 export const metadata: Metadata = {
-  title: "SonoPrep - Pass the ARDMS SPI Exam on Your First Attempt",
+  title: "SonoPrep - Prepare for the ARDMS SPI Exam With a Focused Study System",
   description:
-    "Master the ARDMS SPI exam with high-yield physics questions, interactive mock exams, spaced-repetition flashcards, and physics pearls.",
+    "Prepare for the ARDMS SPI exam with independently written practice questions, timed simulator attempts, spaced-repetition flashcards, and ultrasound physics study tools.",
   alternates: {
     canonical: "https://sonoprep.com",
   },

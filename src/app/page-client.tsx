@@ -49,7 +49,7 @@ function Hero() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.9 }}
             >
-              — all locked behind the SPI
+              — common credential pathways may include the SPI
             </motion.span>
           </div>
         </motion.div>
@@ -194,11 +194,11 @@ function TheFork() {
             </div>
             <span className="t-caption text-[#c85b3a] block mt-8">PATH B</span>
             <h3 className="t-subhead text-xl mt-4 mb-5">
-              Focus on exactly what ARDMS tests.
+              Focus on the current published SPI content outline.
             </h3>
             <p className="t-body text-sm">
               Each exam attempt pulls 110 questions from a 155-question bank
-              covering all 5 ARDMS domains, with a per-domain breakdown after
+              covering five study areas aligned to the current published SPI content outline, with a per-domain breakdown after
               every attempt. You see exactly where you're losing points while
               there's still time to fix them.
             </p>
@@ -307,8 +307,8 @@ function WhyMostFail() {
 
   const points = [
     {
-      head: "The SPI doesn't test evenly.",
-      body: "Five domains. Different weightings. Most students prep like every topic matters equally. It doesn't.",
+      head: "The published outline allocates practice topics in approximate proportions.",
+      body: "Five domains. Different topic proportions mean a focused review plan can be more useful than treating every topic identically.",
     },
     {
       head: "Blind spots don't surface until test day.",
@@ -330,7 +330,7 @@ function WhyMostFail() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
         >
-          <span className="t-caption">WHY MOST STUDENTS FAIL</span>
+          <span className="t-caption">WHY BROAD STUDYING CAN MISS THE MARK</span>
           <h2 className="t-heading text-4xl sm:text-5xl mt-6 leading-tight">
             It's not that they didn't study.{" "}
             <span className="text-gradient-accent">
@@ -366,8 +366,7 @@ function WhyMostFail() {
           transition={{ delay: 0.7 }}
         >
           <p className="t-subhead text-lg text-[#B8B0A6] italic mb-10 max-w-md mx-auto">
-            The question isn't whether you studied enough. It's whether you know
-            where you'd lose points today.
+            The useful question is which practice areas deserve your attention next.
           </p>
           <Link href="/demo" className="premium-cta px-10 py-5 text-sm">
             FIND OUT WHERE YOU STAND — FREE →
@@ -449,12 +448,12 @@ function DemoSection() {
         >
           <span className="t-caption">TRY IT NOW</span>
           <h2 className="t-heading text-4xl sm:text-5xl mt-5">
-            Find out what you'd get wrong
-            <br className="hidden sm:block" /> if you took the SPI today.
+            Get a quick snapshot of which practice areas deserve more review
+            <br className="hidden sm:block" /> after a short practice session.
           </h2>
           <p className="t-body text-base mt-6 max-w-xl mx-auto">
-            This is the real simulator. The full version draws 110 questions
-            from a 155-question bank, with detailed rationales
+            This demo uses the same question interface and scoring engine as the full SonoPrep simulator. The full SonoPrep simulator presents 110 independently written questions per practice attempt
+            selected from SonoPrep’s 155-question bank, with answer explanations
             and per-domain analytics.
           </p>
         </motion.div>
@@ -517,7 +516,7 @@ function DemoSection() {
               See your SPI weak spots before exam day.
             </h3>
             <p className="t-body text-sm mb-8">
-              Get a . No spam.
+              Get a short study summary and recommended review topics. No spam.
               Unsubscribe anytime.
             </p>
             <form
@@ -613,11 +612,11 @@ function WhatThisIsNot() {
           {[
             {
               not: "Not a textbook.",
-              is: "Structured SPI prep covering all 5 ARDMS domains — not everything the field covers.",
+              is: "Structured SPI prep covering five study areas aligned to the current published SPI content outline — not everything the field covers.",
             },
             {
               not: "Not random questions.",
-              is: "155 ARDMS SPI questions. Each exam pulls 110 randomly — so every attempt is unique.",
+              is: "The full SonoPrep simulator includes three practice attempts. Each attempt presents 110 independently written questions selected from SonoPrep’s 155-question bank.",
             },
             {
               not: "Not a subscription.",
@@ -686,7 +685,7 @@ function TheSystem() {
       n: "02",
       label: "See your gaps",
       action: "Review domain results",
-      detail: "Find out which of the 6 areas need work",
+      detail: "Find out which practice areas need more work",
     },
     {
       n: "03",
@@ -789,9 +788,7 @@ function TheCost() {
               studying material you may have already gotten wrong once.
             </p>
             <p className="t-body text-sm mt-5">
-              The SPI isn't hard because the physics is hard — it's hard because
-              most people study broadly instead of studying precisely what ARDMS
-              tests.
+              The SPI covers a broad physics outline, so focused practice and targeted review can make study time more efficient.
             </p>
 
             <div className="mt-10 lift-card p-7">
@@ -832,7 +829,7 @@ function TheCost() {
               {
                 label: "SonoPrep simulator",
                 flag: true,
-                desc: "110-question exams from 155-question bank, covers all 5 domains",
+                desc: "110-question practice attempts selected from SonoPrep’s 155-question bank, covers five study areas aligned to the current published SPI content outline",
               },
             ].map(({ label, flag, desc }, i) => (
               <motion.div
@@ -915,18 +912,15 @@ function Credibility() {
               struggle with physics, then pass their credentials.
             </p>
             <p className="t-body text-sm mt-5">
-              Every flashcard, every exam question, every Physics Pearl was
-              written by that instructor — not assembled by a content team, not
-              AI-generated.
+              Content is developed for focused SPI practice and reviewed for clarity before publication.
             </p>
 
             <div className="mt-10 glow-card-featured p-7">
               <span className="t-caption text-[10px] text-[#4a453f]">
-                BUILT TO THE ACTUAL EXAM
+                ALIGNED TO THE PUBLISHED OUTLINE
               </span>
               <p className="t-body text-sm mt-4">
-                Content is built from real SPI exam patterns and ARDMS domain
-                weighting — not generic sonography curriculum.
+                Questions are distributed according to approximate proportions based on the current published SPI content outline. SonoPrep questions are independently written practice questions, not official ARDMS exam questions.
               </p>
             </div>
 
@@ -993,7 +987,7 @@ function Credibility() {
                 },
                 {
                   head: "Content written to ARDMS specifications",
-                  body: "All 5 SPI domains covered at published weightings. The simulator distributes questions accordingly.",
+                  body: "Practice content covers five areas using approximate proportions based on the current published SPI content outline.",
                 },
                 {
                   head: "10-day refund if it doesn't work",
@@ -1050,7 +1044,7 @@ const PRODUCTS = [
     features: [
       "50 concept summaries",
       "Clinical examples",
-      "ARDMS domain mapped",
+      "SPI outline aligned",
     ],
     featured: false,
   },
@@ -1075,8 +1069,8 @@ const PRODUCTS = [
     desc: "3 attempts over 30 days. 110 questions from a 155-question bank — timed, different every time.",
     features: [
       "3 attempts · 30-day access",
-      "110 Qs from 155-question bank",
-      "2-hour timer (real SPI format)",
+      "110 independently written questions from SonoPrep’s 155-question bank",
+      "Two-hour practice timer",
       "Per-domain analytics",
     ],
     featured: true,
@@ -1087,7 +1081,7 @@ const PRODUCTS = [
     price: "$34",
     tag: "UNDERSTAND THE SYSTEM",
     desc: "Not just memorize answers. 159-page guide covering all 5 SPI domains across 15 chapters.",
-    features: ["159 pages", "15 chapters", "All 5 domains"],
+    features: ["159 pages", "15 chapters", "Five study areas aligned to the current published SPI content outline"],
     featured: false,
   },
 ];
@@ -1138,7 +1132,7 @@ function ProductsSection() {
                   $99
                 </span>
                 <span className="t-label text-sm text-[#5a5349] line-through">
-                  $116
+                  $116.99
                 </span>
                 <span className="t-caption text-[10px] text-[#5a554f]">
                   / 45-day access
@@ -1155,7 +1149,7 @@ function ProductsSection() {
                 {[
                   "All 4 products included",
                   "200+ flashcards + 50 Physics Pearls",
-                  "110-question exams from 155-question bank",
+                  "110-question practice attempts selected from SonoPrep’s 155-question bank",
                   "159-page study notes",
                   "Every exam attempt is different",
                   "45-day full access",
@@ -1176,10 +1170,10 @@ function ProductsSection() {
                 GET THE BUNDLE — $99 →
               </Link>
               <p className="t-caption text-[10px] text-center mt-3 text-[#c85b3a]/80 font-medium">
-                Most students choose this
+                Complete preparation in one purchase
               </p>
               <p className="t-caption text-[10px] text-center mt-1 text-[#8a8279]">
-                One bad exam costs more than everything you need to pass
+                One payment · no recurring subscription
               </p>
               <p className="t-caption text-[10px] text-center mt-1 text-[#5a554f]">
                 10-day refund · instant access · no subscription
@@ -1231,7 +1225,7 @@ function ProductsSection() {
             "10-day refund",
             "Instant access",
             "RDMS instructor",
-            "All 5 domains",
+            "Five study areas aligned to the current published SPI content outline",
           ].map((t) => (
             <span key={t} className="t-caption text-[10px] text-[#5a554f]">
               ✓ {t}
@@ -1344,6 +1338,54 @@ export function HomePageClient() {
         <LazySection>
           <FaqSection />
         </LazySection>
+
+        <section
+          data-sonoprep-resource-links
+          className="px-6 py-20 border-t border-white/[0.06]"
+          aria-labelledby="study-resources-heading"
+        >
+          <div className="max-w-5xl mx-auto">
+            <div className="max-w-2xl">
+              <span className="t-caption">FREE STUDY RESOURCES</span>
+              <h2 id="study-resources-heading" className="t-heading text-3xl sm:text-4xl mt-5">
+                Build your SPI study plan from useful, focused resources.
+              </h2>
+              <p className="t-body text-sm mt-5 text-[#7a7269]">
+                Start with a formula sheet, glossary, calculator, or educational article,
+                then use the practice tools to identify what deserves more review.
+              </p>
+            </div>
+
+            <nav className="mt-10 grid sm:grid-cols-2 lg:grid-cols-5 gap-4" aria-label="SPI study resources">
+              {[
+                ["SPI Formula Sheet", "/spi-physics-formula-sheet"],
+                ["Ultrasound Glossary", "/spi-ultrasound-glossary"],
+                ["Physics Calculators", "/ultrasound-physics-calculators"],
+                ["Free Practice Test", "/free-spi-practice-test"],
+                ["Study Articles", "/blog"],
+              ].map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="lift-card p-5 text-sm text-[#B8B0A6] hover:text-white transition-colors"
+                >
+                  {label} <span className="text-[#c85b3a]">→</span>
+                </Link>
+              ))}
+            </nav>
+
+            <div className="mt-12 lift-card p-6">
+              <p className="t-body text-xs leading-relaxed text-[#8a8279]">
+                <strong className="text-[#B8B0A6]">Independent practice resource.</strong>{" "}
+                SonoPrep is not affiliated with or endorsed by ARDMS or Inteleos.
+                SonoPrep questions are independently written practice questions, not official
+                ARDMS exam questions. The demo is for study guidance only and does not predict
+                an official ARDMS exam result. Confirm current eligibility and registration
+                information through official ARDMS resources.
+              </p>
+            </div>
+          </div>
+        </section>
       </main>
       <Footer />
       <StickyMobileCTA />

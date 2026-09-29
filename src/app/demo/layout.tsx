@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Free SPI Exam Demo — Try Before You Buy | SonoPrep",
     description:
-      "10 real SPI questions. 10 flashcards. No account required. Find out what you'd get wrong if you took the SPI today.",
+      "10 real SPI questions. 10 flashcards. No account required. Get a quick snapshot of which practice areas deserve more review after a short practice session.",
     url: "https://www.sonoprep.com/demo",
     siteName: "SonoPrep",
     type: "website",

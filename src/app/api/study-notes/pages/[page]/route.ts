@@ -7,7 +7,6 @@ import { authOptions } from "@/lib/auth";
 import { checkContentAccess } from "@/lib/content/access-check";
 import { rateLimit } from "@/lib/rate-limit";
 import {
-  SONOGRAPHIC_PHYSICS_META,
   SONOGRAPHIC_PHYSICS_PRODUCT_KEY,
   blobPathForPage,
   parsePageParam,
@@ -32,15 +31,6 @@ function jsonError(
       ...extraHeaders,
     },
   });
-}
-
-function escapeXml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
 }
 
 function createWatermarkSvg(

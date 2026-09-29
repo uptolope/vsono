@@ -120,7 +120,7 @@ export function ExamSimulator({ questions }: ExamSimulatorProps) {
           <p className="body-readable text-[#8a8279] text-sm">
             {percentage >= 75
               ? "Strong foundation — the full simulator will show you exactly where to sharpen."
-              : "The full exam covers all 5 ARDMS domains with 110 questions. Targeted prep makes the difference."}
+              : "The full exam covers five study areas aligned to the current published SPI content outline with 110 questions. Targeted prep makes the difference."}
           </p>
         </div>
 

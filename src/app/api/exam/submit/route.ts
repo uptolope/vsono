@@ -12,16 +12,16 @@ export async function POST(req: Request) {
     }
 
     // 2. Extract unique user identifier for strict per-user quota tracking
-    const userId = (session.user as any).id || session.user.email;
+    const userId = (session.user as { id?: string | null }).id || session.user.email;
 
     // 3. Enforce Server-Side Rate Limit (Layer 2)
-    const rateCheck = await checkRateLimit(mutationLimiter, `user:\${userId}:exam-submit`);
+    const rateCheck = await checkRateLimit(mutationLimiter, `user:${userId}:exam-submit`);
     if (!rateCheck.success) {
       return rateCheck.response!;
     }
 
     // 4. Parse request body and execute core exam submission logic
-    const body = await req.json();
+    await req.json();
 
     // TODO: Insert your existing exam evaluation & DB write logic here
 

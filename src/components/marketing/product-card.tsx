@@ -105,9 +105,9 @@ export const PRODUCTS: ProductData[] = [
     features: [
       "All 4 products included",
       "200+ flashcards + 50 Pearls",
-      "3 exam attempts 110 questions from 155-question bank",
+      "3 exam attempts 110 independently written questions from SonoPrep’s 155-question bank",
       "159-page study notes",
-      "One bad exam costs more than everything you need to pass",
+      "One payment · no recurring subscription",
       "45-day full access",
     ],
     icon: Package,
