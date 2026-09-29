@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title:
     "SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time | SonoPrep",
   description:
-    "How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage your pace across 110 questions in two hours.",
+    "How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage your pace across approximately 110 questions over two hours.",
   keywords: [
     "SPI exam strategy",
     "ARDMS test taking tips",
@@ -24,7 +24,7 @@ export default function Page() {
       date="March 14, 2026"
       read="11 min read"
       url="https://www.sonoprep.com/blog/test-taking-strategies-spi"
-      description="How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage your pace through 110 questions in two hours."
+      description="How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage your pace through approximately 110 questions over two hours."
     >
       <p>
         Knowing the physics is necessary but not sufficient. The SPI exam is
@@ -36,7 +36,7 @@ export default function Page() {
       <h2 className={proseClasses.h2}>Know the format going in</h2>
       <p>
         The SPI exam consists of{" "}
-        <strong className="text-white">110 multiple-choice questions</strong>,
+        <strong className="text-white">approximately 110 multiple-choice questions</strong>,
         administered over a <strong className="text-white">two-hour</strong>{" "}
         window that includes a brief tutorial and a post-exam survey. That works
         out to roughly a minute per question on average — but not every question
@@ -166,7 +166,7 @@ export default function Page() {
           the instinct for how long a "first pass" question should take versus a
           "final pass" question, so it becomes automatic rather than something
           you're consciously managing on test day. SonoPrep's exam simulator
-          runs on the same 110-question, two-hour format so your practice pacing
+          runs on the same approximately 110-question, two-hour format so your practice pacing
           matches the real thing.
         </p>
       </div>

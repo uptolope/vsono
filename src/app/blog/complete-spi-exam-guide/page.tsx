@@ -51,7 +51,7 @@ export default function Page() {
       <h2 className={proseClasses.h2}>Exam format at a glance</h2>
       <ul className={proseClasses.ul}>
         <li>
-          <strong className="text-white">110 multiple-choice questions</strong>,
+          <strong className="text-white">approximately 110 multiple-choice questions</strong>,
           administered over a <strong className="text-white">two-hour</strong>{" "}
           session that includes a short tutorial and a brief post-exam survey.
         </li>
@@ -114,7 +114,7 @@ export default function Page() {
           </tr>
           <tr>
             <td className={proseClasses.td}>
-              5. Provide Clinical Safety &amp; Quality Assurance
+              5. Clinical Safety &amp; Quality Assurance
             </td>
             <td className={proseClasses.td}>10%</td>
           </tr>
@@ -222,7 +222,7 @@ export default function Page() {
 
       <h2 className={proseClasses.h2}>Clinical safety and quality assurance</h2>
       <p>
-        At 10%, Provide Clinical Safety &amp; Quality Assurance is the smallest
+        At 10%, Clinical Safety &amp; Quality Assurance is the smallest
         domain after transducers, and it's also the most memorization-friendly —
         infection control protocols, QA documentation, transducer and machine
         integrity checks, gray-scale QA testing with tissue-mimicking phantoms,
