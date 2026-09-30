@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | SonoPrep",
+  title: "Terms of Service",
   description:
     "SonoPrep's terms of service: license terms, refund policy, acceptable use, and limitations of liability.",
   keywords: ["SonoPrep terms of service", "SonoPrep refund policy"],

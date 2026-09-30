@@ -277,6 +277,21 @@ model Subscriber {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  // Where the address was captured (landing_page, demo_page, get_started…).
+  source         String    @default("unknown")
+  // Follow-up sequence state: 0 = welcome sent, 1-2 = follow-ups sent,
+  // 3+ = sequence finished / not enrolled. See src/lib/lead-emails.ts.
+  nurtureStep    Int       @default(0)
+  nextNurtureAt  DateTime?
+  // Set when the person unsubscribes. Never cleared automatically.
+  unsubscribedAt DateTime?
+  // Double opt-in: no marketing email is sent until the address is confirmed.
+  // confirmationSentAt = when we last asked; confirmedAt = when they clicked.
+  // Rows that pre-date double opt-in have both NULL and are never emailed.
+  confirmationSentAt DateTime?
+  confirmedAt        DateTime?
+
+  @@index([nextNurtureAt])
   @@map("subscribers")
 }
 

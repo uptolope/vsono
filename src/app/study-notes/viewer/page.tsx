@@ -230,7 +230,6 @@ export default function SonographicPhysicsViewerPage() {
       </header>
 
       <main
-        id="main-content"
         className="relative flex flex-1 flex-col items-center justify-center overflow-auto p-4"
       >
         <div className="mb-4 w-full max-w-4xl rounded border border-[#c85b3a]/30 bg-[#c85b3a]/5 px-4 py-3 text-sm leading-6 text-[#c2bab0]">

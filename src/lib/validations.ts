@@ -30,6 +30,12 @@ export const checkoutSchema = z.object({
     "STUDY_NOTES",
     "PREMIUM_BUNDLE",
   ]),
+  // GA4 client id from the visitor's `_ga` cookie (e.g. "123456.7890123").
+  // Only used to attribute the purchase to the right session in analytics.
+  gaClientId: z
+    .string()
+    .regex(/^\d{1,12}\.\d{1,12}$/)
+    .optional(),
 });
 
 export const accountDeleteSchema = z.object({

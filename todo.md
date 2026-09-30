@@ -25,10 +25,29 @@ actually outstanding as of August 2026.
       specific calls this app makes are stable, low-surface APIs, but that's
       not the same as verified. Don't skip the test-mode run.
 
+- [ ] After deploy, verify in SQL that every COMPLETED bundle purchase has
+      `accessExpiresAt - accessGrantedAt >= 45 days` (migration
+      `20260929180000_guarantee_bundle_45_days`).
+- [ ] Migrations `20260929175000`/`20260929180000` are idempotent, but the
+      baseline migration has other drift vs `schema.prisma` (e.g. table names
+      `flashcard_progress`/`flashcard_reviews`, `Purchase` defaults). Run
+      `prisma migrate diff --from-url $DATABASE_URL --to-schema-datamodel
+      prisma/schema.prisma` against a staging copy and reconcile.
+- [ ] SEO backlog: see `docs/SEO-AUDIT-2026-09-29.md` (Search Console data needed).
+
+## Product gaps found 2026-09-29 (see docs/GROWTH-IMPLEMENTATION-2026-09-29.md)
+- [ ] Exam bank does not follow the SPI V24.1 weights: bank tags are 55/14/40/42/4 of 155
+      (Doppler 27% vs 34% official, Safety ≈2.6% vs 10%) and use pre-V24.1 domain names.
+      Add questions for Domain 5/2/4, retag to V24.1 domains, then do a stratified draw.
+      Until then marketing must not claim "weighted to the real exam".
+- [ ] Confirm the "credentialed/RDMS sonographers reviewed" and "independently written
+      questions" claims are accurate and licensed (question bank header cites an external PDF).
+- [ ] Lead nurture is dark: set LEAD_NURTURE_ENABLED, MAIL_POSTAL_ADDRESS, CRON_SECRET.
+- [x] Double opt-in implemented (confirm link → welcome → sequence).
+
 ## Nice to have, not blocking
 - [ ] CSRF middleware / explicit SameSite=Strict verification
-- [ ] Wire `src/lib/analytics.ts` to a real analytics provider (currently
-      console-only stubs)
+- [ ] Set `NEXT_PUBLIC_GA_MEASUREMENT_ID` / `GA_API_SECRET` (analytics is wired, dormant until set)
 - [ ] Optional: set `UPSTASH_REDIS_REST_URL`/`TOKEN` to move rate limiting
       off Postgres onto Redis at higher scale. Not required for correctness
       — the Postgres fallback is a real shared counter, not a stopgap —

@@ -1,12 +1,13 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
+import ResourceFooter from "@/components/resources/ResourceFooter";
 
 export const metadata: Metadata = {
   title: "Ultrasound Physics Glossary for the ARDMS SPI",
   description:
     "A practical ultrasound physics glossary covering acoustic impedance, axial resolution, duty factor, Nyquist limit, attenuation, cavitation, and more.",
   alternates: {
-    canonical: "https://sonoprep.com/spi-ultrasound-glossary",
+    canonical: "https://www.sonoprep.com/spi-ultrasound-glossary",
   },
 };
 
@@ -74,7 +75,7 @@ function GlossarySchema() {
     "@context": "https://schema.org",
     "@type": "DefinedTermSet",
     name: "ARDMS SPI Ultrasound Physics Glossary",
-    url: "https://sonoprep.com/spi-ultrasound-glossary",
+    url: "https://www.sonoprep.com/spi-ultrasound-glossary",
     hasDefinedTerm: TERMS.map((item) => ({
       "@type": "DefinedTerm",
       name: item.term,
@@ -92,7 +93,7 @@ function GlossarySchema() {
 
 export default function GlossaryPage() {
   return (
-    <main id="main-content" className="min-h-screen pt-24 px-6 pb-20">
+    <main className="min-h-screen pt-24 px-6 pb-20">
       <GlossarySchema />
 
       <div className="max-w-4xl mx-auto">
@@ -203,6 +204,12 @@ export default function GlossaryPage() {
           </div>
         </section>
       </div>
+      <ResourceFooter
+        path="/spi-ultrasound-glossary"
+        title="SPI Ultrasound Physics Glossary"
+        updated="2026-09-29"
+        methodology="Terms are defined in plain language and organized around the concepts tested on the ARDMS SPI exam. Definitions follow standard ultrasound physics usage."
+      />
     </main>
   );
 }

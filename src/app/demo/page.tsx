@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExamSimulator } from "@/components/app/exam-simulator";
 import { FlashcardViewer } from "@/components/app/flashcard-viewer";
 import { DEMO_QUESTIONS } from "@/lib/demo/exam-data";
-import { trackSignup } from "@/lib/analytics";
+import { trackLead } from "@/lib/analytics";
 import { DEMO_FLASHCARDS } from "@/lib/demo/flashcard-data";
 
 export default function DemoPage() {
@@ -38,7 +38,7 @@ export default function DemoPage() {
     } catch {
       /* never block user on marketing call */
     }
-    trackSignup("demo_page");
+    trackLead("demo_page");
     setSubmitted(true);
   };
 
@@ -62,9 +62,9 @@ export default function DemoPage() {
             <p className="body-readable text-[#c2bab0] text-sm leading-relaxed">
               The ARDMS SPI exam is a prerequisite for every ARDMS credential —
               RDMS, RDCS, RVT, and RMSKS. You cannot register for specialty
-              exams until you pass it. It tests 5 specific physics domains at
-              specific weightings. Most students underestimate how targeted you
-              need to be with your prep.
+              exams until you pass it. ARDMS publishes the exam's five content
+              domains and how heavily each is weighted, so targeted prep
+              matters.
             </p>
           </div>
         </div>
@@ -78,9 +78,9 @@ export default function DemoPage() {
           <p className="body-readable text-[#8a8279] mt-4 max-w-xl mx-auto">
             This demo uses the same question interface and scoring engine as the full SonoPrep simulator. See exactly
             which of the five study areas aligned to the current published SPI content outline need work. The full version draws 110
-            questions from a 155-question bank — questions are weighted to
-            match the real exam, with performance tracking and clear
-            explanations for every answer, plus 200+ spaced repetition
+            questions from a 155-question bank — every question is tagged by
+            topic area, with performance tracking and clear
+            explanations for every answer, plus 200 spaced repetition
             flashcards.
           </p>
           {/* Micro-commitment strip */}
@@ -130,8 +130,8 @@ export default function DemoPage() {
               See your SPI weak spots before exam day.
             </p>
             <p className="body-readable text-[#c2bab0] text-sm mb-6 leading-relaxed">
-              Get a short study summary and recommended review topics. No spam.
-              Unsubscribe any time.
+              Get the free diagnostic link plus a few SPI study tips by email. No
+              spam. Unsubscribe any time.
             </p>
             <form
               onSubmit={handleEmailSubmit}
@@ -152,6 +152,12 @@ export default function DemoPage() {
                 GET ACCESS →
               </button>
             </form>
+            <p className="meta text-[9px] text-[#4a453f] mt-3">
+              We&apos;ll email a confirmation link first. Once you confirm,
+              you&apos;ll get your diagnostic link and up to 3 follow-up study
+              tips over about two weeks. One-click unsubscribe in every email.{" "}
+              <Link href="/privacy" className="underline">Privacy Policy</Link>
+            </p>
             <p className="meta text-[9px] text-[#3a3530] mt-3">
               Or skip this and{" "}
               <Link
@@ -168,11 +174,12 @@ export default function DemoPage() {
         {submitted && (
           <div className="mt-10 border border-white/6 p-7 text-center">
             <p className="display-serif text-lg font-semibold text-white mb-2">
-              Check your inbox.
+              Check your inbox to confirm.
             </p>
             <p className="body-small text-[#8a8279] text-sm mb-6">
-              The SPI domain breakdown is on its way. When you're ready for the
-              full prep system:
+              We&apos;ve sent a confirmation link. Click it and we&apos;ll send
+              your free diagnostic link (check spam if you don&apos;t see it).
+              When you&apos;re ready for the full prep system:
             </p>
             <Link
               href="/products"
@@ -195,7 +202,7 @@ export default function DemoPage() {
                 Premium Bundle — $99
               </h3>
               <p className="body-small text-[#c2bab0] text-sm leading-relaxed flex-grow mb-5">
-                All four products: 200+ flashcards, 110-question exam from a 155-question bank
+                All four products: 200 flashcards, 110-question exam from a 155-question bank
                 bank, 50 Physics Pearls, 159-page notes. 45-day access. 10-day
                 refund. Covers all 5 ARDMS SPI domains.
               </p>

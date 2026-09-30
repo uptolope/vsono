@@ -41,7 +41,7 @@ export const PRODUCTS: ProductData[] = [
     name: "Physics Pearls",
     price: 900,
     description:
-      "Start studying in 10 minutes. 50 high-yield physics principles concise, memorable, and mapped to what ARDMS actually tests.",
+      "Start studying in 10 minutes. 50 high-yield physics principles concise, memorable, and organized around the published SPI content outline.",
     features: [
       "50 high-yield concept summaries",
       "Clinical application examples",
@@ -55,9 +55,9 @@ export const PRODUCTS: ProductData[] = [
     name: "SPI Flashcards",
     price: 2400,
     description:
-      "Fix your weakest topics fast. 200+ clinically focused flashcards with SM-2 spaced repetition the algorithm prioritizes what you're getting wrong.",
+      "Fix your weakest topics fast. 200 clinically focused flashcards with SM-2 spaced repetition the algorithm prioritizes what you're getting wrong.",
     features: [
-      "200+ expert-written flashcards",
+      "200 expert-written flashcards",
       "SM-2 spaced repetition algorithm",
       "Progress tracking per card",
       "Covers all 5 ARDMS SPI domains",
@@ -69,10 +69,10 @@ export const PRODUCTS: ProductData[] = [
     name: "Study Notes",
     price: 3400,
     description:
-      "Understand the system not just memorize answers. 159-page comprehensive guide covering all 5 SPI domains across 10 organized chapters.",
+      "Understand the system not just memorize answers. 159-page comprehensive guide covering all 5 SPI domains across 15 organized chapters.",
     features: [
       "159 pages of content",
-      "10 organized chapters",
+      "15 organized chapters",
       "Reading progress tracking",
       "Covers all 5 SPI domains",
     ],
@@ -104,14 +104,14 @@ export const PRODUCTS: ProductData[] = [
       "Everything you need to pass in one system. For less than the cost of a single retake fee, you get the complete system: flashcards, simulator, Physics Pearls, and study notes.",
     features: [
       "All 4 products included",
-      "200+ flashcards + 50 Pearls",
+      "200 flashcards + 50 Pearls",
       "3 exam attempts 110 independently written questions from SonoPrep’s 155-question bank",
       "159-page study notes",
       "One payment · no recurring subscription",
       "45-day full access",
     ],
     icon: Package,
-    savingsLabel: "Most Students Choose This",
+    savingsLabel: "Best Value — Save $17.99",
   },
 ];
 
@@ -287,7 +287,7 @@ export function ProductGrid({ onPurchase }: ProductGridProps) {
             Everything You Need to Pass the SPI
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-cream-dim">
-            110-question exams from a 155-question bank, 200+ spaced repetition
+            110-question exams from a 155-question bank, 200 spaced repetition
             flashcards, 50 Physics Pearls, and 159 pages of study notes all
             written by a credentialed RDMS instructor. Start with a free demo.
             Upgrade when you're ready.

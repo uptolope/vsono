@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Page Not Found | SonoPrep",
+  title: "Page Not Found",
   description:
     "This page doesn't exist. Head back to SonoPrep to continue your SPI exam prep.",
 };

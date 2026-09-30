@@ -1,97 +1,0 @@
-"File","Line","Content"
-"public\demo\index.md","21","Experience the exact same interface, timer behavior, and question quality used in the full 110-quest"
-"public\demo\index.md","45","**10-day full refund** ??? If you go through the material and still don???t feel ready, get every pe"
-"public\demo\index.md","47","**GET THE BUNDLE ??? $99 ???**"
-"public\demo\index.md","55","The full products are built to the exact same standard you???re seeing in this demo. Most students w"
-"public\products\index.md","16","~~$116.99~~ ??? Save **$17.99**"
-"public\products\index.md","29","**GET THE PREMIUM BUNDLE ??? $99 ???**"
-"public\products\index.md","40","**GET PHYSICS PEARLS ???**"
-"public\products\index.md","45","**GET SPI FLASHCARDS ???**"
-"public\products\index.md","50","**GET STUDY NOTES ???**"
-"public\products\index.md","55","**GET EXAM SIMULATOR ???**"
-"public\products\index.md","66","[Try the Free Demo ???](https://sonoprep.com/demo)"
-"public\products\index.md","80","**GET THE PREMIUM BUNDLE ??? $99 ???**"
-"public\index.md","46","**~~$116.99~~** ??? **$99** (Save **$17.99**) ??? 45-day access"
-"public\index.md","58","**GET THE PREMIUM BUNDLE ??? $99 ???**"
-"public\index.md","67","**GET PHYSICS PEARLS ???**"
-"public\index.md","72","**GET SPI FLASHCARDS ???**"
-"public\index.md","77","**GET STUDY NOTES ???**"
-"public\index.md","82","**GET EXAM SIMULATOR ???**"
-"src\app\account\AccountPageClient.tsx","153","          ??? BACK TO HOME"
-"src\app\account\AccountPageClient.tsx","205","                BROWSE PRODUCTS ???"
-"src\app\account\AccountPageClient.tsx","252","                            OPEN ???"
-"src\app\api\demo\capture\route.ts","86","              View Full Pricing ???"
-"src\app\exam-simulator\page.tsx","243","          SIGN IN ???"
-"src\app\exam-simulator\page.tsx","288","          BROWSE PRODUCTS ???"
-"src\app\exam-simulator\page.tsx","305","          RELOAD ???"
-"src\app\exam-simulator\page.tsx","331","            ??? BACK TO ACCOUNT"
-"src\app\exam-simulator\page.tsx","405","            RETAKE EXAM ???"
-"src\app\exam-simulator\page.tsx","498","          'We couldn???t save your results. Please try again.',"
-"src\app\exam-simulator\page.tsx","528","            ??? BACK TO ACCOUNT"
-"src\app\exam-simulator\page.tsx","596","              ??? PREVIOUS"
-"src\app\exam-simulator\page.tsx","604","                NEXT ???"
-"src\app\exam-simulator\page.tsx","614","                  : 'SUBMIT EXAM ???'}"
-"src\app\flashcards\review\page.tsx","111","            SIGN IN ???"
-"src\app\flashcards\review\page.tsx","135","              BROWSE PRODUCTS ???"
-"src\app\flashcards\review\page.tsx","146","              RESTART REVIEW ???"
-"src\app\flashcards\review\page.tsx","154","              RELOAD ???"
-"src\app\flashcards\review\page.tsx","169","          ??? BACK TO ACCOUNT"
-"src\app\flashcards\review\page.tsx","179","                ??? Access until {new Date(accessExpiresAt).toLocaleDateString()}"
-"src\app\flashcards\review\page.tsx","215","                {isSubmitting ? 'SAVING...' : 'GOT IT ???'}"
-"src\app\flashcards\review\page.tsx","222","                {isSubmitting ? 'SAVING...' : 'DIFFICULT ???'}"
-"src\app\forgot-password\page.tsx","60","              BACK TO SIGN IN ???"
-"src\app\forgot-password\page.tsx","116","            {loading ? ""SENDING???"" : ""SEND RESET LINK ???""}"
-"src\app\forgot-password\page.tsx","134","            ??? BACK TO HOME"
-"src\app\login\LoginFormClient.tsx","148","              placeholder=""??????????????????????????????"""
-"src\app\login\LoginFormClient.tsx","157","            {loading ? ""SIGNING IN???"" : ""SIGN IN ???""}"
-"src\app\login\LoginFormClient.tsx","180","            ??? BACK TO HOME"
-"src\app\physics-pearls\page.tsx","33","          SIGN IN ???"
-"src\app\physics-pearls\page.tsx","50","          BROWSE PRODUCTS ???"
-"src\app\physics-pearls\page.tsx","61","          RELOAD ???"
-"src\app\physics-pearls\page.tsx","86","          ??? BACK TO ACCOUNT"
-"src\app\physics-pearls\page.tsx","98","                ??? Access until {new Date(expiresAt).toLocaleDateString()}"
-"src\app\privacy\page.tsx","24","          ??? BACK TO HOME"
-"src\app\products\page.tsx","336","                  : ""GET THE BUNDLE ??? $99 ???""}"
-"src\app\products\page.tsx","417","                  : `GET ${product.name.toUpperCase()} ???`}"
-"src\app\products\page.tsx","445","            TRY FREE DEMO ???"
-"src\app\reset-password\ResetPasswordClient.tsx","126","            REQUEST NEW LINK ???"
-"src\app\reset-password\ResetPasswordClient.tsx","167","            SIGN IN ???"
-"src\app\reset-password\ResetPasswordClient.tsx","218","              placeholder=""??????????????????????????????"""
-"src\app\reset-password\ResetPasswordClient.tsx","245","              placeholder=""??????????????????????????????"""
-"src\app\reset-password\ResetPasswordClient.tsx","255","            {loading ? ""RESETTING???"" : ""RESET PASSWORD ???""}"
-"src\app\reset-password\ResetPasswordClient.tsx","264","            ??? BACK TO SIGN IN"
-"src\app\signup\page.tsx","100","            GO TO SIGN IN ???"
-"src\app\signup\page.tsx","193","              placeholder=""??????????????????????????????"""
-"src\app\signup\page.tsx","205","            {loading ? ""CREATING ACCOUNT???"" : ""CREATE ACCOUNT ???""}"
-"src\app\signup\page.tsx","237","            ??? BACK TO HOME"
-"src\app\study-notes\viewer\page.tsx","145","          SIGN IN ???"
-"src\app\study-notes\viewer\page.tsx","166","          VIEW PRODUCTS ???"
-"src\app\study-notes\viewer\page.tsx","286","          ??? PREV"
-"src\app\study-notes\viewer\page.tsx","315","          NEXT ???"
-"src\app\study-notes\page.tsx","42","          SIGN IN ???"
-"src\app\study-notes\page.tsx","64","          BROWSE PRODUCTS ???"
-"src\app\study-notes\page.tsx","79","          RELOAD ???"
-"src\app\study-notes\page.tsx","107","          ??? BACK TO ACCOUNT"
-"src\app\study-notes\page.tsx","139","                ??? Access until {new Date(expiresAt).toLocaleDateString()}"
-"src\app\study-notes\page.tsx","171","            OPEN SONOGRAPHIC PHYSICS ???"
-"src\app\terms\page.tsx","24","          ??? BACK TO HOME"
-"src\app\not-found.tsx","52","            Back to Home ???"
-"src\components\app\exam-simulator.tsx","158","          RETAKE DEMO ???"
-"src\components\app\exam-simulator.tsx","227","              SHOW EXPLANATION ???"
-"src\components\app\exam-simulator.tsx","246","          {attempt.currentIndex < total - 1 ? ""NEXT QUESTION ???"" : ""SEE RESULTS ???""}"
-"src\components\app\flashcard-viewer.tsx","57","      // Last card ??? first card"
-"src\components\app\flashcard-viewer.tsx","66","      // First card ??? last card"
-"src\components\app\flashcard-viewer.tsx","180","          ??? PREVIOUS"
-"src\components\app\flashcard-viewer.tsx","189","          NEXT ???"
-"src\components\app\flashcard-viewer.tsx","223","        Use ??? and ??? to move between cards"
-"src\components\layout\header.tsx","84","            GET THE BUNDLE ???"
-"src\components\layout\header.tsx","143","            GET THE BUNDLE ???"
-"src\components\marketing\product-card.tsx","218","                  <span>???</span>"
-"src\components\BlogPostLayout.tsx","91","            ??? BACK TO BLOG"
-"src\lib\content\exam-data.ts","1596","    question: `In bio effect studies, the term ???In Vitro??? means:`,"
-"src\lib\content\exam-data.ts","1738","      `Ohm???s Principle`,"
-"src\lib\content\exam-data.ts","1741","      `Huygens??? Principle`,"
-"src\lib\content\exam-data.ts","2174","    question: `Bernoulli???s Principle?`,"
-"STATUS.md","127","In your Stripe dashboard ??? Webhooks, register these events:"
-"todo.md","22","- [ ] Test the full checkout ??? webhook ??? access-grant flow in Stripe TEST"
-"todo.md","24","      `2025-02-24.acacia` to `2026-07-29.dahlia` (SDK v17 ??? v22) ??? the"

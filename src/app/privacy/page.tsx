@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | SonoPrep",
+  title: "Privacy Policy",
   description:
     "SonoPrep's privacy policy: what data we collect, how we use it, and your rights as a user.",
   keywords: ["SonoPrep privacy policy", "sonography exam prep privacy"],
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   },
 };
 
-const LAST_UPDATED = "June 1, 2026";
+const LAST_UPDATED = "September 29, 2026";
 
 export default function PrivacyPage() {
   return (
@@ -81,6 +81,12 @@ export default function PrivacyPage() {
                 You can opt out via browser extensions that block GA.
               </li>
               <li>
+                <strong className="text-white">Marketing contact data:</strong>{" "}
+                if you request the free diagnostic, your email address, the page
+                you submitted it from, whether and when you confirmed it, and
+                where you are in our follow-up email sequence.
+              </li>
+              <li>
                 <strong className="text-white">Support data:</strong> any
                 information you send us by email.
               </li>
@@ -100,6 +106,15 @@ export default function PrivacyPage() {
                 reset)
               </li>
               <li>To respond to support requests</li>
+              <li>
+                If you requested the free diagnostic: we first email you a
+                confirmation link. Only if you click it do we send the
+                diagnostic link and up to three follow-up study-tip emails over
+                about two weeks. If you never confirm, we send nothing further
+                and delete the address after 30 days. Every email has a
+                one-click unsubscribe link, and we stop immediately when you
+                unsubscribe or purchase.
+              </li>
             </ul>
             <p className="mt-3">
               We do not sell your data. We do not use your data for advertising.
@@ -164,7 +179,7 @@ export default function PrivacyPage() {
                 .
               </li>
               <li>
-                <strong className="text-white">Resend</strong> — transactional
+                <strong className="text-white">Resend</strong> — transactional and follow-up
                 email delivery (password resets, account notifications).
                 Subject to{" "}
                 <a
@@ -233,8 +248,13 @@ export default function PrivacyPage() {
             </h2>
             <p>
               We use session cookies to keep you logged in and analytics cookies
-              (Google Analytics) to understand site usage. We do not use
-              advertising or tracking cookies. You can disable cookies in your
+              (Google Analytics) to understand site usage. We do not load
+              Google Analytics if your browser sends a Do Not Track or Global
+              Privacy Control signal. We turn off Google advertising features
+              in Google Analytics and do not use advertising or remarketing
+              cookies. When you buy, our server reports the order amount and
+              product (never your name or email) to Google Analytics so we can
+              measure which pages lead to purchases. You can disable cookies in your
               browser settings, but some features (like staying logged in) will
               not work without them.
             </p>

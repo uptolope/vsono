@@ -27,6 +27,23 @@ export const metadata: Metadata = {
 
 const POSTS = [
   {
+    slug: "spi-study-plan-30-45-days",
+    tag: "STUDY STRATEGY",
+    title:
+      "SPI Study Plan: A 30- and 45-Day Schedule Built on the Official Content Outline",
+    desc: "Two realistic schedules that divide your hours by the official domain weightings, with a daily routine, practice-exam timing and a last-week checklist.",
+    date: "September 29, 2026",
+    read: "12 min read",
+  },
+  {
+    slug: "ardms-spi-exam-cost-scheduling-retakes",
+    tag: "EXAM FACTS",
+    title: "ARDMS SPI Exam Cost, Format, Scoring and Retake Rules (2026)",
+    desc: "The $275 fee, 300–700 scoring with 555 to pass, the 60-day retake wait, and ARDMS's published 2013–2023 pass rates, all from official sources.",
+    date: "September 29, 2026",
+    read: "8 min read",
+  },
+  {
     slug: "complete-spi-exam-guide",
     tag: "COMPLETE GUIDE",
     title: "The Complete ARDMS SPI Exam Guide: Everything You Need to Pass",
@@ -61,7 +78,7 @@ const POSTS = [
     read: "18 min read",
   },
   {
-    slug: "ultrasound-artifacts-spi",
+    slug: "spi-ultrasound-artifacts-guide",
     tag: "IMAGE QUALITY",
     title: "Ultrasound Artifacts: The 7 Most Common SPI Exam Questions",
     desc: "Reverberation, shadowing, comet-tail, mirror image — the ARDMS tests these every time. Learn to identify and explain each one.",

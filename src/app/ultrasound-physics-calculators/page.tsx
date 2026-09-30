@@ -1,8 +1,9 @@
 ﻿import type { Metadata } from "next";
 import UltrasoundCalculatorsClient from "./UltrasoundCalculatorsClient";
+import ResourceFooter from "@/components/resources/ResourceFooter";
 
 export const metadata: Metadata = {
-  title: "Ultrasound Physics Calculators: Axial Resolution & Nyquist | SonoPrep",
+  title: "Ultrasound Physics Calculators: Axial Resolution & Nyquist",
   description:
     "Free interactive ultrasound physics calculators for axial resolution and the Nyquist limit. Practice important ARDMS SPI exam formulas.",
   keywords: [
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     "ARDMS SPI physics",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/ultrasound-physics-calculators",
+    canonical: "https://www.sonoprep.com/ultrasound-physics-calculators",
   },
 };
 
@@ -26,7 +27,7 @@ function CalculatorSchema() {
     isAccessibleForFree: true,
     description:
       "Interactive calculators for axial resolution and the Nyquist limit used in ultrasound physics and ARDMS SPI exam preparation.",
-    url: "https://sonoprep.com/ultrasound-physics-calculators",
+    url: "https://www.sonoprep.com/ultrasound-physics-calculators",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -47,7 +48,7 @@ export default function CalculatorsPage() {
     <>
       <CalculatorSchema />
 
-      <main id="main-content" className="min-h-screen pt-24 px-6 pb-20">
+      <main className="min-h-screen pt-24 px-6 pb-20">
         <div className="mx-auto max-w-3xl">
           <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#c85b3a]">
             ARDMS SPI Study Tools
@@ -64,6 +65,13 @@ export default function CalculatorsPage() {
         </div>
 
         <UltrasoundCalculatorsClient />
+
+        <ResourceFooter
+          path="/ultrasound-physics-calculators"
+          title="Ultrasound Physics Calculators"
+          updated="2026-09-29"
+          methodology="The calculators implement the standard exam-style relationships: axial resolution = spatial pulse length ÷ 2, and PRF = 77 ÷ depth (cm) in kHz with the Nyquist limit = PRF ÷ 2, using the conventional 1540 m/s soft-tissue propagation speed."
+        />
       </main>
     </>
   );

@@ -1,7 +1,7 @@
 ---
 title: "SonoPrep Products — ARDMS SPI Exam Preparation"
 description: "Choose from individual SPI prep tools or get the complete Premium Bundle for $99. All content is aligned to the official 5-domain ARDMS SPI content outline."
-url: "https://sonoprep.com/products"
+url: "https://www.sonoprep.com/products"
 ---
 
 # SonoPrep Products
@@ -18,7 +18,7 @@ All materials are built directly to the current **5-domain ARDMS SPI content out
 Get everything you need to pass the SPI exam in one package.
 
 - Physics Pearls (50 high-yield summaries)
-- SPI Flashcards (200+ cards with spaced repetition)
+- SPI Flashcards (200 cards with spaced repetition)
 - Complete Study Notes (159-page PDF, 15 chapters)
 - Full Exam Simulator (155-question bank, 3 full timed attempts)
 - Per-domain performance tracking
@@ -40,7 +40,7 @@ Get everything you need to pass the SPI exam in one package.
 **GET PHYSICS PEARLS →**
 
 **SPI Flashcards — $24** (30-day access)  
-200+ digital flashcards mapped to all 5 SPI domains. Built for active recall and spaced repetition — the most effective way to master instrumentation and Doppler concepts.
+200 digital flashcards mapped to all 5 SPI domains. Built for active recall and spaced repetition — the most effective way to master instrumentation and Doppler concepts.
 
 **GET SPI FLASHCARDS →**
 
@@ -63,7 +63,7 @@ Not ready to buy yet? Test the quality yourself.
 - 10 realistic SPI-style questions with full explanations
 - 10 sample flashcards from the complete deck
 
-[Try the Free Demo →](https://sonoprep.com/demo)
+[Try the Free Demo →](https://www.sonoprep.com/demo)
 
 ---
 

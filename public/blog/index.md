@@ -1,7 +1,7 @@
 ---
 title: "SonoPrep Blog — Free SPI Exam Study Guides"
 description: "Free in-depth study guides for ARDMS SPI exam candidates. Ultrasound physics, Doppler principles, artifact recognition, study strategy, and credential comparisons."
-url: "https://sonoprep.com/blog"
+url: "https://www.sonoprep.com/blog"
 ---
 
 # SonoPrep Blog — Free SPI Exam Study Guides
@@ -10,7 +10,23 @@ Free, in-depth study resources for ARDMS SPI exam candidates. Every article is w
 
 ---
 
-## [The Complete ARDMS SPI Exam Guide: Everything You Need to Pass](https://sonoprep.com/blog/complete-spi-exam-guide)
+## [SPI Study Plan: A 30- and 45-Day Schedule Built on the Official Content Outline](https://www.sonoprep.com/blog/spi-study-plan-30-45-days)
+
+_September 29, 2026 · 12 min read_
+
+Two realistic schedules that divide your hours by the official domain weightings, with a daily routine, practice-exam timing and a last-week checklist.
+
+---
+
+## [ARDMS SPI Exam Cost, Format, Scoring and Retake Rules (2026)](https://www.sonoprep.com/blog/ardms-spi-exam-cost-scheduling-retakes)
+
+_September 29, 2026 · 8 min read_
+
+The $275 fee, 300–700 scoring with 555 to pass, the 60-day retake wait, and ARDMS's published 2013–2023 pass rates, all from official sources.
+
+---
+
+## [The Complete ARDMS SPI Exam Guide: Everything You Need to Pass](https://www.sonoprep.com/blog/complete-spi-exam-guide)
 
 _May 12, 2026 · 25 min read_
 
@@ -18,7 +34,7 @@ The definitive guide to the SPI exam. Covers what the exam tests, the five domai
 
 ---
 
-## [ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained](https://sonoprep.com/blog/ardms-exam-blueprint)
+## [ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained](https://www.sonoprep.com/blog/ardms-exam-blueprint)
 
 _April 26, 2026 · 17 min read_
 
@@ -26,7 +42,7 @@ A deep dive into the official ARDMS SPI Content Outline V24.1 — domain weighti
 
 ---
 
-## [Doppler Principles for the SPI Exam: Nyquist, Aliasing & Spectral Analysis](https://sonoprep.com/blog/doppler-principles-spi-exam)
+## [Doppler Principles for the SPI Exam: Nyquist, Aliasing & Spectral Analysis](https://www.sonoprep.com/blog/doppler-principles-spi-exam)
 
 _April 18, 2026 · 20 min read_
 
@@ -34,7 +50,7 @@ Doppler is 34% of the SPI exam. This guide covers every core concept ARDMS tests
 
 ---
 
-## [Ultrasound Physics for the SPI Exam: The 6 Concepts That Actually Appear](https://sonoprep.com/blog/ultrasound-physics-spi)
+## [Ultrasound Physics for the SPI Exam: The 6 Concepts That Actually Appear](https://www.sonoprep.com/blog/ultrasound-physics-spi)
 
 _April 10, 2026 · 18 min read_
 
@@ -42,7 +58,7 @@ Cut through the noise. These are the foundational ultrasound physics concepts re
 
 ---
 
-## [Ultrasound Artifacts: The 7 Most Common SPI Exam Questions](https://sonoprep.com/blog/ultrasound-artifacts-spi)
+## [Ultrasound Artifacts: The 7 Most Common SPI Exam Questions](https://www.sonoprep.com/blog/spi-ultrasound-artifacts-guide)
 
 _April 3, 2026 · 15 min read_
 
@@ -50,7 +66,7 @@ Artifact recognition is heavily tested on the SPI. This guide covers the 7 artif
 
 ---
 
-## [How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint](https://sonoprep.com/blog/pass-spi-first-attempt)
+## [How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint](https://www.sonoprep.com/blog/pass-spi-first-attempt)
 
 _March 28, 2026 · 14 min read_
 
@@ -58,7 +74,7 @@ A week-by-week study schedule built around the ARDMS SPI content outline and wei
 
 ---
 
-## [Spaced Repetition for SPI Exam Success: Why Active Recall Beats Cramming](https://sonoprep.com/blog/spaced-repetition-spi-exam)
+## [Spaced Repetition for SPI Exam Success: Why Active Recall Beats Cramming](https://www.sonoprep.com/blog/spaced-repetition-spi-exam)
 
 _March 20, 2026 · 12 min read_
 
@@ -66,7 +82,7 @@ The neuroscience of spaced repetition and why it works better than re-reading fo
 
 ---
 
-## [SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time](https://sonoprep.com/blog/test-taking-strategies-spi)
+## [SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time](https://www.sonoprep.com/blog/test-taking-strategies-spi)
 
 _March 14, 2026 · 11 min read_
 
@@ -74,7 +90,7 @@ Practical strategies for the exam itself: how to parse ARDMS-style question stem
 
 ---
 
-## [RDMS vs RDCS vs RVT vs RMSKS: Which ARDMS Specialty Is Right for You?](https://sonoprep.com/blog/ardms-specialties-comparison)
+## [RDMS vs RDCS vs RVT vs RMSKS: Which ARDMS Specialty Is Right for You?](https://www.sonoprep.com/blog/ardms-specialties-comparison)
 
 _March 6, 2026 · 13 min read_
 

@@ -1,4 +1,4 @@
-﻿import path from "node:path";
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const securityHeaders = [
@@ -10,7 +10,7 @@ const securityHeaders = [
       "form-action 'self'",
       "frame-ancestors 'none'",
       "object-src 'none'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
@@ -42,6 +42,17 @@ const securityHeaders = [
   },
 ];
 
+// Embeddable widgets (/embed/*) may be framed by any site; everything else
+// stays un-frameable. Header values for the embed route are derived from the
+// global set so the two cannot drift apart.
+const embedHeaders = securityHeaders
+  .filter((h) => h.key !== "X-Frame-Options")
+  .map((h) =>
+    h.key === "Content-Security-Policy-Report-Only"
+      ? { ...h, value: h.value.replace("frame-ancestors 'none'", "frame-ancestors *") }
+      : h,
+  );
+
 const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
@@ -56,11 +67,35 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 
+  async redirects() {
+    return [
+      // Non-www -> www (the canonical host). Permanent (308).
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "sonoprep.com" }],
+        destination: "https://www.sonoprep.com/:path*",
+        permanent: true,
+      },
+      // Legacy blog slug. The old page used redirect() (a temporary 307);
+      // search engines need a permanent redirect to consolidate signals.
+      {
+        source: "/blog/ultrasound-artifacts-spi",
+        destination: "/blog/spi-ultrasound-artifacts-guide",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {
-        source: "/(.*)",
+        // Negative lookahead: every path except /embed/*
+        source: "/((?!embed/).*)",
         headers: securityHeaders,
+      },
+      {
+        source: "/embed/:path*",
+        headers: embedHeaders,
       },
       {
         source: "/(.*)\\.(png|jpg|jpeg|webp|avif|svg|woff2)",

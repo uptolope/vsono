@@ -1,41 +1,35 @@
 import type { Metadata } from "next";
 import Providers from "./providers";
 import StructuredData from "@/components/StructuredData";
+import Analytics from "@/components/Analytics";
+import SiteChrome from "@/components/layout/site-chrome";
+import { SITE_URL } from "@/lib/site-config";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sonoprep.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "SonoPrep - ARDMS SPI Exam Preparation",
     template: "%s | SonoPrep",
   },
   description:
     "Prepare for the ARDMS SPI exam with independently written practice questions, timed simulator attempts, spaced-repetition flashcards, and ultrasound physics study tools.",
-  alternates: {
-    canonical: "/",
-  },
+  // No site-wide canonical here: a root-level canonical of "/" is inherited by
+  // every page that doesn't declare its own and would point it at the
+  // homepage. Each indexable page sets its own `alternates.canonical`.
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://sonoprep.com",
+    url: SITE_URL,
     siteName: "SonoPrep",
     title: "SonoPrep - ARDMS SPI Exam Preparation",
     description:
       "Master the ARDMS SPI exam with high-yield physics questions, mock exams, flashcards, and ultrasound physics study tools.",
-    images: [
-      {
-        url: "/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "SonoPrep ARDMS SPI Exam Preparation",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "SonoPrep - ARDMS SPI Exam Preparation",
     description: "Prepare for the ARDMS SPI exam with SonoPrep study tools.",
-    images: ["/opengraph-image.png"],
   },
 };
 
@@ -57,10 +51,10 @@ export default function RootLayout({
           Skip to main content
         </a>
 
+        <Analytics />
+
         <Providers>
-          <div id="main-content" tabIndex={-1}>
-            {children}
-          </div>
+          <SiteChrome>{children}</SiteChrome>
         </Providers>
       </body>
     </html>

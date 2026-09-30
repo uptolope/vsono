@@ -142,6 +142,15 @@ export default function GetStartedClient() {
             <p className="meta text-[9px] text-[#4a453f] text-center">
               FREE · NO CREDIT CARD · INSTANT ACCESS
             </p>
+
+            <p className="meta text-[9px] text-[#4a453f] text-center">
+              We&apos;ll email a confirmation link first. Once you confirm,
+              you&apos;ll get up to 3 follow-up study tips over about two
+              weeks. One-click unsubscribe in every email.{" "}
+              <Link href="/privacy" className="underline">
+                Privacy Policy
+              </Link>
+            </p>
           </form>
         )}
       </div>

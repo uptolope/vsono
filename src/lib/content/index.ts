@@ -44,7 +44,7 @@ export const BUNDLE_INCLUDES: ProductContentKey[] = [
 /**
  * Number of questions drawn per exam attempt.
  * Intentionally fixed at 110 to mirror the real ARDMS SPI exam format
- * (110 multiple-choice questions, 2.5-hour time limit — see faq-data.ts),
+ * (110 multiple-choice questions, 2-hour time limit including a five-minute survey — see faq-data.ts),
  * independent of how large the underlying question bank is.
  */
 export const QUESTIONS_PER_ATTEMPT = 110;

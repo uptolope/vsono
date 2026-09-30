@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SOCIAL_PROFILES } from "@/lib/site-config";
 
 const FOOTER_LINKS = [
   { href: "/products", label: "Products" },
@@ -8,15 +9,15 @@ const FOOTER_LINKS = [
   { href: "/privacy", label: "Privacy" },
 ];
 
-const SOCIAL_LINKS = [
-  {
-    href: "https://www.linkedin.com/groups/42841070/",
-    label: "LinkedIn",
-  },
-  {
-    href: "https://www.instagram.com/sonoprep/",
-    label: "Instagram",
-  },
+const SOCIAL_LINKS = SOCIAL_PROFILES;
+
+const RESOURCE_LINKS = [
+  { href: "/free-spi-practice-test", label: "Free SPI practice test" },
+  { href: "/spi-physics-formula-sheet", label: "Formula sheet" },
+  { href: "/spi-ultrasound-glossary", label: "Glossary" },
+  { href: "/ultrasound-physics-calculators", label: "Physics calculators" },
+  { href: "/tools/nyquist-calculator", label: "Nyquist calculator" },
+  { href: "/blog/spi-study-plan-30-45-days", label: "SPI study plan" },
 ];
 
 export function Footer() {
@@ -44,6 +45,22 @@ export function Footer() {
             ))}
           </nav>
         </div>
+
+        <nav
+          aria-label="Free SPI study resources"
+          className="mb-8 flex flex-wrap gap-x-6 gap-y-2"
+        >
+          <span className="meta text-[10px] text-[#4a453f]">FREE RESOURCES</span>
+          {RESOURCE_LINKS.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="text-xs text-[#8a8279] hover:text-white transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
 
         <div className="border-t border-white/[0.04] pt-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">

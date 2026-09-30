@@ -1,10 +1,10 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Pricing & Products — SPI Exam Prep | SonoPrep",
+  title: "Pricing & Products — SPI Exam Prep",
   description:
-    "SPI exam prep starting at $9. Flashcards, exam simulator, Physics Pearls, and study notes — or get the complete bundle for $99 and save $17 vs buying individually.",
+    "SPI exam prep starting at $9. Flashcards, exam simulator, Physics Pearls, and study notes — or get the complete bundle for $99 and save $17.99 vs buying individually.",
   keywords: [
     "SPI exam prep pricing",
     "ARDMS SPI study materials",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "sonography exam prep bundle",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/products",
+    canonical: "https://www.sonoprep.com/products",
   },
 };
 
@@ -24,7 +24,7 @@ function ProductsSchema() {
     name: "SonoPrep ARDMS SPI Exam Prep",
     description:
       "SPI exam preparation tools including flashcards, exam simulator, Physics Pearls, study notes, and a complete study bundle.",
-    url: "https://sonoprep.com/products",
+    url: "https://www.sonoprep.com/products",
     brand: {
       "@type": "Brand",
       name: "SonoPrep",
@@ -36,7 +36,7 @@ function ProductsSchema() {
       highPrice: "99.00",
       offerCount: 5,
       availability: "https://schema.org/InStock",
-      url: "https://sonoprep.com/products",
+      url: "https://www.sonoprep.com/products",
     },
   };
 

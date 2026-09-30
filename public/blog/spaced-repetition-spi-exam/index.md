@@ -1,7 +1,7 @@
 ---
 title: "Spaced Repetition for SPI Exam Success: Why Active Recall Beats Cramming"
 description: "The science behind spaced repetition and how SonoPrep's flashcard system applies it to ARDMS SPI content."
-url: "https://sonoprep.com/blog/spaced-repetition-spi-exam"
+url: "https://www.sonoprep.com/blog/spaced-repetition-spi-exam"
 date: "March 20, 2026"
 read: "12 min read"
 ---

@@ -1,7 +1,7 @@
 ---
 title: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained"
 description: "A breakdown of the official ARDMS SPI Content Outline V24.1 — how the exam's domain weightings can guide your study-time allocation."
-url: "https://sonoprep.com/blog/ardms-exam-blueprint"
+url: "https://www.sonoprep.com/blog/ardms-exam-blueprint"
 date: "April 26, 2026"
 read: "17 min read"
 ---

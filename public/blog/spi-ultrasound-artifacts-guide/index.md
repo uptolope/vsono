@@ -1,7 +1,7 @@
 ---
 title: "Ultrasound Artifacts: The 7 Most Common SPI Exam Questions"
 description: "Reverberation, shadowing, comet-tail, mirror image — the ARDMS SPI exam tests these artifacts heavily."
-url: "https://sonoprep.com/blog/ultrasound-artifacts-spi"
+url: "https://www.sonoprep.com/blog/spi-ultrasound-artifacts-guide"
 date: "April 3, 2026"
 read: "15 min read"
 ---

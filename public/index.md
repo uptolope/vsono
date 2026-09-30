@@ -1,14 +1,14 @@
 ---
 title: "SonoPrep — ARDMS SPI Exam Prep"
 description: "Pass the ARDMS SPI exam on your first attempt. Question bank, flashcards, physics notes, and a full exam simulator — built around the official 5-domain ARDMS content outline."
-url: "https://sonoprep.com"
+url: "https://www.sonoprep.com"
 ---
 
 # SonoPrep — ARDMS SPI Exam Prep
 
 SonoPrep provides focused, high-yield preparation for the ARDMS Sonography Principles and Instrumentation (SPI) exam — the required physics credential for RDMS, RDCS, RVT, and RMSKS.
 
-Every product is mapped directly to the official ARDMS SPI content outline and weighted by domain frequency.
+Every product is organized around the official ARDMS SPI content outline.
 
 ## What the SPI Exam Is
 
@@ -48,7 +48,7 @@ Domains 3 and 4 (image optimization and Doppler) make up **60% of the exam**.
 Get everything in one package — the most popular and cost-effective choice.
 
 - Physics Pearls (50 high-yield summaries)
-- SPI Flashcards (200+ cards with spaced repetition)
+- SPI Flashcards (200 cards with spaced repetition)
 - 159-page Study Notes (15 chapters)
 - Full Exam Simulator (155-question bank, 3 attempts)
 - Per-domain performance analytics
@@ -67,7 +67,7 @@ Get everything in one package — the most popular and cost-effective choice.
 **GET PHYSICS PEARLS →**
 
 **SPI Flashcards — $24** (30-day access)  
-200+ digital flashcards mapped to all 5 domains. Built for active recall and spaced repetition.
+200 digital flashcards mapped to all 5 domains. Built for active recall and spaced repetition.
 
 **GET SPI FLASHCARDS →**
 
@@ -87,7 +87,7 @@ Get everything in one package — the most popular and cost-effective choice.
 
 Not sure yet? Test the quality risk-free.
 
-The free demo at [sonoprep.com/demo](https://sonoprep.com/demo) includes 10 real SPI-style questions and 10 sample flashcards. No account or email required.
+The free demo at [sonoprep.com/demo](https://www.sonoprep.com/demo) includes 10 real SPI-style questions and 10 sample flashcards. No account or email required.
 
 ---
 

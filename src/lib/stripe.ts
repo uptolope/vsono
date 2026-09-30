@@ -3,6 +3,8 @@ import "server-only";
 import Stripe from "stripe";
 import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
+import { ACCESS_DAYS } from "@/lib/access-durations";
+
 const STRIPE_API_VERSION = "2026-08-26.dahlia" as const;
 
 const REQUIRED_STRIPE_ENV_VARS = [
@@ -62,23 +64,23 @@ export function getStripe(): Stripe {
 export const PRODUCT_PRICE_MAP = {
   FLASHCARDS: {
     priceId: process.env.STRIPE_PRICE_FLASHCARDS?.trim() ?? "",
-    accessDays: 30,
+    accessDays: ACCESS_DAYS.FLASHCARDS,
   },
   EXAM_SIMULATOR: {
     priceId: process.env.STRIPE_PRICE_EXAM_SIMULATOR?.trim() ?? "",
-    accessDays: 30,
+    accessDays: ACCESS_DAYS.EXAM_SIMULATOR,
   },
   PHYSICS_PEARLS: {
     priceId: process.env.STRIPE_PRICE_PHYSICS_PEARLS?.trim() ?? "",
-    accessDays: 30,
+    accessDays: ACCESS_DAYS.PHYSICS_PEARLS,
   },
   STUDY_NOTES: {
     priceId: process.env.STRIPE_PRICE_STUDY_NOTES?.trim() ?? "",
-    accessDays: 30,
+    accessDays: ACCESS_DAYS.STUDY_NOTES,
   },
   PREMIUM_BUNDLE: {
     priceId: process.env.STRIPE_PRICE_PREMIUM_BUNDLE?.trim() ?? "",
-    accessDays: 45,
+    accessDays: ACCESS_DAYS.PREMIUM_BUNDLE,
   },
 } as const;
 

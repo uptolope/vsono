@@ -3,7 +3,7 @@ import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time | SonoPrep",
+    "SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time",
   description:
     "How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage your pace across approximately 110 questions over two hours.",
   keywords: [

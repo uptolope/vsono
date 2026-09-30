@@ -1,10 +1,11 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ResourceFooter from "@/components/resources/ResourceFooter";
 import NyquistCalculatorClient from "./NyquistCalculatorClient";
 
 export const metadata: Metadata = {
-  title: "Nyquist Limit Calculator by Depth | SPI Exam Physics | SonoPrep",
+  title: "Nyquist Limit Calculator by Depth | SPI Exam Physics",
   description:
     "Calculate PRF and the Nyquist limit from imaging depth using PRF = 77 ÷ depth in centimeters.",
   keywords: [
@@ -50,7 +51,7 @@ export default function NyquistCalculatorPage() {
     <>
       <NyquistSchema />
 
-      <main id="main-content" className="min-h-screen px-6 pb-20 pt-32">
+      <main className="min-h-screen px-6 pb-20 pt-32">
         <div className="mx-auto max-w-4xl">
           <Breadcrumbs
             items={[
@@ -152,7 +153,7 @@ export default function NyquistCalculatorPage() {
                 </li>
                 <li>
                   <Link
-                    href="/exam-simulator"
+                    href="/spi-exam-simulator"
                     className="text-[#c85b3a] hover:text-white"
                   >
                     Practice with the 110-question Exam Simulator
@@ -162,6 +163,14 @@ export default function NyquistCalculatorPage() {
             </nav>
           </section>
         </div>
+
+        <ResourceFooter
+          path="/tools/nyquist-calculator"
+          title="Nyquist Limit Calculator by Depth"
+          updated="2026-09-29"
+          embedPath="/embed/nyquist-calculator"
+          methodology="The calculator uses the standard exam-style relationship PRF (kHz) = 77 ÷ depth (cm), which follows from a 1540 m/s soft-tissue propagation speed and 13 µs of go-return time per centimeter, and then Nyquist limit = PRF ÷ 2. Real scanners also limit PRF by other settings, so treat results as an exam-style estimate."
+        />
       </main>
     </>
   );

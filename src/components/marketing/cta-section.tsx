@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Shield, Zap } from "lucide-react";
 
 const INCLUSIONS = [
-  "200+ RDMS-written flashcards",
+  "200 RDMS-written flashcards",
   "3 exam attempts · 110 independently written questions from SonoPrep’s 155-question bank",
   "50 Physics Pearls",
   "Domain performance analytics",
@@ -28,8 +28,8 @@ export function CtaSection() {
         </h2>
 
         <p className="t-body mx-auto mt-8 max-w-xl text-lg">
-          Every product is structured around the exact ARDMS exam blueprint.
-          That&apos;s not a guess — that&apos;s by design.
+          Every product is organized around the five content domains ARDMS
+          publishes for the SPI exam.
         </p>
 
         {/* What's included */}

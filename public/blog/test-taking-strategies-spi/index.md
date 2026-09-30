@@ -1,7 +1,7 @@
 ---
 title: "SPI Exam Test-Taking Strategies: Eliminate Wrong Answers & Manage Time"
 description: "How to handle tricky ARDMS SPI question stems, eliminate distractors, and manage approximately 110 questions over two hours."
-url: "https://sonoprep.com/blog/test-taking-strategies-spi"
+url: "https://www.sonoprep.com/blog/test-taking-strategies-spi"
 date: "March 14, 2026"
 read: "11 min read"
 ---
