@@ -1,7 +1,7 @@
 ---
 title: "How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint"
 description: "A week-by-week study schedule built around the ARDMS SPI content outline for first-time candidates."
-url: "https://sonoprep.com/blog/pass-spi-first-attempt"
+url: "https://www.sonoprep.com/blog/pass-spi-first-attempt"
 date: "March 28, 2026"
 read: "14 min read"
 ---

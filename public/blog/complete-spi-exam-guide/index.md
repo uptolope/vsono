@@ -1,7 +1,7 @@
 ---
 title: "The Complete ARDMS SPI Exam Guide: Everything You Need to Pass"
 description: "Domain weightings, a proven 6-week study plan, common mistakes, and how to pass the ARDMS SPI exam on your first attempt."
-url: "https://sonoprep.com/blog/complete-spi-exam-guide"
+url: "https://www.sonoprep.com/blog/complete-spi-exam-guide"
 date: "May 12, 2026"
 read: "25 min read"
 ---

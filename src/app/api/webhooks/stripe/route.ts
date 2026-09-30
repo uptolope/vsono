@@ -5,6 +5,7 @@ import { PHASE_PRODUCTION_BUILD } from "next/constants";
 
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
+import { getAccessDays } from "@/lib/access-durations";
 
 export const runtime = "nodejs";
 
@@ -269,6 +270,34 @@ async function handleCheckoutCompleted(
     checkoutSession.payment_intent,
   );
 
+  const existingPurchase = await prisma.purchase.findUnique({
+    where: {
+      stripeSessionId: checkoutSession.id,
+    },
+    select: {
+      id: true,
+      status: true,
+      accessGrantedAt: true,
+    },
+  });
+
+  /*
+   * A replayed/late checkout event must never resurrect a purchase that was
+   * already refunded or charged back.
+   */
+  if (
+    existingPurchase &&
+    (existingPurchase.status === "REFUNDED" ||
+      existingPurchase.status === "DISPUTED")
+  ) {
+    console.warn(
+      `[webhook:${eventId}] Ignoring checkout replay for ` +
+        `${existingPurchase.status} purchase ${existingPurchase.id}`,
+    );
+
+    return;
+  }
+
   const now = new Date();
   let accessGrantedAt = now;
 
@@ -280,9 +309,35 @@ async function handleCheckoutCompleted(
     }
   }
 
+  /*
+   * On a retry of an already-fulfilled session keep the original grant time,
+   * so redelivery can neither shorten nor silently move the access window.
+   */
+  if (
+    existingPurchase?.status === "COMPLETED" &&
+    existingPurchase.accessGrantedAt
+  ) {
+    accessGrantedAt = existingPurchase.accessGrantedAt;
+  }
+
+  /*
+   * Access length comes from code (ACCESS_DAYS), not the DB column, so a
+   * Premium Bundle buyer always gets 45 days even if the Product row is
+   * unseeded or still holds the 30-day schema default.
+   */
+  const accessDays = getAccessDays(productRecord.type);
+
+  if (productRecord.accessDurationDays !== accessDays) {
+    console.warn(
+      `[webhook:${eventId}] Product ${productRecord.id} has ` +
+        `accessDurationDays=${productRecord.accessDurationDays} in the ` +
+        `database but ${accessDays} is required for ${productRecord.type}; ` +
+        `using ${accessDays}.`,
+    );
+  }
+
   const accessExpiresAt = new Date(
-    accessGrantedAt.getTime() +
-      productRecord.accessDurationDays * 24 * 60 * 60 * 1000,
+    accessGrantedAt.getTime() + accessDays * 24 * 60 * 60 * 1000,
   );
 
   const purchase = await prisma.purchase.upsert({
@@ -323,6 +378,19 @@ async function handleRefund(
   charge: Stripe.Charge,
   eventId: string,
 ): Promise<void> {
+  /*
+   * charge.refunded also fires for PARTIAL refunds. Only a full refund
+   * revokes access.
+   */
+  if (!charge.refunded) {
+    console.info(
+      `[webhook:${eventId}] Partial refund on charge ${charge.id}; ` +
+        `access unchanged.`,
+    );
+
+    return;
+  }
+
   const paymentIntentId = extractPaymentIntentId(charge.payment_intent);
 
   if (!paymentIntentId) {

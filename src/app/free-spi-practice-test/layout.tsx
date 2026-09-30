@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free ARDMS SPI Practice Test: 10 Questions | SonoPrep",
+  title: "Free ARDMS SPI Practice Test: 10 Questions",
   description:
     "Take a free 10-question ARDMS SPI practice test with instant answers, explanations, and domain feedback. No signup required.",
   keywords: [
@@ -15,12 +15,12 @@ export const metadata: Metadata = {
     title: "Free ARDMS SPI Practice Test | SonoPrep",
     description:
       "Test your ultrasound physics knowledge with 10 free SPI practice questions and instant explanations.",
-    url: "https://sonoprep.com/free-spi-practice-test",
+    url: "https://www.sonoprep.com/free-spi-practice-test",
     siteName: "SonoPrep",
     type: "website",
   },
   alternates: {
-    canonical: "https://sonoprep.com/free-spi-practice-test",
+    canonical: "https://www.sonoprep.com/free-spi-practice-test",
   },
 };
 

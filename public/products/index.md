@@ -1,7 +1,7 @@
 ---
 title: "SonoPrep Products — ARDMS SPI Exam Preparation"
 description: "Choose from individual SPI prep tools or get the complete Premium Bundle for $99. All content is aligned to the official 5-domain ARDMS SPI content outline."
-url: "https://sonoprep.com/products"
+url: "https://www.sonoprep.com/products"
 ---
 
 # SonoPrep Products
@@ -63,7 +63,7 @@ Not ready to buy yet? Test the quality yourself.
 - 10 realistic SPI-style questions with full explanations
 - 10 sample flashcards from the complete deck
 
-[Try the Free Demo →](https://sonoprep.com/demo)
+[Try the Free Demo →](https://www.sonoprep.com/demo)
 
 ---
 

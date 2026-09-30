@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Study Notes | SonoPrep",
+  title: "Study Notes",
   description:
     "Structured ultrasound physics study notes for students preparing for the ARDMS SPI exam.",
   alternates: {

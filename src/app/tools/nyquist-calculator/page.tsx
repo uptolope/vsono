@@ -4,7 +4,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import NyquistCalculatorClient from "./NyquistCalculatorClient";
 
 export const metadata: Metadata = {
-  title: "Nyquist Limit Calculator by Depth | SPI Exam Physics | SonoPrep",
+  title: "Nyquist Limit Calculator by Depth | SPI Exam Physics",
   description:
     "Calculate PRF and the Nyquist limit from imaging depth using PRF = 77 ÷ depth in centimeters.",
   keywords: [

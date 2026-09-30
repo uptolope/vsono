@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+// Cheap regression guards for things that have broken before.
+// Run: npm run check:invariants   (exit 1 on failure)
+import { readFileSync, readdirSync, statSync, existsSync } from "node:fs";
+import { join } from "node:path";
+
+const failures = [];
+const fail = (msg) => failures.push(msg);
+
+function walk(dir, out = []) {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) walk(p, out);
+    else out.push(p);
+  }
+  return out;
+}
+
+// 1. Access windows: bundle must be 45 days, individual products 30.
+const dur = readFileSync("src/lib/access-durations.ts", "utf8");
+const expected = {
+  FLASHCARDS: 30,
+  EXAM_SIMULATOR: 30,
+  PHYSICS_PEARLS: 30,
+  STUDY_NOTES: 30,
+  PREMIUM_BUNDLE: 45,
+};
+for (const [k, v] of Object.entries(expected)) {
+  const m = dur.match(new RegExp(`${k}:\\s*(\\d+)`));
+  if (!m || Number(m[1]) !== v) fail(`ACCESS_DAYS.${k} must be ${v}`);
+}
+
+// 2. Webhook must take the duration from code, not the DB column.
+const hook = readFileSync("src/app/api/webhooks/stripe/route.ts", "utf8");
+if (!hook.includes("getAccessDays(")) fail("webhook must use getAccessDays()");
+if (/productRecord\.accessDurationDays\s*\*/.test(hook))
+  fail("webhook must not compute expiry from Product.accessDurationDays");
+
+// 3. One canonical host (www). No apex URLs in published surfaces.
+const files = [...walk("src"), ...walk("public")].filter(
+  (f) => /\.(tsx?|md|txt)$/.test(f) && !f.endsWith(".backup"),
+);
+for (const f of files) {
+  if (/https:\/\/sonoprep\.com/.test(readFileSync(f, "utf8")))
+    fail(`apex URL (use https://www.sonoprep.com) in ${f}`);
+}
+
+// 4. robots.txt has exactly one source.
+if (existsSync("public/robots.txt"))
+  fail("public/robots.txt conflicts with src/app/robots.ts");
+
+// 5. No hard-coded ' | SonoPrep' in metadata titles (root template adds it).
+for (const f of files.filter((f) => f.endsWith(".tsx"))) {
+  if (/^  title:\s*\n?\s*["'][^"'\n]* \| SonoPrep["'],?$/m.test(readFileSync(f, "utf8")))
+    fail(`title already gets the "| SonoPrep" template suffix: ${f}`);
+}
+
+if (failures.length) {
+  console.error("Invariant check FAILED:\n - " + failures.join("\n - "));
+  process.exit(1);
+}
+console.log("All invariants OK.");

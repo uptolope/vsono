@@ -32,7 +32,7 @@ type Product = {
 // Individual prices:
 // $9 + $24 + $34 + $49.99 = $116.99
 // Bundle price: $99
-// Displayed savings: $17
+// Displayed savings: $17.99
 const PRODUCTS: Product[] = [
   {
     key: "bundle",
@@ -51,6 +51,7 @@ const PRODUCTS: Product[] = [
       "All 5 ARDMS SPI domains covered",
       "Per-domain performance analytics",
       "Detailed clinical rationales",
+      "45 days of full access from purchase",
       "One payment · no recurring subscription",
     ],
     bundle: true,
@@ -68,6 +69,7 @@ const PRODUCTS: Product[] = [
       "Clinical application examples",
       "SPI outline aligned",
       "Quick reference format",
+      "30 days of access from purchase",
     ],
     bundle: false,
     featured: false,
@@ -84,6 +86,7 @@ const PRODUCTS: Product[] = [
       "SM-2 spaced repetition",
       "Progress tracking per card",
       "Covers all 5 ARDMS SPI domains",
+      "30 days of access from purchase",
     ],
     bundle: false,
     featured: false,
@@ -101,6 +104,7 @@ const PRODUCTS: Product[] = [
       "10 organized chapters",
       "Progress tracking",
       "Covers all 5 SPI domains",
+      "30 days of access from purchase",
     ],
     bundle: false,
     featured: false,
@@ -119,6 +123,7 @@ const PRODUCTS: Product[] = [
       "Randomized each time",
       "Detailed clinical rationales",
       "Per-domain performance analytics",
+      "30 days of access from purchase",
     ],
     bundle: false,
     featured: true,

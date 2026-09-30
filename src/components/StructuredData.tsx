@@ -4,20 +4,20 @@
     '@graph': [
       {
         '@type': 'Organization',
-        '@id': 'https://sonoprep.com/#organization',
+        '@id': 'https://www.sonoprep.com/#organization',
         name: 'SonoPrep',
-        url: 'https://sonoprep.com',
-        logo: 'https://sonoprep.com/logo.webp',
+        url: 'https://www.sonoprep.com',
+        logo: 'https://www.sonoprep.com/logo.webp',
         description:
           'ARDMS SPI exam preparation, physics pearls, and timed mock simulators.',
       },
       {
         '@type': 'WebSite',
-        '@id': 'https://sonoprep.com/#website',
-        url: 'https://sonoprep.com',
+        '@id': 'https://www.sonoprep.com/#website',
+        url: 'https://www.sonoprep.com',
         name: 'SonoPrep',
         publisher: {
-          '@id': 'https://sonoprep.com/#organization',
+          '@id': 'https://www.sonoprep.com/#organization',
         },
       },
       {
@@ -26,7 +26,7 @@
         description:
           'Comprehensive preparation material, spaced-repetition flashcards, and mock exams for passing the ARDMS SPI examination.',
         provider: {
-          '@id': 'https://sonoprep.com/#organization',
+          '@id': 'https://www.sonoprep.com/#organization',
         },
       },
     ],

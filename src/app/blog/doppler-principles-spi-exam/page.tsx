@@ -3,7 +3,7 @@ import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "Doppler Principles for the SPI Exam: Nyquist, Aliasing & Spectral Analysis | SonoPrep",
+    "Doppler Principles for the SPI Exam: Nyquist, Aliasing & Spectral Analysis",
   description:
     "The Doppler domain is 34% of the SPI exam. This guide covers the core concepts ARDMS tests — Doppler shift, aliasing, wall filters, and spectral analysis — with clear explanations.",
   keywords: [

@@ -1,7 +1,7 @@
 ---
 title: "SonoPrep Free Demo — Try SPI Exam Questions & Flashcards"
 description: "Try before you buy. 10 real ARDMS SPI-style practice questions and 10 sample flashcards. No account or credit card required."
-url: "https://sonoprep.com/demo"
+url: "https://www.sonoprep.com/demo"
 ---
 
 # Free Demo
@@ -56,4 +56,4 @@ The full products are built to the exact same standard you’re seeing in this d
 
 Questions? Just reach out — we answer every email.
 
-[View All Products](https://sonoprep.com/products)
+[View All Products](https://www.sonoprep.com/products)

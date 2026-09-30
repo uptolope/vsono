@@ -67,7 +67,7 @@ All four products included. 45-day access. 10-day full refund, no questions aske
 - /blog/ardms-exam-blueprint — Domain Weightings Blueprint
 - /blog/doppler-principles-spi-exam — Doppler Principles (34% of exam)
 - /blog/ultrasound-physics-spi — Core Physics Concepts
-- /blog/ultrasound-artifacts-spi — 7 Most Common Artifact Questions
+- /blog/spi-ultrasound-artifacts-guide — 7 Most Common Artifact Questions
 - /blog/pass-spi-first-attempt — 6-Week Study Blueprint
 - /blog/spaced-repetition-spi-exam — Spaced Repetition Study Method
 - /blog/test-taking-strategies-spi — Test-Taking Strategies
@@ -85,7 +85,7 @@ Clean markdown versions of every page for AI reading:
 - /blog/ardms-exam-blueprint/index.md
 - /blog/doppler-principles-spi-exam/index.md
 - /blog/ultrasound-physics-spi/index.md
-- /blog/ultrasound-artifacts-spi/index.md
+- /blog/spi-ultrasound-artifacts-guide/index.md
 - /blog/pass-spi-first-attempt/index.md
 - /blog/spaced-repetition-spi-exam/index.md
 - /blog/test-taking-strategies-spi/index.md
@@ -93,4 +93,4 @@ Clean markdown versions of every page for AI reading:
 
 ## Sitemap
 
-- https://sonoprep.com/sitemap.xml
+- https://www.sonoprep.com/sitemap.xml

@@ -4,7 +4,7 @@ import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "The Complete ARDMS SPI Exam Guide: Everything You Need to Pass | SonoPrep",
+    "The Complete ARDMS SPI Exam Guide: Everything You Need to Pass",
   description:
     "Domain weightings, a proven 6-week study plan, common mistakes, and how to pass the ARDMS SPI exam on your first attempt.",
   keywords: [
@@ -212,7 +212,7 @@ export default function Page() {
         refraction, and side lobe artifacts each have a specific physical cause
         — and the exam tends to test the cause, not just the name. Our{" "}
         <Link
-          href="/blog/ultrasound-artifacts-spi"
+          href="/blog/spi-ultrasound-artifacts-guide"
           className="text-[#c85b3a] hover:underline"
         >
           artifacts guide

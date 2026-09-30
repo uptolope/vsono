@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Free SPI Exam Demo — Try Before You Buy | SonoPrep",
+  title: "Free SPI Exam Demo — Try Before You Buy",
   description:
     "Try SonoPrep free. 10 real SPI exam questions and 10 flashcards — no account, no credit card. See exactly what the full simulator feels like before you decide.",
   keywords: [

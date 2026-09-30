@@ -1,7 +1,7 @@
 ---
 title: "RDMS vs RDCS vs RVT vs RMSKS: Which ARDMS Specialty Is Right for You?"
 description: "A practical comparison of the four ARDMS specialty credentials — exam requirements, career paths, and how to choose."
-url: "https://sonoprep.com/blog/ardms-specialties-comparison"
+url: "https://www.sonoprep.com/blog/ardms-specialties-comparison"
 date: "March 6, 2026"
 read: "13 min read"
 ---

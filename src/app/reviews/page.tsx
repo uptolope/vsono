@@ -7,8 +7,9 @@ import { prisma } from "@/lib/prisma";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Reviews | SonoPrep",
+  title: "Reviews",
   description: "See what SonoPrep students say about their study experience.",
+  alternates: { canonical: "/reviews" },
 };
 
 export default async function ReviewsPage() {

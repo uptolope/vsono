@@ -1,7 +1,7 @@
 ---
 title: "Ultrasound Physics for the SPI Exam: The 6 Concepts That Actually Appear"
 description: "The foundational ultrasound physics concepts responsible for the most questions on the ARDMS SPI exam."
-url: "https://sonoprep.com/blog/ultrasound-physics-spi"
+url: "https://www.sonoprep.com/blog/ultrasound-physics-spi"
 date: "April 10, 2026"
 read: "18 min read"
 ---

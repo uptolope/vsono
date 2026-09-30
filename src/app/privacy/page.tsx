@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | SonoPrep",
+  title: "Privacy Policy",
   description:
     "SonoPrep's privacy policy: what data we collect, how we use it, and your rights as a user.",
   keywords: ["SonoPrep privacy policy", "sonography exam prep privacy"],

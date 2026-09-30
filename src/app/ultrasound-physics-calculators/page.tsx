@@ -2,7 +2,7 @@
 import UltrasoundCalculatorsClient from "./UltrasoundCalculatorsClient";
 
 export const metadata: Metadata = {
-  title: "Ultrasound Physics Calculators: Axial Resolution & Nyquist | SonoPrep",
+  title: "Ultrasound Physics Calculators: Axial Resolution & Nyquist",
   description:
     "Free interactive ultrasound physics calculators for axial resolution and the Nyquist limit. Practice important ARDMS SPI exam formulas.",
   keywords: [
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     "ARDMS SPI physics",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/ultrasound-physics-calculators",
+    canonical: "https://www.sonoprep.com/ultrasound-physics-calculators",
   },
 };
 
@@ -26,7 +26,7 @@ function CalculatorSchema() {
     isAccessibleForFree: true,
     description:
       "Interactive calculators for axial resolution and the Nyquist limit used in ultrasound physics and ARDMS SPI exam preparation.",
-    url: "https://sonoprep.com/ultrasound-physics-calculators",
+    url: "https://www.sonoprep.com/ultrasound-physics-calculators",
     offers: {
       "@type": "Offer",
       price: "0",

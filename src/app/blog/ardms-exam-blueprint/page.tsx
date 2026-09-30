@@ -4,7 +4,7 @@ import BlogCTA from "@/components/marketing/BlogCTA";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained | SonoPrep",
+  title: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained",
   description:
     "A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation.",
   keywords: [
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "SPI domain weightings",
   ],
   alternates: {
-    canonical: "https://sonoprep.com/blog/ardms-exam-blueprint",
+    canonical: "https://www.sonoprep.com/blog/ardms-exam-blueprint",
   },
 };
 
@@ -24,7 +24,7 @@ function BlogPostingSchema() {
     headline: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained",
     description:
       "A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation.",
-    url: "https://sonoprep.com/blog/ardms-exam-blueprint",
+    url: "https://www.sonoprep.com/blog/ardms-exam-blueprint",
     datePublished: "2026-04-26",
     dateModified: "2026-04-26",
     author: {
@@ -37,7 +37,7 @@ function BlogPostingSchema() {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": "https://sonoprep.com/blog/ardms-exam-blueprint",
+      "@id": "https://www.sonoprep.com/blog/ardms-exam-blueprint",
     },
   };
 
@@ -58,15 +58,15 @@ export default function Page() {
         items={[
           {
             name: "Home",
-            url: "https://sonoprep.com",
+            url: "https://www.sonoprep.com",
           },
           {
             name: "Blog",
-            url: "https://sonoprep.com/blog",
+            url: "https://www.sonoprep.com/blog",
           },
           {
             name: "ARDMS SPI Exam Blueprint",
-            url: "https://sonoprep.com/blog/ardms-exam-blueprint",
+            url: "https://www.sonoprep.com/blog/ardms-exam-blueprint",
           },
         ]}
       />
@@ -76,7 +76,7 @@ export default function Page() {
         title="ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained"
         date="April 26, 2026"
         read="17 min read"
-        url="https://sonoprep.com/blog/ardms-exam-blueprint"
+        url="https://www.sonoprep.com/blog/ardms-exam-blueprint"
         description="A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation, and how to weight your study time accordingly."
       >
         <p>

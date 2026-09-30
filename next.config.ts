@@ -56,6 +56,25 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 
+  async redirects() {
+    return [
+      // Non-www -> www (the canonical host). Permanent (308).
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "sonoprep.com" }],
+        destination: "https://www.sonoprep.com/:path*",
+        permanent: true,
+      },
+      // Legacy blog slug. The old page used redirect() (a temporary 307);
+      // search engines need a permanent redirect to consolidate signals.
+      {
+        source: "/blog/ultrasound-artifacts-spi",
+        destination: "/blog/spi-ultrasound-artifacts-guide",
+        permanent: true,
+      },
+    ];
+  },
+
   async headers() {
     return [
       {

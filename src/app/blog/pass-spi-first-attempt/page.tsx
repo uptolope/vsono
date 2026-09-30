@@ -3,7 +3,7 @@ import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint | SonoPrep",
+    "How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint",
   description:
     "A week-by-week study schedule built around the ARDMS SPI content outline, designed to get you exam-ready in six weeks.",
   keywords: [

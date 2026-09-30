@@ -3,7 +3,7 @@ import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "RDMS vs RDCS vs RVT vs RMSKS: Which ARDMS Specialty Is Right for You? | SonoPrep",
+    "RDMS vs RDCS vs RVT vs RMSKS: Which ARDMS Specialty Is Right for You?",
   description:
     "A practical comparison of the four ARDMS specialty credentials — corresponding specialty exams, scope, and how to choose your path after the SPI exam.",
   keywords: [

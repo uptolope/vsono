@@ -3,7 +3,7 @@ import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "Ultrasound Physics for the SPI Exam: The 6 Concepts That Actually Appear | SonoPrep",
+    "Ultrasound Physics for the SPI Exam: The 6 Concepts That Actually Appear",
   description:
     "Cut through the noise. These are the foundational ultrasound physics concepts responsible for the majority of SPI exam questions, explained clearly.",
   keywords: [

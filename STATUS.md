@@ -22,7 +22,12 @@ Last updated: August 2026
   secure random token stored in VerificationToken, 1-hour expiry, used token
   deleted after reset, lockout state cleared on reset.
 - **Checkout** (`src/app/api/checkout/route.ts`): client sends product key only,
-  price resolved exclusively from server-side `PRODUCT_PRICE_MAP`.
+  price resolved exclusively from server-side `PRODUCT_PRICE_MAP`. Creates a
+  Stripe Checkout Session (mode=payment) whose metadata drives the webhook.
+  (Until 2026-09-29 this route was a stub that returned a fake success and
+  never created a session.) Blocks buying an individual product while a
+  Premium Bundle is active; re-buying the same product queues the new window
+  after the current one via `stackAfter`.
 - **Stripe webhook** (`src/app/api/webhooks/stripe/route.ts`): raw-body
   signature verification, server-side access window calculation. Handles
   `checkout.session.completed`, `charge.refunded`, and `charge.dispute.created`.
@@ -135,6 +140,10 @@ In your Stripe dashboard → Webhooks, register these events:
 - 10-day refund window (ToS + webhook code match).
 - Purchase rows are retained on account deletion (for tax/legal). Confirm
   retention policy.
+- **Access length is defined in code** (`src/lib/access-durations.ts`) and used
+  by the webhook, checkout, seed script and price map — not by the
+  `Product.accessDurationDays` DB column (kept in sync by migration
+  `20260929180000`). `npm run check:invariants` guards it.
 - **Premium Bundle = 45-day access. Individual products = 30-day access.**
   Confirmed deliberately (2026-08-24) at the current 30/45 values — not a
   default, a decision. Revisit if refund reasons or support tickets start

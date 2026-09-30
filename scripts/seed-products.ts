@@ -1,6 +1,7 @@
 import "dotenv/config";
 import Stripe from "stripe";
 import { PrismaClient, ProductType } from "@prisma/client";
+import { ACCESS_DAYS } from "../src/lib/access-durations";
 
 const prisma = new PrismaClient();
 
@@ -19,7 +20,7 @@ const products = [
     description: "Access to the SonoPrep flashcard library.",
     envName: "STRIPE_PRICE_FLASHCARDS",
     id: "flashcards",
-    accessDurationDays: 30,
+    accessDurationDays: ACCESS_DAYS.FLASHCARDS,
   },
   {
     type: ProductType.PHYSICS_PEARLS,
@@ -27,7 +28,7 @@ const products = [
     description: "Access to SonoPrep Physics Pearls.",
     envName: "STRIPE_PRICE_PHYSICS_PEARLS",
     id: "physics-pearls",
-    accessDurationDays: 30,
+    accessDurationDays: ACCESS_DAYS.PHYSICS_PEARLS,
   },
   {
     type: ProductType.EXAM_SIMULATOR,
@@ -35,7 +36,7 @@ const products = [
     description: "Access to the SonoPrep exam simulator.",
     envName: "STRIPE_PRICE_EXAM_SIMULATOR",
     id: "exam-simulator",
-    accessDurationDays: 30,
+    accessDurationDays: ACCESS_DAYS.EXAM_SIMULATOR,
   },
   {
     type: ProductType.STUDY_NOTES,
@@ -43,7 +44,7 @@ const products = [
     description: "Access to SonoPrep study notes.",
     envName: "STRIPE_PRICE_STUDY_NOTES",
     id: "study-notes",
-    accessDurationDays: 30,
+    accessDurationDays: ACCESS_DAYS.STUDY_NOTES,
   },
   {
     type: ProductType.PREMIUM_BUNDLE,
@@ -51,7 +52,7 @@ const products = [
     description: "Access to all SonoPrep premium resources.",
     envName: "STRIPE_PRICE_PREMIUM_BUNDLE",
     id: "premium-bundle",
-    accessDurationDays: 45,
+    accessDurationDays: ACCESS_DAYS.PREMIUM_BUNDLE,
   },
 ] as const;
 

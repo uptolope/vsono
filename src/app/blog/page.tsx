@@ -61,7 +61,7 @@ const POSTS = [
     read: "18 min read",
   },
   {
-    slug: "ultrasound-artifacts-spi",
+    slug: "spi-ultrasound-artifacts-guide",
     tag: "IMAGE QUALITY",
     title: "Ultrasound Artifacts: The 7 Most Common SPI Exam Questions",
     desc: "Reverberation, shadowing, comet-tail, mirror image — the ARDMS tests these every time. Learn to identify and explain each one.",

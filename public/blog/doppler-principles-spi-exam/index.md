@@ -1,7 +1,7 @@
 ---
 title: "Doppler Principles for the SPI Exam: Nyquist, Aliasing & Spectral Analysis"
 description: "The Doppler domain is 34% of the SPI exam. Nyquist limit, aliasing, spectral Doppler analysis, and PRF — all covered."
-url: "https://sonoprep.com/blog/doppler-principles-spi-exam"
+url: "https://www.sonoprep.com/blog/doppler-principles-spi-exam"
 date: "April 18, 2026"
 read: "20 min read"
 ---

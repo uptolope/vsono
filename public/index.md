@@ -1,7 +1,7 @@
 ---
 title: "SonoPrep — ARDMS SPI Exam Prep"
 description: "Pass the ARDMS SPI exam on your first attempt. Question bank, flashcards, physics notes, and a full exam simulator — built around the official 5-domain ARDMS content outline."
-url: "https://sonoprep.com"
+url: "https://www.sonoprep.com"
 ---
 
 # SonoPrep — ARDMS SPI Exam Prep
@@ -87,7 +87,7 @@ Get everything in one package — the most popular and cost-effective choice.
 
 Not sure yet? Test the quality risk-free.
 
-The free demo at [sonoprep.com/demo](https://sonoprep.com/demo) includes 10 real SPI-style questions and 10 sample flashcards. No account or email required.
+The free demo at [sonoprep.com/demo](https://www.sonoprep.com/demo) includes 10 real SPI-style questions and 10 sample flashcards. No account or email required.
 
 ---
 

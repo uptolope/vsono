@@ -3,7 +3,7 @@ import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "Spaced Repetition for SPI Exam Success: Why Active Recall Beats Cramming | SonoPrep",
+    "Spaced Repetition for SPI Exam Success: Why Active Recall Beats Cramming",
   description:
     "The science behind spaced repetition and active recall, and how SonoPrep's flashcard system uses these principles to help you retain physics concepts long-term.",
   keywords: [

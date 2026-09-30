@@ -11,6 +11,7 @@
     "vercel-build": "node scripts/maybe-migrate.cjs && next build",
     "start": "next start",
     "lint": "eslint .",
+    "check:invariants": "node scripts/check-invariants.mjs",
     "postinstall": "prisma generate"
   },
   "dependencies": {

@@ -25,6 +25,16 @@ actually outstanding as of August 2026.
       specific calls this app makes are stable, low-surface APIs, but that's
       not the same as verified. Don't skip the test-mode run.
 
+- [ ] After deploy, verify in SQL that every COMPLETED bundle purchase has
+      `accessExpiresAt - accessGrantedAt >= 45 days` (migration
+      `20260929180000_guarantee_bundle_45_days`).
+- [ ] Migrations `20260929175000`/`20260929180000` are idempotent, but the
+      baseline migration has other drift vs `schema.prisma` (e.g. table names
+      `flashcard_progress`/`flashcard_reviews`, `Purchase` defaults). Run
+      `prisma migrate diff --from-url $DATABASE_URL --to-schema-datamodel
+      prisma/schema.prisma` against a staging copy and reconcile.
+- [ ] SEO backlog: see `docs/SEO-AUDIT-2026-09-29.md` (Search Console data needed).
+
 ## Nice to have, not blocking
 - [ ] CSRF middleware / explicit SameSite=Strict verification
 - [ ] Wire `src/lib/analytics.ts` to a real analytics provider (currently

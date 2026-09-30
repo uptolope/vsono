@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Prepare for the ARDMS SPI exam with independently written practice questions, timed simulator attempts, spaced-repetition flashcards, and ultrasound physics study tools.",
   alternates: {
-    canonical: "https://sonoprep.com",
+    canonical: "https://www.sonoprep.com",
   },
 };
 
