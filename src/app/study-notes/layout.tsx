@@ -1,19 +1,10 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 
+// Members-only app route (anonymous visitors only see a sign-in / purchase
+// prompt). Noindex + excluded from the sitemap; see exam-simulator/layout.tsx.
 export const metadata: Metadata = {
   title: "Study Notes",
-  description:
-    "Structured ultrasound physics study notes for students preparing for the ARDMS SPI exam.",
-  alternates: {
-    canonical: "https://www.sonoprep.com/study-notes",
-  },
-  openGraph: {
-    title: "Study Notes | SonoPrep",
-    description:
-      "Structured ultrasound physics study notes for the ARDMS SPI exam.",
-    url: "https://www.sonoprep.com/study-notes",
-    type: "website",
-  },
+  robots: { index: false, follow: true },
 };
 
 export default function StudyNotesLayout({

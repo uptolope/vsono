@@ -14,6 +14,9 @@ const BLOG_POSTS = [
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // Members-only app routes (/exam-simulator, /physics-pearls, /study-notes) are
+  // deliberately NOT listed: they are noindex and show only a sign-in/purchase
+  // prompt to anonymous visitors.
   // lastModified is intentionally omitted for static pages: only real content
   // changes should be advertised (blog posts keep their recorded dates).
   const staticPages: MetadataRoute.Sitemap = [
@@ -25,9 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE}/ultrasound-physics-calculators`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE}/spi-physics-formula-sheet`, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE}/spi-ultrasound-glossary`, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${SITE}/exam-simulator`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${SITE}/physics-pearls`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${SITE}/study-notes`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE}/blog`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${SITE}/terms`, lastModified: "2026-06-15", changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE}/privacy`, lastModified: "2026-06-15", changeFrequency: "yearly", priority: 0.3 },

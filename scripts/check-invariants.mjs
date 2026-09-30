@@ -55,6 +55,14 @@ for (const f of files.filter((f) => f.endsWith(".tsx"))) {
     fail(`title already gets the "| SonoPrep" template suffix: ${f}`);
 }
 
+// 6. Members-only app routes: noindex and never in the sitemap.
+const sitemapSrc = readFileSync("src/app/sitemap.ts", "utf8");
+for (const route of ["exam-simulator", "physics-pearls", "study-notes"]) {
+  if (sitemapSrc.includes(`/${route}\``)) fail(`/${route} must not be in the sitemap`);
+  const layout = readFileSync(`src/app/${route}/layout.tsx`, "utf8");
+  if (!/index:\s*false/.test(layout)) fail(`/${route} layout must be noindex`);
+}
+
 if (failures.length) {
   console.error("Invariant check FAILED:\n - " + failures.join("\n - "));
   process.exit(1);
