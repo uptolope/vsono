@@ -27,7 +27,7 @@ export default function FreeSpiPracticeTestPage() {
   };
 
   return (
-    <main id="main-content" className="min-h-screen pt-24 px-6 pb-20">
+    <main className="min-h-screen pt-24 px-6 pb-20">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

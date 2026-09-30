@@ -6,7 +6,6 @@ import Link from 'next/link';
 export default function VerifiedPage(): React.ReactNode {
   return (
     <main
-      id="main-content"
       className="flex items-center justify-center min-h-screen bg-gray-50"
     >
       <div className="text-center max-w-md">

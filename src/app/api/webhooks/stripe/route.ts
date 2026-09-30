@@ -6,6 +6,7 @@ import { PHASE_PRODUCTION_BUILD } from "next/constants";
 import { getStripe } from "@/lib/stripe";
 import { prisma } from "@/lib/prisma";
 import { getAccessDays } from "@/lib/access-durations";
+import { reportPurchaseToGa4 } from "@/lib/analytics-server";
 
 export const runtime = "nodejs";
 
@@ -23,6 +24,7 @@ const checkoutMetadataSchema = z.object({
   productId: z.string().min(1, "productId is required"),
   product: z.string().min(1, "product is required"),
   stackAfter: z.string().datetime().optional(),
+  ga_client_id: z.string().regex(/^\d{1,12}\.\d{1,12}$/).optional(),
 });
 
 function extractPaymentIntentId(
@@ -223,7 +225,8 @@ async function handleCheckoutCompleted(
     );
   }
 
-  const { userId, productId, product, stackAfter } = metadataResult.data;
+  const { userId, productId, product, stackAfter, ga_client_id } =
+    metadataResult.data;
 
   const user = await prisma.user.findUnique({
     where: {
@@ -366,6 +369,21 @@ async function handleCheckoutCompleted(
       accessExpiresAt,
     },
   });
+
+  /*
+   * Report the conversion to GA4 once, on first fulfilment only. Best-effort:
+   * reportPurchaseToGa4 never throws.
+   */
+  if (!existingPurchase) {
+    await reportPurchaseToGa4({
+      transactionId: checkoutSession.id,
+      gaClientId: ga_client_id,
+      amountInCents: checkoutSession.amount_total ?? 0,
+      currency: checkoutSession.currency ?? "usd",
+      productType: productRecord.type,
+      productName: productRecord.type,
+    });
+  }
 
   console.info(
     `[webhook:${eventId}] Purchase completed: ${purchase.id}; ` +

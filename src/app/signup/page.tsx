@@ -2,16 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-
-declare global {
-  function gtag(...args: unknown[]): void;
-}
+import { trackSignup } from "@/lib/analytics";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -29,7 +25,6 @@ export default function SignupPage() {
           name: name.trim(),
           email: email.trim().toLowerCase(),
           password,
-          phone: phone.trim(),
         }),
       });
 
@@ -46,34 +41,9 @@ export default function SignupPage() {
         return;
       }
 
-      // ===== TRACKING CONVERSIONS =====
-
-      // TAG 4: Microsoft UET - Capture user data and track signup conversion
-      if (typeof window !== "undefined") {
-        window.uetq = window.uetq || [];
-
-        window.uetq.push("set", {
-          pid: {
-            em: email.trim().toLowerCase(),
-            ph: phone.trim(),
-          },
-        });
-
-        window.uetq.push("event", "", {
-          revenue_value: 0,
-          currency: "USD",
-        });
-      }
-
-      // Google Analytics - Track signup conversion
-      if (typeof window !== "undefined" && typeof gtag !== "undefined") {
-        gtag("event", "sign_up", {
-          method: "email",
-          email: email.trim().toLowerCase(),
-        });
-      }
-
-      // ===== END TRACKING =====
+      // Conversion event only. No email/phone or other PII is ever sent to
+      // analytics or ad platforms (Privacy Policy §3/§7).
+      trackSignup("email");
 
       // Signup succeeded
       setSuccess(true);
@@ -87,7 +57,6 @@ export default function SignupPage() {
   if (success) {
     return (
       <main
-        id="main-content"
         className="min-h-screen flex items-center justify-center px-6"
       >
         <div className="w-full max-w-sm text-center">
@@ -145,7 +114,6 @@ export default function SignupPage() {
 
   return (
     <main
-      id="main-content"
       className="min-h-screen flex items-center justify-center px-6"
     >
       <div className="w-full max-w-sm">
@@ -206,25 +174,6 @@ export default function SignupPage() {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40 focus:ring-2 focus:ring-[#c85b3a]/50"
               placeholder="your@email.com"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="phone"
-              className="meta text-[9px] text-[#4a453f] block mb-1.5"
-            >
-              PHONE (OPTIONAL)
-            </label>
-
-            <input
-              id="phone"
-              type="tel"
-              autoComplete="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="w-full px-4 py-3 bg-[#0B0D10] border border-white/[0.08] text-white placeholder:text-[#3a3530] text-sm rounded focus:outline-none focus:border-[#c85b3a]/40 focus:ring-2 focus:ring-[#c85b3a]/50"
-              placeholder="+1 (555) 000-0000"
             />
           </div>
 

@@ -1,159 +1,115 @@
 // ────────────────────────────────────────────────────────────────────────────────
-// SonoPrep – Client-side analytics
-// Integrated with Google Analytics and Microsoft UET
+// SonoPrep – client-side analytics (Google Analytics 4)
+//
+// The GA tag itself is loaded by <Analytics /> (src/components/Analytics.tsx)
+// only when NEXT_PUBLIC_GA_MEASUREMENT_ID is set and the visitor has not sent a
+// Do-Not-Track / Global-Privacy-Control signal. Every helper here is a safe
+// no-op when the tag is not present, so calling them never throws.
+//
+// Conversion events:
+//   generate_lead   free-diagnostic email capture (home / demo / get-started)
+//   sign_up         real account creation
+//   begin_checkout  click on a buy button
+//   purchase        sent SERVER-SIDE from the verified Stripe webhook
+//                   (src/lib/analytics-server.ts) so it cannot be spoofed,
+//                   blocked by an ad-blocker or double counted.
 // ────────────────────────────────────────────────────────────────────────────────
 
 declare global {
-  function gtag(...args: unknown[]): void;
-  var uetq: unknown[];
+  interface Window {
+    dataLayer?: unknown[];
+    gtag?: (...args: unknown[]) => void;
+  }
 }
 
-export function trackCheckoutStarted(product: string, price: number): void {
+type EventParams = Record<string, unknown>;
+
+function send(event: string, params?: EventParams): void {
   if (typeof window === "undefined") return;
+
   try {
-    console.log("[analytics] checkout_started", { product, price });
-    
-    // Google Analytics
-    if (typeof gtag !== "undefined") {
-      gtag("event", "begin_checkout", {
-        value: price,
-        currency: "USD",
-        items: [
-          {
-            item_name: product,
-            item_category: "Education",
-            price: price,
-            quantity: 1,
-          },
-        ],
-      });
+    if (process.env.NODE_ENV !== "production") {
+      console.debug("[analytics]", event, params ?? {});
     }
 
-    // Microsoft UET
-    if (typeof window !== "undefined") {
-      window.uetq = window.uetq || [];
-      window.uetq.push("event", "", {
-        revenue_value: price,
-        currency: "USD",
-      });
-    }
-  } catch (error) {
-    console.error("[analytics] trackCheckoutStarted error:", error);
+    window.gtag?.("event", event, params ?? {});
+  } catch {
+    /* analytics must never break the UI */
   }
+}
+
+/** GA4 client id from the `_ga` cookie ("GA1.1.123.456" -> "123.456"). */
+export function getGaClientId(): string | undefined {
+  if (typeof document === "undefined") return undefined;
+
+  const match = document.cookie.match(/(?:^|;\s*)_ga=GA\d+\.\d+\.(\d+\.\d+)/);
+
+  return match?.[1];
+}
+
+export function trackLead(source: string, data?: EventParams): void {
+  send("generate_lead", { lead_source: source, ...data });
 }
 
 export function trackSignup(source: string): void {
-  if (typeof window === "undefined") return;
-  try {
-    console.log("[analytics] signup", { source });
-    
-    // Google Analytics
-    if (typeof gtag !== "undefined") {
-      gtag("event", "sign_up", {
-        method: source,
-      });
-    }
-
-    // Microsoft UET
-    if (typeof window !== "undefined") {
-      window.uetq = window.uetq || [];
-      window.uetq.push("event", "", {
-        revenue_value: 0,
-        currency: "USD",
-      });
-    }
-  } catch (error) {
-    console.error("[analytics] trackSignup error:", error);
-  }
-}
-
-export function trackDemoEngagement(
-  action: string,
-  data?: Record<string, unknown>
-): void {
-  if (typeof window === "undefined") return;
-  try {
-    console.log("[analytics] demo_engagement", { action, ...data });
-    
-    // Google Analytics
-    if (typeof gtag !== "undefined") {
-      gtag("event", `demo_${action}`, {
-        ...data,
-      });
-    }
-  } catch (error) {
-    console.error("[analytics] trackDemoEngagement error:", error);
-  }
-}
-
-export function trackPurchase(
-  transactionId: string,
-  price: number,
-  product: string
-): void {
-  if (typeof window === "undefined") return;
-  try {
-    console.log("[analytics] purchase", { transactionId, price, product });
-    
-    // Google Analytics
-    if (typeof gtag !== "undefined") {
-      gtag("event", "purchase", {
-        transaction_id: transactionId,
-        value: price,
-        currency: "USD",
-        items: [
-          {
-            item_name: product,
-            item_category: "Education",
-            price: price,
-            quantity: 1,
-          },
-        ],
-      });
-    }
-
-    // Microsoft UET
-    if (typeof window !== "undefined") {
-      window.uetq = window.uetq || [];
-      window.uetq.push("event", "", {
-        revenue_value: price,
-        currency: "USD",
-      });
-    }
-  } catch (error) {
-    console.error("[analytics] trackPurchase error:", error);
-  }
+  send("sign_up", { method: source });
 }
 
 export function trackLogin(): void {
-  if (typeof window === "undefined") return;
-  try {
-    console.log("[analytics] login");
-    
-    // Google Analytics
-    if (typeof gtag !== "undefined") {
-      gtag("event", "login", {
-        method: "email",
-      });
-    }
-  } catch (error) {
-    console.error("[analytics] trackLogin error:", error);
-  }
+  send("login", { method: "email" });
+}
+
+export function trackCheckoutStarted(product: string, price: number): void {
+  send("begin_checkout", {
+    value: price,
+    currency: "USD",
+    items: [
+      {
+        item_id: product,
+        item_name: product,
+        item_category: "Education",
+        price,
+        quantity: 1,
+      },
+    ],
+  });
+}
+
+export function trackDemoEngagement(action: string, data?: EventParams): void {
+  send(`demo_${action}`, data);
+}
+
+/**
+ * Client-side purchase event. NOT called by the app: purchases are reported
+ * from the Stripe webhook. Kept for completeness/manual use only.
+ */
+export function trackPurchase(
+  transactionId: string,
+  price: number,
+  product: string,
+): void {
+  send("purchase", {
+    transaction_id: transactionId,
+    value: price,
+    currency: "USD",
+    items: [
+      { item_id: product, item_name: product, item_category: "Education", price, quantity: 1 },
+    ],
+  });
 }
 
 export function trackPageView(pageName: string): void {
-  if (typeof window === "undefined") return;
-  try {
-    console.log("[analytics] page_view", { page: pageName });
-    
-    // Google Analytics auto-tracks page views, but you can add custom ones
-    if (typeof gtag !== "undefined") {
-      gtag("event", "page_view", {
-        page_title: pageName,
-        page_path: window.location.pathname,
-      });
-    }
-  } catch (error) {
-    console.error("[analytics] trackPageView error:", error);
-  }
+  send("page_view", {
+    page_title: pageName,
+    page_path: typeof window !== "undefined" ? window.location.pathname : undefined,
+  });
+}
+
+/** Outbound/tool engagement used to see which linkable assets get real use. */
+export function trackToolUse(tool: string, data?: EventParams): void {
+  send("tool_use", { tool_name: tool, ...data });
+}
+
+export function trackCtaClick(location: string, target: string): void {
+  send("cta_click", { cta_location: location, cta_target: target });
 }

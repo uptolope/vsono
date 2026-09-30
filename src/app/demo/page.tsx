@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExamSimulator } from "@/components/app/exam-simulator";
 import { FlashcardViewer } from "@/components/app/flashcard-viewer";
 import { DEMO_QUESTIONS } from "@/lib/demo/exam-data";
-import { trackSignup } from "@/lib/analytics";
+import { trackLead } from "@/lib/analytics";
 import { DEMO_FLASHCARDS } from "@/lib/demo/flashcard-data";
 
 export default function DemoPage() {
@@ -38,7 +38,7 @@ export default function DemoPage() {
     } catch {
       /* never block user on marketing call */
     }
-    trackSignup("demo_page");
+    trackLead("demo_page");
     setSubmitted(true);
   };
 
@@ -80,7 +80,7 @@ export default function DemoPage() {
             which of the five study areas aligned to the current published SPI content outline need work. The full version draws 110
             questions from a 155-question bank — questions are weighted to
             match the real exam, with performance tracking and clear
-            explanations for every answer, plus 200+ spaced repetition
+            explanations for every answer, plus 200 spaced repetition
             flashcards.
           </p>
           {/* Micro-commitment strip */}
@@ -130,8 +130,8 @@ export default function DemoPage() {
               See your SPI weak spots before exam day.
             </p>
             <p className="body-readable text-[#c2bab0] text-sm mb-6 leading-relaxed">
-              Get a short study summary and recommended review topics. No spam.
-              Unsubscribe any time.
+              Get the free diagnostic link plus a few SPI study tips by email. No
+              spam. Unsubscribe any time.
             </p>
             <form
               onSubmit={handleEmailSubmit}
@@ -152,6 +152,11 @@ export default function DemoPage() {
                 GET ACCESS →
               </button>
             </form>
+            <p className="meta text-[9px] text-[#4a453f] mt-3">
+              We&apos;ll email your diagnostic link and up to 3 follow-up study
+              tips over about two weeks. One-click unsubscribe in every email.{" "}
+              <Link href="/privacy" className="underline">Privacy Policy</Link>
+            </p>
             <p className="meta text-[9px] text-[#3a3530] mt-3">
               Or skip this and{" "}
               <Link
@@ -195,7 +200,7 @@ export default function DemoPage() {
                 Premium Bundle — $99
               </h3>
               <p className="body-small text-[#c2bab0] text-sm leading-relaxed flex-grow mb-5">
-                All four products: 200+ flashcards, 110-question exam from a 155-question bank
+                All four products: 200 flashcards, 110-question exam from a 155-question bank
                 bank, 50 Physics Pearls, 159-page notes. 45-day access. 10-day
                 refund. Covers all 5 ARDMS SPI domains.
               </p>

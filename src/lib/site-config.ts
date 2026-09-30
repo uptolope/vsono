@@ -11,3 +11,11 @@ export const SITE_URL = "https://www.sonoprep.com";
 export function absoluteUrl(path = "/"): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
+
+/** Official profiles. Used by the footer and Organization `sameAs` schema. */
+export const SOCIAL_PROFILES = [
+  { label: "LinkedIn", href: "https://www.linkedin.com/groups/42841070/" },
+  { label: "Instagram", href: "https://www.instagram.com/sonoprep/" },
+] as const;
+
+export const SUPPORT_EMAIL = "support@sonoprep.com";

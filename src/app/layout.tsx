@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Providers from "./providers";
 import StructuredData from "@/components/StructuredData";
+import Analytics from "@/components/Analytics";
+import SiteChrome from "@/components/layout/site-chrome";
 import { SITE_URL } from "@/lib/site-config";
 import "./globals.css";
 
@@ -49,10 +51,10 @@ export default function RootLayout({
           Skip to main content
         </a>
 
+        <Analytics />
+
         <Providers>
-          <div id="main-content" tabIndex={-1}>
-            {children}
-          </div>
+          <SiteChrome>{children}</SiteChrome>
         </Providers>
       </body>
     </html>

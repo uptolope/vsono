@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Shield, Zap } from "lucide-react";
 
 const INCLUSIONS = [
-  "200+ RDMS-written flashcards",
+  "200 RDMS-written flashcards",
   "3 exam attempts · 110 independently written questions from SonoPrep’s 155-question bank",
   "50 Physics Pearls",
   "Domain performance analytics",

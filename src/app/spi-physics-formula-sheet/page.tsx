@@ -120,7 +120,7 @@ export default function FormulaSheetPage() {
     <>
       <FormulaSheetSchema />
 
-      <main id="main-content" className="min-h-screen pt-24 px-6 pb-20">
+      <main className="min-h-screen pt-24 px-6 pb-20">
         <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-[#c85b3a]">
           ARDMS SPI Study Reference
         </p>

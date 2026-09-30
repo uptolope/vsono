@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { trackCheckoutStarted } from "@/lib/analytics";
+import { getGaClientId, trackCheckoutStarted } from "@/lib/analytics";
 
 // Maps the local product keys used on this page to the server-side
 // PRODUCT_PRICE_MAP keys in src/lib/stripe.ts and validations.ts.
@@ -40,11 +40,11 @@ const PRODUCTS: Product[] = [
     price: "$99",
     strikethrough: "$116.99",
     savings: "Save $17.99 vs buying individually",
-    tag: "THE PATH PEOPLE ACTUALLY TAKE",
+    tag: "BEST VALUE",
     description:
       "Everything you need to pass — in one system. The flashcard deck, the full exam simulator, Physics Pearls, and the 159-page study notes. All 5 ARDMS SPI domains. No piecing resources together.",
     features: [
-      "200+ flashcards with SM-2 spaced repetition",
+      "200 flashcards with SM-2 spaced repetition",
       "3 exam attempts · 110 independently written questions from SonoPrep’s 155-question bank",
       "50 high-yield Physics Pearls",
       "159-page study notes (15 chapters)",
@@ -80,9 +80,9 @@ const PRODUCTS: Product[] = [
     price: "$24",
     tag: "FIX YOUR WEAKEST TOPICS FAST",
     description:
-      "This is where commitment begins. 200+ clinically focused flashcards with SM-2 spaced repetition — the algorithm prioritizes what you're getting wrong, so 30 minutes a day actually moves the needle.",
+      "This is where commitment begins. 200 clinically focused flashcards with SM-2 spaced repetition — the algorithm prioritizes what you're getting wrong, so 30 minutes a day actually moves the needle.",
     features: [
-      "200+ expert-written flashcards",
+      "200 expert-written flashcards",
       "SM-2 spaced repetition",
       "Progress tracking per card",
       "Covers all 5 ARDMS SPI domains",
@@ -90,7 +90,6 @@ const PRODUCTS: Product[] = [
     ],
     bundle: false,
     featured: false,
-    socialProof: "Most students start here",
   },
   {
     key: "notes",
@@ -101,7 +100,7 @@ const PRODUCTS: Product[] = [
       "Understand the system — not just memorize answers. 159-page comprehensive guide covering all 5 SPI domains across 15 chapters. For students who want to master the material, not just pass.",
     features: [
       "159 pages of content",
-      "10 organized chapters",
+      "15 organized chapters",
       "Progress tracking",
       "Covers all 5 SPI domains",
       "30 days of access from purchase",
@@ -127,7 +126,6 @@ const PRODUCTS: Product[] = [
     ],
     bundle: false,
     featured: true,
-    nudge: "Most users upgrade to the full bundle after 1–2 exams",
   },
 ];
 
@@ -158,6 +156,7 @@ export default function ProductsPage() {
         },
         body: JSON.stringify({
           product: serverKey,
+          gaClientId: getGaClientId(),
         }),
       });
 
@@ -209,7 +208,7 @@ export default function ProductsPage() {
           </h1>
 
           <p className="body-readable mt-5 max-w-xl text-[#c2bab0]">
-            Most students get the bundle. If you want to start smaller,
+            The bundle is the best value. If you want to start smaller,
             Physics Pearls at $9 gets you studying in 10 minutes — and every
             step after that leads to the same place.
           </p>

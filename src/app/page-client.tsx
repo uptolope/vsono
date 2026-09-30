@@ -3,9 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { trackSignup } from "@/lib/analytics";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
+import { trackLead } from "@/lib/analytics";
 import { ExamSimulator } from "@/components/app/exam-simulator";
 import { FlashcardViewer } from "@/components/app/flashcard-viewer";
 import { FaqSection } from "@/components/marketing/faq-section";
@@ -67,7 +65,7 @@ function Hero() {
           transition={{ delay: 1, duration: 0.8 }}
         >
           Prepare for the ARDMS SPI exam with a 110-question practice simulator,
-200+ ultrasound physics flashcards, 50 Physics Pearls, and domain-focused
+200 ultrasound physics flashcards, 50 Physics Pearls, and domain-focused
 feedback developed by an RDMS instructor.
         </motion.p>
 
@@ -109,7 +107,7 @@ feedback developed by an RDMS instructor.
           transition={{ delay: 1.6, duration: 0.8 }}
         >
           {[
-            { value: "200+", label: "Flashcards" },
+            { value: "200", label: "Flashcards" },
             { value: "155", label: "Question Bank" },
             { value: "50", label: "Physics Pearls" },
             { value: "5", label: "SPI Domains Covered" },
@@ -243,7 +241,7 @@ function WhoIsThisFor() {
     {
       tag: "IN A SONO PROGRAM",
       head: "Your program covers procedures. SonoPrep covers the physics.",
-      body: "Most clinical programs don't spend enough time on physics — which is exactly what the SPI tests. 50 Physics Pearls and 200+ flashcards fill that gap.",
+      body: "Most clinical programs don't spend enough time on physics — which is exactly what the SPI tests. 50 Physics Pearls and 200 flashcards fill that gap.",
       cta: "Try the Demo →",
       href: "#demo",
     },
@@ -424,7 +422,7 @@ function DemoSection() {
     const trimmed = email.trim().toLowerCase();
     if (!trimmed) return;
     setSubmitted(true);
-    trackSignup("landing_page");
+    trackLead("landing_page");
     try {
       await fetch("/api/demo/capture", {
         method: "POST",
@@ -516,8 +514,8 @@ function DemoSection() {
               See your SPI weak spots before exam day.
             </h3>
             <p className="t-body text-sm mb-8">
-              Get a short study summary and recommended review topics. No spam.
-              Unsubscribe anytime.
+              Get the free diagnostic link plus a few SPI study tips by email. No
+              spam. Unsubscribe anytime.
             </p>
             <form
               onSubmit={handleEmailSubmit}
@@ -535,9 +533,14 @@ function DemoSection() {
                 type="submit"
                 className="premium-cta px-8 py-4 whitespace-nowrap text-sm"
               >
-                SEND MY DOMAIN BREAKDOWN →
+                SEND ME THE FREE DIAGNOSTIC →
               </button>
             </form>
+            <p className="meta text-[9px] text-[#4a453f] mt-3">
+              We&apos;ll email your diagnostic link and up to 3 follow-up study
+              tips over about two weeks. One-click unsubscribe in every email.{" "}
+              <Link href="/privacy" className="underline">Privacy Policy</Link>
+            </p>
           </motion.div>
         )}
 
@@ -549,7 +552,7 @@ function DemoSection() {
           >
             <h3 className="t-subhead text-lg mb-4">Check your inbox.</h3>
             <p className="t-body text-sm mb-8">
-              Your SPI breakdown is on its way.
+              Your free diagnostic link is on its way.
             </p>
             <Link href="/products" className="premium-cta px-8 py-4 text-sm">
               GET FULL ACCESS →
@@ -824,7 +827,7 @@ function TheCost() {
               {
                 label: "SonoPrep flashcards",
                 flag: true,
-                desc: "200+ cards mapped to 5 ARDMS SPI domains",
+                desc: "200 cards mapped to 5 ARDMS SPI domains",
               },
               {
                 label: "SonoPrep simulator",
@@ -1053,9 +1056,9 @@ const PRODUCTS = [
     name: "SPI Flashcards",
     price: "$24",
     tag: "FIX YOUR WEAKEST TOPICS",
-    desc: "200+ cards with SM-2 spaced repetition. Most students start here.",
+    desc: "200 cards with SM-2 spaced repetition. The lowest-cost way to drill weak topics.",
     features: [
-      "200+ expert-written cards",
+      "200 expert-written cards",
       "SM-2 algorithm",
       "Per-card tracking",
     ],
@@ -1104,8 +1107,8 @@ function ProductsSection() {
             ready yet.
           </h2>
           <p className="t-body text-sm mt-5 max-w-lg text-[#7a7269]">
-            Every product works standalone. But most students get everything —
-            because each step naturally leads to the next.
+            Every product works standalone. The bundle includes all four for
+            less than buying them separately.
           </p>
         </motion.div>
 
@@ -1148,7 +1151,7 @@ function ProductsSection() {
               <ul className="space-y-3 mb-8">
                 {[
                   "All 4 products included",
-                  "200+ flashcards + 50 Physics Pearls",
+                  "200 flashcards + 50 Physics Pearls",
                   "110-question practice attempts selected from SonoPrep’s 155-question bank",
                   "159-page study notes",
                   "Every exam attempt is different",
@@ -1273,6 +1276,13 @@ function StickyMobileCTA() {
 /* ═══════════════════════════════════════════════════════════════════
    PAGE ASSEMBLY
 ═══════════════════════════════════════════════════════════════════ */
+/**
+ * Defers rendering/painting of below-the-fold sections WITHOUT removing them
+ * from the server-rendered HTML. (This used to be an IntersectionObserver gate
+ * that rendered an empty placeholder until scrolled into view, so nine of the
+ * homepage's sections — including the FAQ, pricing and "who is this for" — were
+ * missing from the HTML that search engines and non-JS crawlers receive.)
+ */
 function LazySection({
   children,
   className,
@@ -1280,26 +1290,12 @@ function LazySection({
   children: React.ReactNode;
   className?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setShow(true);
-          obs.disconnect();
-        }
-      },
-      { rootMargin: "200px" },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
   return (
-    <div ref={ref} className={className}>
-      {show ? children : <div style={{ minHeight: "60vh" }} />}
+    <div
+      className={className}
+      style={{ contentVisibility: "auto", containIntrinsicSize: "auto 700px" }}
+    >
+      {children}
     </div>
   );
 }
@@ -1307,8 +1303,7 @@ function LazySection({
 export function HomePageClient() {
   return (
     <div className="min-h-screen bg-[#0B0D10]">
-      <Header />
-      <main id="main-content">
+      <main>
         <Hero />
         <TheFork />
         <LazySection>
@@ -1387,7 +1382,6 @@ export function HomePageClient() {
           </div>
         </section>
       </main>
-      <Footer />
       <StickyMobileCTA />
     </div>
   );

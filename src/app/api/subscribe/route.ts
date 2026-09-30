@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { z } from "zod";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { captureLead } from "@/lib/leads";
 
 export const runtime = "nodejs";
 
+const subscribeSchema = z.object({
+  email: z.string().trim().toLowerCase().email().max(255),
+});
+
 export async function POST(request: NextRequest) {
   try {
-    // Security fix: this endpoint had no rate limiting, unlike the
-    // otherwise-identical /api/demo/capture route. Unlimited requests let
-    // an attacker flood the subscriber table or use it to enumerate/verify
-    // email addresses. Mirrors the limit already used elsewhere in the app.
     const ip = getClientIp(request.headers);
     const limit = await rateLimit(`subscribe:${ip}`, {
       limit: 5,
@@ -19,35 +20,29 @@ export async function POST(request: NextRequest) {
     if (!limit.allowed) {
       return NextResponse.json(
         { error: "Too many requests. Try again later." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
-    const body = await request.json();
-    const email =
-      typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const parsed = subscribeSchema.safeParse(
+      await request.json().catch(() => null),
+    );
 
-    // Validate email
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!parsed.success) {
       return NextResponse.json(
         { error: "Please enter a valid email address." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Save or update subscriber
-    await prisma.subscriber.upsert({
-      where: { email },
-      update: {},
-      create: { email },
-    });
+    await captureLead({ email: parsed.data.email, source: "get_started" });
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Subscribe error:", error);
     return NextResponse.json(
       { error: "Could not save your email. Please try again." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -50,7 +50,7 @@ export default function NyquistCalculatorPage() {
     <>
       <NyquistSchema />
 
-      <main id="main-content" className="min-h-screen px-6 pb-20 pt-32">
+      <main className="min-h-screen px-6 pb-20 pt-32">
         <div className="mx-auto max-w-4xl">
           <Breadcrumbs
             items={[

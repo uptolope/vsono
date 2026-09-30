@@ -125,6 +125,10 @@ export async function POST(req: Request) {
       product: product.type,
     };
 
+    if (parsed.data.gaClientId) {
+      metadata.ga_client_id = parsed.data.gaClientId;
+    }
+
     if (latestSameProductExpiry) {
       metadata.stackAfter = latestSameProductExpiry.toISOString();
     }

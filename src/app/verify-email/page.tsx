@@ -6,7 +6,6 @@ export default function VerifyEmailPage(): React.ReactNode {
     <Suspense
       fallback={
         <main
-          id="main-content"
           className="min-h-screen flex items-center justify-center bg-gray-900"
         >
           <div className="text-white">Loading...</div>

@@ -48,7 +48,7 @@ Domains 3 and 4 (image optimization and Doppler) make up **60% of the exam**.
 Get everything in one package — the most popular and cost-effective choice.
 
 - Physics Pearls (50 high-yield summaries)
-- SPI Flashcards (200+ cards with spaced repetition)
+- SPI Flashcards (200 cards with spaced repetition)
 - 159-page Study Notes (15 chapters)
 - Full Exam Simulator (155-question bank, 3 attempts)
 - Per-domain performance analytics
@@ -67,7 +67,7 @@ Get everything in one package — the most popular and cost-effective choice.
 **GET PHYSICS PEARLS →**
 
 **SPI Flashcards — $24** (30-day access)  
-200+ digital flashcards mapped to all 5 domains. Built for active recall and spaced repetition.
+200 digital flashcards mapped to all 5 domains. Built for active recall and spaced repetition.
 
 **GET SPI FLASHCARDS →**
 

@@ -35,7 +35,7 @@ export default function GetStartedPage() {
   };
 
   return (
-    <main id="main-content" className="min-h-screen bg-[#0B0D10] text-[#c2bab0] flex flex-col">
+    <main className="min-h-screen bg-[#0B0D10] text-[#c2bab0] flex flex-col">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

@@ -92,7 +92,7 @@ function GlossarySchema() {
 
 export default function GlossaryPage() {
   return (
-    <main id="main-content" className="min-h-screen pt-24 px-6 pb-20">
+    <main className="min-h-screen pt-24 px-6 pb-20">
       <GlossarySchema />
 
       <div className="max-w-4xl mx-auto">
