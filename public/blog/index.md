@@ -10,6 +10,22 @@ Free, in-depth study resources for ARDMS SPI exam candidates. Every article is w
 
 ---
 
+## [SPI Study Plan: A 30- and 45-Day Schedule Built on the Official Content Outline](https://www.sonoprep.com/blog/spi-study-plan-30-45-days)
+
+_September 29, 2026 · 12 min read_
+
+Two realistic schedules that divide your hours by the official domain weightings, with a daily routine, practice-exam timing and a last-week checklist.
+
+---
+
+## [ARDMS SPI Exam Cost, Format, Scoring and Retake Rules (2026)](https://www.sonoprep.com/blog/ardms-spi-exam-cost-scheduling-retakes)
+
+_September 29, 2026 · 8 min read_
+
+The $275 fee, 300–700 scoring with 555 to pass, the 60-day retake wait, and ARDMS's published 2013–2023 pass rates, all from official sources.
+
+---
+
 ## [The Complete ARDMS SPI Exam Guide: Everything You Need to Pass](https://www.sonoprep.com/blog/complete-spi-exam-guide)
 
 _May 12, 2026 · 25 min read_

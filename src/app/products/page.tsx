@@ -14,6 +14,14 @@ const PRODUCT_KEY_MAP: Record<string, string> = {
   notes: "STUDY_NOTES",
 };
 
+// Public detail pages (server-rendered, indexable) for each product.
+const PRODUCT_PAGES: Record<string, string> = {
+  flashcards: "/spi-flashcards",
+  simulator: "/spi-exam-simulator",
+  pearls: "/spi-physics-pearls",
+  notes: "/spi-study-notes",
+};
+
 type Product = {
   key: string;
   name: string;
@@ -223,11 +231,11 @@ export default function ProductsPage() {
               {[
                 {
                   not: "Not a textbook",
-                  is: "Structured SPI prep based on ARDMS exam weighting",
+                  is: "Structured SPI prep organized around the five published SPI content domains",
                 },
                 {
                   not: "Not random practice tests",
-                  is: "110 questions drawn from 155-question bank, mapped to 5 domains at real exam ratios",
+                  is: "110 questions drawn from a 155-question bank, tagged by domain with per-domain results",
                 },
                 {
                   not: "Not a subscription",
@@ -420,6 +428,17 @@ export default function ProductsPage() {
                   ? "PROCESSING..."
                   : `GET ${product.name.toUpperCase()} →`}
               </button>
+
+              {PRODUCT_PAGES[product.key] && (
+                <p className="mt-3 text-center">
+                  <Link
+                    href={PRODUCT_PAGES[product.key]}
+                    className="meta text-[10px] text-[#8a8279] underline hover:text-white"
+                  >
+                    WHAT&apos;S INCLUDED →
+                  </Link>
+                </p>
+              )}
 
               {product.nudge && (
                 <p className="meta mt-2 text-center text-[9px] text-[#8a8279]">

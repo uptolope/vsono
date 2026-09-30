@@ -19,7 +19,9 @@ export default function SiteChrome({
   children: React.ReactNode;
 }) {
   const pathname = usePathname() ?? "";
-  const bare = pathname.startsWith("/embed/");
+  // Embeds and the full-screen protected notes viewer bring their own layout.
+  const bare =
+    pathname.startsWith("/embed/") || pathname === "/study-notes/viewer";
 
   if (bare) {
     return <div id="main-content">{children}</div>;

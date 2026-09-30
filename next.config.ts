@@ -42,6 +42,17 @@ const securityHeaders = [
   },
 ];
 
+// Embeddable widgets (/embed/*) may be framed by any site; everything else
+// stays un-frameable. Header values for the embed route are derived from the
+// global set so the two cannot drift apart.
+const embedHeaders = securityHeaders
+  .filter((h) => h.key !== "X-Frame-Options")
+  .map((h) =>
+    h.key === "Content-Security-Policy-Report-Only"
+      ? { ...h, value: h.value.replace("frame-ancestors 'none'", "frame-ancestors *") }
+      : h,
+  );
+
 const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
@@ -78,8 +89,13 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/(.*)",
+        // Negative lookahead: every path except /embed/*
+        source: "/((?!embed/).*)",
         headers: securityHeaders,
+      },
+      {
+        source: "/embed/:path*",
+        headers: embedHeaders,
       },
       {
         source: "/(.*)\\.(png|jpg|jpeg|webp|avif|svg|woff2)",

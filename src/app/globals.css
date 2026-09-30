@@ -801,3 +801,24 @@ body > main {
   }
 }
 
+
+@media print {
+  header.fixed,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  main,
+  main * {
+    color: #000 !important;
+    background: transparent !important;
+    border-color: #999 !important;
+  }
+  a {
+    text-decoration: underline;
+  }
+}

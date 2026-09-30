@@ -9,19 +9,19 @@ export const FAQS = [
   },
   {
     q: "How many questions are on the SPI exam?",
-    a: "110 multiple-choice questions with a 2.5-hour time limit. Approximately 90 are scored; 20 are unscored pilot questions distributed throughout. You won't know which is which, so treat every question equally.",
+    a: "According to ARDMS, the SPI exam has approximately 110 multiple-choice questions over two hours (including a five-minute survey). Some questions are unscored pilot items and you can't tell which, so treat every question equally. Always confirm current details on the ARDMS / Inteleos website.",
   },
   {
     q: "How long does it take to prepare for the SPI?",
-    a: "Most candidates need 4–8 weeks of dedicated study. SonoPrep's spaced-repetition system is built so 30 minutes of daily practice can prepare you in as little as 30 days. Candidates with strong clinical physics backgrounds from their DMS program often need less time.",
+    a: "It varies. Many candidates plan for roughly 4–8 weeks of consistent study, and our free 30–45 day study plan shows one way to structure it. SonoPrep's spaced-repetition flashcards are designed for short daily sessions. Your timeline depends on your physics background and how close your exam date is.",
   },
   {
     q: "How much does SonoPrep cost?",
-    a: "Individual products range from $9 to $49.99. The Premium Bundle is $99 for all 4 products (save $17 vs buying individually). Individual products include 30-day access; the Premium Bundle includes 45 days — no subscription. You can start free with 10 flashcards and a 10-question quiz. No credit card required for the free tier.",
+    a: "Individual products range from $9 to $49.99. The Premium Bundle is $99 for all 4 products (save $17.99 vs buying individually). Individual products include 30-day access; the Premium Bundle includes 45 days — no subscription. You can start free with 10 flashcards and a 10-question quiz. No credit card required for the free tier.",
   },
   {
     q: "What is the first-attempt pass rate for SonoPrep students?",
-    a: "Every product is built around the exact ARDMS exam blueprint by credentialed sonographers who passed the SPI and scan patients daily. What we don't have yet: a statistically meaningful first-attempt pass rate. SonoPrep is a new platform — we won't publish numbers we can't verify. What we do have: a 10-day full refund if it's not the right fit, and 30 days of full access — more than enough for thorough preparation.",
+    a: "Every product is organized around the published ARDMS SPI content outline. What we don't have yet: a statistically meaningful first-attempt pass rate. SonoPrep is a new platform — we won't publish numbers we can't verify. What we do have: a 10-day full refund if it's not the right fit, and 30 days of full access — more than enough for thorough preparation.",
   },
   {
     q: "Who built SonoPrep?",
@@ -33,6 +33,6 @@ export const FAQS = [
   },
   {
     q: "Does SonoPrep offer institutional or program licensing?",
-    a: "Yes. We offer volume pricing, cohort progress dashboards, and LMS integration for DMS programs and hospital training departments. Email support@sonoprep.com for pricing and details.",
+    a: "We are happy to discuss volume pricing for DMS programs and hospital training departments. Email support@sonoprep.com with your program size and what you need.",
   },
 ];

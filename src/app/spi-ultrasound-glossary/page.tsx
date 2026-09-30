@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
+import ResourceFooter from "@/components/resources/ResourceFooter";
 
 export const metadata: Metadata = {
   title: "Ultrasound Physics Glossary for the ARDMS SPI",
@@ -203,6 +204,12 @@ export default function GlossaryPage() {
           </div>
         </section>
       </div>
+      <ResourceFooter
+        path="/spi-ultrasound-glossary"
+        title="SPI Ultrasound Physics Glossary"
+        updated="2026-09-29"
+        methodology="Terms are defined in plain language and organized around the concepts tested on the ARDMS SPI exam. Definitions follow standard ultrasound physics usage."
+      />
     </main>
   );
 }

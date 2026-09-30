@@ -114,7 +114,7 @@ Last updated: August 2026
 ```
 DATABASE_URL=postgresql://...
 NEXTAUTH_SECRET=<random 32+ char string>
-NEXTAUTH_URL=https://sonoprep.com
+NEXTAUTH_URL=https://www.sonoprep.com
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PRICE_FLASHCARDS=price_...
@@ -126,6 +126,16 @@ RESEND_API_KEY=re_...
 EMAIL_FROM=SonoPrep <noreply@sonoprep.com>
 UPSTASH_REDIS_REST_URL=...
 UPSTASH_REDIS_REST_TOKEN=...
+
+# Growth / lead system (all optional; features stay dormant until set)
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-...   # GA4 tag (skipped for DNT/GPC)
+GA_API_SECRET=...                      # server-side purchase events
+LEAD_NURTURE_ENABLED=true              # follow-up emails; also needs the next two
+MAIL_POSTAL_ADDRESS=...                # physical address in email footer (CAN-SPAM)
+CRON_SECRET=...                        # authorises /api/cron/nurture (Vercel cron, daily)
+EMAIL_REPLY_TO=...                     # monitored mailbox; enables "reply to this email" copy
+NEXT_PUBLIC_REVIEWER_NAME= / NEXT_PUBLIC_REVIEWER_CREDENTIALS=   # only if a real reviewer exists
+NEXT_PUBLIC_SOCIAL_PROFILES=           # extra official profile URLs, comma-separated
 ```
 
 ## Stripe webhook events to register

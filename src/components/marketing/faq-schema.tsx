@@ -1,4 +1,3 @@
-import { headers } from "next/headers";
 import { FAQS } from "@/lib/faq-data";
 
 /**
@@ -17,7 +16,7 @@ import { FAQS } from "@/lib/faq-data";
  *     );
  *   }
  */
-export async function FaqSchema() {
+export function FaqSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -31,14 +30,9 @@ export async function FaqSchema() {
     })),
   };
 
-  // Nonce from src/middleware.ts — required under the CSP's
-  // 'nonce-...' script-src rule now that 'unsafe-inline' is gone.
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
-
   return (
     <script
       type="application/ld+json"
-      nonce={nonce}
       dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
   );

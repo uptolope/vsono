@@ -28,8 +28,8 @@ export function CtaSection() {
         </h2>
 
         <p className="t-body mx-auto mt-8 max-w-xl text-lg">
-          Every product is structured around the exact ARDMS exam blueprint.
-          That&apos;s not a guess — that&apos;s by design.
+          Every product is organized around the five content domains ARDMS
+          publishes for the SPI exam.
         </p>
 
         {/* What's included */}

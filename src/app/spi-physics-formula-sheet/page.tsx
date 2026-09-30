@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
+import ResourceFooter from "@/components/resources/ResourceFooter";
 
 export const metadata: Metadata = {
   title: "ARDMS SPI Ultrasound Physics Formula Sheet (2026)",
@@ -60,6 +61,119 @@ const FORMULAS = [
     ],
   },
   {
+    category: "Time, Distance & Frame Rate",
+    items: [
+      {
+        name: "Period (T)",
+        formula: "1 / Frequency (f)",
+        notes: "Period and frequency are reciprocals. Set by the sound source.",
+      },
+      {
+        name: "Wavelength (λ)",
+        formula: "Propagation Speed (c) / Frequency (f)",
+        notes:
+          "In soft tissue (1540 m/s), λ in mm = 1.54 / frequency in MHz.",
+      },
+      {
+        name: "Pulse Repetition Period (PRP)",
+        formula: "1 / PRF",
+        notes:
+          "Time from the start of one pulse to the start of the next, including listening time.",
+      },
+      {
+        name: "Go-Return Time (Time of Flight)",
+        formula: "13 µs per cm of depth",
+        notes:
+          "Rule of thumb for soft tissue: an echo from 1 cm depth returns in about 13 µs.",
+      },
+      {
+        name: "Maximum PRF for a Depth",
+        formula: "77,000 / depth (cm)  (Hz)",
+        notes:
+          "Equivalent to 77 / depth (cm) in kHz. Deeper imaging forces a lower PRF.",
+      },
+      {
+        name: "Frame Rate",
+        formula: "PRF / Lines per Frame",
+        notes:
+          "More lines, deeper depth or multiple focal zones lower the frame rate.",
+      },
+    ],
+  },
+  {
+    category: "Decibels, Intensity & Reflection",
+    items: [
+      {
+        name: "Intensity",
+        formula: "Power / Area",
+        notes:
+          "Doubling the power doubles the intensity; halving the beam area also doubles it.",
+      },
+      {
+        name: "Decibels (intensity or power)",
+        formula: "dB = 10 × log₁₀(I₂ / I₁)",
+        notes:
+          "+3 dB ≈ ×2, −3 dB ≈ ×½, +10 dB = ×10. For amplitude or pressure the multiplier is 20 × log₁₀.",
+      },
+      {
+        name: "Total Attenuation",
+        formula: "Attenuation Coefficient (dB/cm) × Path Length (cm)",
+        notes:
+          "Path length is the round-trip distance for an echo (2 × depth).",
+      },
+      {
+        name: "Half-Value Layer (HVL)",
+        formula: "3 dB / Attenuation Coefficient (dB/cm)",
+        notes:
+          "Depth at which intensity has fallen by 3 dB. Shallower for higher frequencies.",
+      },
+      {
+        name: "Intensity Reflection Coefficient (IRC)",
+        formula: "[(Z₂ − Z₁) / (Z₂ + Z₁)]²",
+        notes:
+          "Normal incidence. Larger impedance mismatch means more reflection; equal impedances mean none.",
+      },
+    ],
+  },
+  {
+    category: "Beam Geometry & Hemodynamics",
+    items: [
+      {
+        name: "Near Zone Length (Focal Depth)",
+        formula: "D² / (4 × λ)",
+        notes:
+          "D is the aperture (crystal) diameter. Larger aperture or higher frequency lengthens the near zone.",
+      },
+      {
+        name: "Continuity Equation",
+        formula: "A₁ × v₁ = A₂ × v₂",
+        notes:
+          "Velocity rises at a stenosis because the cross-sectional area falls.",
+      },
+      {
+        name: "Simplified Bernoulli",
+        formula: "ΔP = 4 × v²",
+        notes: "Pressure gradient in mmHg with velocity in m/s.",
+      },
+      {
+        name: "Reynolds Number",
+        formula: "(ρ × v × D) / η",
+        notes:
+          "Values above roughly 2000 predict turbulent flow; below that flow tends to be laminar.",
+      },
+      {
+        name: "Resistive Index (RI)",
+        formula: "(PSV − EDV) / PSV",
+        notes: "Uses peak systolic and end-diastolic velocities.",
+      },
+      {
+        name: "Pulsatility Index (PI)",
+        formula: "(PSV − EDV) / Mean Velocity",
+        notes: "Uses the mean velocity over the cardiac cycle.",
+      },
+    ],
+  },
+  {
     category: "Wave Properties & Attenuation",
     items: [
       {
@@ -91,9 +205,10 @@ function FormulaSheetSchema() {
     description:
       "Comprehensive quick-reference guide to SPI ultrasound physics formulas and equations.",
     url: "https://www.sonoprep.com/spi-physics-formula-sheet",
+    dateModified: "2026-09-29",
     author: {
       "@type": "Organization",
-      name: "SonoPrep Clinical Faculty",
+      name: "SonoPrep Editorial Team",
       url: "https://www.sonoprep.com",
     },
     publisher: {
@@ -183,6 +298,14 @@ export default function FormulaSheetPage() {
             </section>
           ))}
         </div>
+
+        <ResourceFooter
+          path="/spi-physics-formula-sheet"
+          title="ARDMS SPI Ultrasound Physics Formula Sheet"
+          updated="2026-09-29"
+          printable
+          methodology="Formulas are the standard relationships taught in ultrasound physics courses, organized by the SPI content outline domains. Typical soft-tissue values use the conventional 1540 m/s propagation speed, and the rules of thumb (13 µs/cm, 77 kHz ÷ depth) follow from it."
+        />
       </main>
     </>
   );

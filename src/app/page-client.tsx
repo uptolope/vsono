@@ -248,7 +248,7 @@ function WhoIsThisFor() {
     {
       tag: "ALREADY FAILED ONCE",
       head: "The problem wasn't effort. It was coverage.",
-      body: "The SPI tests 5 domains at specific weightings. If you didn't know which questions came from which domain, you couldn't prioritize. Our analytics fix that.",
+      body: "The SPI tests 5 domains at specific weightings. If you didn't know which questions came from which domain, you couldn't prioritize. Per-domain results show you where you're losing points.",
       cta: "See the Simulator →",
       href: "/products",
     },
@@ -822,7 +822,7 @@ function TheCost() {
               {
                 label: "Generic practice tests",
                 flag: false,
-                desc: "No domain weighting, no rationale, no gap analysis",
+                desc: "No per-domain results, no rationale, no gap analysis",
               },
               {
                 label: "SonoPrep flashcards",

@@ -62,9 +62,9 @@ export default function DemoPage() {
             <p className="body-readable text-[#c2bab0] text-sm leading-relaxed">
               The ARDMS SPI exam is a prerequisite for every ARDMS credential —
               RDMS, RDCS, RVT, and RMSKS. You cannot register for specialty
-              exams until you pass it. It tests 5 specific physics domains at
-              specific weightings. Most students underestimate how targeted you
-              need to be with your prep.
+              exams until you pass it. ARDMS publishes the exam's five content
+              domains and how heavily each is weighted, so targeted prep
+              matters.
             </p>
           </div>
         </div>
@@ -78,8 +78,8 @@ export default function DemoPage() {
           <p className="body-readable text-[#8a8279] mt-4 max-w-xl mx-auto">
             This demo uses the same question interface and scoring engine as the full SonoPrep simulator. See exactly
             which of the five study areas aligned to the current published SPI content outline need work. The full version draws 110
-            questions from a 155-question bank — questions are weighted to
-            match the real exam, with performance tracking and clear
+            questions from a 155-question bank — every question is tagged by
+            topic area, with performance tracking and clear
             explanations for every answer, plus 200 spaced repetition
             flashcards.
           </p>

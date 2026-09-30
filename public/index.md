@@ -8,7 +8,7 @@ url: "https://www.sonoprep.com"
 
 SonoPrep provides focused, high-yield preparation for the ARDMS Sonography Principles and Instrumentation (SPI) exam — the required physics credential for RDMS, RDCS, RVT, and RMSKS.
 
-Every product is mapped directly to the official ARDMS SPI content outline and weighted by domain frequency.
+Every product is organized around the official ARDMS SPI content outline.
 
 ## What the SPI Exam Is
 

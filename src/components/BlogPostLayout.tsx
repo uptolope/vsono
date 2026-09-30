@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { headers } from "next/headers";
 import type { ReactNode } from "react";
 
 type BlogPostLayoutProps = {
@@ -9,6 +8,8 @@ type BlogPostLayoutProps = {
   read: string;
   url?: string;
   description?: string;
+  /** Last substantive edit, same format as `date`. Defaults to `date`. */
+  updated?: string;
   children: ReactNode;
 };
 
@@ -34,19 +35,16 @@ function toIsoDate(dateStr: string): string {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-export default async function BlogPostLayout({
+export default function BlogPostLayout({
   tag,
   title,
   date,
   read,
   url,
   description,
+  updated,
   children,
 }: BlogPostLayoutProps) {
-  // Nonce from src/middleware.ts — required under the CSP's
-  // 'nonce-...' script-src rule now that 'unsafe-inline' is gone.
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
-
   const articleSchema = url
     ? {
         "@context": "https://schema.org",
@@ -55,7 +53,7 @@ export default async function BlogPostLayout({
         description: description ?? "",
         url,
         datePublished: toIsoDate(date),
-        dateModified: toIsoDate(date),
+        dateModified: toIsoDate(updated ?? date),
         author: {
           "@type": "Organization",
           name: "SonoPrep",
@@ -78,7 +76,6 @@ export default async function BlogPostLayout({
       {articleSchema && (
         <script
           type="application/ld+json"
-          nonce={nonce}
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
         />
       )}
@@ -127,6 +124,25 @@ export default async function BlogPostLayout({
               </Link>
             </div>
           </div>
+
+          <nav
+            aria-label="Free SPI study tools"
+            className="mt-12 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#8a8279]"
+          >
+            <span className="meta text-[11px]">FREE TOOLS</span>
+            <Link href="/free-spi-practice-test" className="hover:text-[#c85b3a]">
+              Practice test
+            </Link>
+            <Link href="/spi-physics-formula-sheet" className="hover:text-[#c85b3a]">
+              Formula sheet
+            </Link>
+            <Link href="/spi-ultrasound-glossary" className="hover:text-[#c85b3a]">
+              Glossary
+            </Link>
+            <Link href="/ultrasound-physics-calculators" className="hover:text-[#c85b3a]">
+              Calculators
+            </Link>
+          </nav>
 
           <div className="mt-16 flex gap-6 text-sm text-[#8a8279] meta border-t border-white/8 pt-8">
             <Link href="/blog" className="hover:text-[#c85b3a]">

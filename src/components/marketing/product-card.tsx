@@ -41,7 +41,7 @@ export const PRODUCTS: ProductData[] = [
     name: "Physics Pearls",
     price: 900,
     description:
-      "Start studying in 10 minutes. 50 high-yield physics principles concise, memorable, and mapped to what ARDMS actually tests.",
+      "Start studying in 10 minutes. 50 high-yield physics principles concise, memorable, and organized around the published SPI content outline.",
     features: [
       "50 high-yield concept summaries",
       "Clinical application examples",

@@ -1,5 +1,6 @@
 ﻿import type { Metadata } from "next";
 import UltrasoundCalculatorsClient from "./UltrasoundCalculatorsClient";
+import ResourceFooter from "@/components/resources/ResourceFooter";
 
 export const metadata: Metadata = {
   title: "Ultrasound Physics Calculators: Axial Resolution & Nyquist",
@@ -64,6 +65,13 @@ export default function CalculatorsPage() {
         </div>
 
         <UltrasoundCalculatorsClient />
+
+        <ResourceFooter
+          path="/ultrasound-physics-calculators"
+          title="Ultrasound Physics Calculators"
+          updated="2026-09-29"
+          methodology="The calculators implement the standard exam-style relationships: axial resolution = spatial pulse length ÷ 2, and PRF = 77 ÷ depth (cm) in kHz with the Nyquist limit = PRF ÷ 2, using the conventional 1540 m/s soft-tissue propagation speed."
+        />
       </main>
     </>
   );
