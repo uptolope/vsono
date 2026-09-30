@@ -537,7 +537,8 @@ function DemoSection() {
               </button>
             </form>
             <p className="meta text-[9px] text-[#4a453f] mt-3">
-              We&apos;ll email your diagnostic link and up to 3 follow-up study
+              We&apos;ll email a confirmation link first. Once you confirm,
+              you&apos;ll get your diagnostic link and up to 3 follow-up study
               tips over about two weeks. One-click unsubscribe in every email.{" "}
               <Link href="/privacy" className="underline">Privacy Policy</Link>
             </p>
@@ -550,9 +551,13 @@ function DemoSection() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
           >
-            <h3 className="t-subhead text-lg mb-4">Check your inbox.</h3>
+            <h3 className="t-subhead text-lg mb-4">
+              Check your inbox to confirm.
+            </h3>
             <p className="t-body text-sm mb-8">
-              Your free diagnostic link is on its way.
+              We&apos;ve sent you a confirmation link. Click it and we&apos;ll
+              send your free diagnostic link (check spam if you don&apos;t see
+              it).
             </p>
             <Link href="/products" className="premium-cta px-8 py-4 text-sm">
               GET FULL ACCESS →

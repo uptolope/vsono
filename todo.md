@@ -43,7 +43,7 @@ actually outstanding as of August 2026.
 - [ ] Confirm the "credentialed/RDMS sonographers reviewed" and "independently written
       questions" claims are accurate and licensed (question bank header cites an external PDF).
 - [ ] Lead nurture is dark: set LEAD_NURTURE_ENABLED, MAIL_POSTAL_ADDRESS, CRON_SECRET.
-- [ ] Consider double opt-in if EU/UK traffic appears.
+- [x] Double opt-in implemented (confirm link → welcome → sequence).
 
 ## Nice to have, not blocking
 - [ ] CSRF middleware / explicit SameSite=Strict verification

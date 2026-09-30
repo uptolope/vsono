@@ -153,7 +153,8 @@ export default function DemoPage() {
               </button>
             </form>
             <p className="meta text-[9px] text-[#4a453f] mt-3">
-              We&apos;ll email your diagnostic link and up to 3 follow-up study
+              We&apos;ll email a confirmation link first. Once you confirm,
+              you&apos;ll get your diagnostic link and up to 3 follow-up study
               tips over about two weeks. One-click unsubscribe in every email.{" "}
               <Link href="/privacy" className="underline">Privacy Policy</Link>
             </p>
@@ -173,11 +174,12 @@ export default function DemoPage() {
         {submitted && (
           <div className="mt-10 border border-white/6 p-7 text-center">
             <p className="display-serif text-lg font-semibold text-white mb-2">
-              Check your inbox.
+              Check your inbox to confirm.
             </p>
             <p className="body-small text-[#8a8279] text-sm mb-6">
-              The SPI domain breakdown is on its way. When you're ready for the
-              full prep system:
+              We&apos;ve sent a confirmation link. Click it and we&apos;ll send
+              your free diagnostic link (check spam if you don&apos;t see it).
+              When you&apos;re ready for the full prep system:
             </p>
             <Link
               href="/products"

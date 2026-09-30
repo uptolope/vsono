@@ -81,6 +81,15 @@ if (!/unsubscribe/i.test(leadEmails)) fail("lead emails must include an unsubscr
 if (!/List-Unsubscribe-Post/.test(leadEmails + leads))
   fail("lead emails must send List-Unsubscribe / List-Unsubscribe-Post headers");
 
+// 8b. Double opt-in: captureLead must not send the welcome email, and the
+// nurture cron must only email confirmed subscribers.
+const captureBody = leads.slice(leads.indexOf("export async function captureLead"), leads.indexOf("export type ConfirmResult"));
+if (/sendLeadEmail\(/.test(captureBody)) fail("captureLead must only send the confirmation email (double opt-in)");
+const cron = readFileSync("src/app/api/cron/nurture/route.ts", "utf8");
+if (!/confirmedAt:\s*\{\s*not:\s*null/.test(cron)) fail("nurture cron must only select confirmed subscribers");
+if (existsSync("src/app/api/confirm/route.ts") && /export async function GET/.test(readFileSync("src/app/api/confirm/route.ts", "utf8")))
+  fail("/api/confirm must be POST-only (link scanners must not confirm addresses)");
+
 // 9. Product landing pages: prices must match /products, and be in the sitemap.
 const catalog = readFileSync("src/lib/catalog.ts", "utf8");
 const productsPage = readFileSync("src/app/products/page.tsx", "utf8");

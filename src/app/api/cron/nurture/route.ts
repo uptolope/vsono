@@ -25,8 +25,42 @@ function authorized(req: NextRequest): boolean {
   return given.length === expected.length && timingSafeEqual(given, expected);
 }
 
+const UNCONFIRMED_TTL_DAYS = 30;
+
 /**
- * Daily cron (vercel.json). Sends the next follow-up email to subscribers
+ * Deletes addresses we asked to confirm more than 30 days ago that never did
+ * (and their demo-lead capture rows). Rows that pre-date double opt-in have no
+ * confirmationSentAt, so they are untouched.
+ */
+async function purgeUnconfirmed(): Promise<number> {
+  const cutoff = new Date(Date.now() - UNCONFIRMED_TTL_DAYS * DAY_MS);
+
+  const stale = await prisma.subscriber.findMany({
+    where: {
+      confirmedAt: null,
+      unsubscribedAt: null,
+      confirmationSentAt: { lt: cutoff },
+    },
+    select: { email: true },
+    take: 500,
+  });
+
+  if (stale.length === 0) return 0;
+
+  const emails = stale.map((s) => s.email);
+
+  await prisma.$transaction([
+    prisma.demoLead.deleteMany({ where: { email: { in: emails } } }),
+    prisma.subscriber.deleteMany({
+      where: { email: { in: emails }, confirmedAt: null },
+    }),
+  ]);
+
+  return emails.length;
+}
+
+/**
+ * Daily cron (vercel.json). Sends the next follow-up email to CONFIRMED subscribers
  * whose nextNurtureAt has passed. Does nothing unless LEAD_NURTURE_ENABLED=true
  * and MAIL_POSTAL_ADDRESS is configured.
  */
@@ -39,14 +73,22 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  // Privacy hygiene: drop addresses that were asked to confirm and never did.
+  const purged = await purgeUnconfirmed();
+
   if (!isNurtureEnabled()) {
-    return NextResponse.json({ skipped: "nurture disabled or MAIL_POSTAL_ADDRESS missing" });
+    return NextResponse.json({
+      skipped: "nurture disabled or MAIL_POSTAL_ADDRESS missing",
+      purged,
+    });
   }
 
   const now = new Date();
 
   const due = await prisma.subscriber.findMany({
     where: {
+      // Double opt-in: only confirmed addresses are ever emailed.
+      confirmedAt: { not: null },
       unsubscribedAt: null,
       nextNurtureAt: { lte: now },
       nurtureStep: { lt: FOLLOW_UPS.length },
@@ -87,6 +129,7 @@ export async function GET(req: NextRequest) {
         id: lead.id,
         nurtureStep: lead.nurtureStep,
         nextNurtureAt: { lte: now },
+        confirmedAt: { not: null },
         unsubscribedAt: null,
       },
       data: { nextNurtureAt: null },
@@ -120,5 +163,5 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  return NextResponse.json({ due: due.length, sent, skippedCustomers, failed });
+  return NextResponse.json({ due: due.length, sent, skippedCustomers, failed, purged });
 }

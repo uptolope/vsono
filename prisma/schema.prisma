@@ -285,6 +285,11 @@ model Subscriber {
   nextNurtureAt  DateTime?
   // Set when the person unsubscribes. Never cleared automatically.
   unsubscribedAt DateTime?
+  // Double opt-in: no marketing email is sent until the address is confirmed.
+  // confirmationSentAt = when we last asked; confirmedAt = when they clicked.
+  // Rows that pre-date double opt-in have both NULL and are never emailed.
+  confirmationSentAt DateTime?
+  confirmedAt        DateTime?
 
   @@index([nextNurtureAt])
   @@map("subscribers")

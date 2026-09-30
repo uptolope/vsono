@@ -22,10 +22,28 @@ provider or GA4 — only `tsc`, `eslint`, `npm run check:invariants` and a
 | | |
 |---|---|
 | Evidence | `/api/demo/capture` never stored the lead; its rate-limit key was the literal string `\${ip}`, so all visitors shared one 5/hour bucket; the welcome email showed invented per-domain scores to everyone; forms promised a "domain breakdown" that never existed. |
-| Change | `captureLead()` persists `Subscriber`/`DemoLead`; welcome email only for new subscribers; 3-email sequence (+2d plan, +5d options, +7d last) via `/api/cron/nurture` (daily, `vercel.json`); one-click unsubscribe (RFC 8058 header + `/unsubscribe` confirm page, signed tokens); never re-enrols an unsubscribed address; skips purchasers; honest copy (free diagnostic link + study tips). Migration `20260929190000` marks existing subscribers as already through the sequence. |
+| Change | `captureLead()` persists `Subscriber`/`DemoLead`; **double opt-in** (see below); 3-email sequence (+2d plan, +5d options, +7d last) via `/api/cron/nurture` (daily, `vercel.json`); one-click unsubscribe (RFC 8058 header + `/unsubscribe` confirm page, signed tokens); never re-enrols an unsubscribed address; skips purchasers; honest copy (free diagnostic link + study tips). Migration `20260929190000` marks existing subscribers as already through the sequence. |
 | Impact | Converts otherwise-lost demo leads; expected effect unknown until measured. |
 | Effort / Risk | L / Medium (email compliance). Ships **dark**: needs `LEAD_NURTURE_ENABLED=true`, `MAIL_POSTAL_ADDRESS`, `CRON_SECRET`, verified sender domain. |
-| Approval | Owner reviews email copy and legal basis. Single opt-in (fine for US/CAN-SPAM); EU/UK visitors would need consent/double opt-in. |
+| Approval | Owner reviews email copy and legal basis. |
+
+### Double opt-in (added on request)
+Form submit → stored as *unconfirmed* → one confirmation email (no marketing content) → the
+link opens `/confirm` with a **button** (POST `/api/confirm`; GET never confirms, so email
+link-scanners can't opt people in) → only then the welcome email is sent and the sequence
+starts. Links are HMAC-signed and expire after 7 days. Re-submitting an unconfirmed address
+re-sends at most once per 24 h. The daily cron emails only `confirmedAt IS NOT NULL` rows and
+deletes addresses that were asked to confirm >30 days ago and never did (plus their
+`DemoLead` rows). Subscribers that pre-date this change have `confirmedAt = NULL`, so they
+are never emailed; they can opt in by submitting a form. Migration `20260929200000`.
+Form copy, success messages and the privacy policy describe the confirm step. GA
+`generate_lead` still fires on form submit (it measures the lead, not the confirmation).
+
+### Also fixed: `/api/*` returned HTTP 500 without Upstash
+`src/proxy.ts` called the Upstash limiter on every `/api/*` request. Without
+`UPSTASH_REDIS_REST_*` (documented as optional) it threw, so **every API route including the
+Stripe webhook would 500**. It now skips when Upstash isn't configured, fails open on limiter
+errors, and never IP-limits webhooks, cron or one-click unsubscribe.
 
 ## A3. Server-render the money pages / site chrome
 | | |
@@ -77,7 +95,7 @@ Not changed, owner must confirm they are true: "written/reviewed by credentialed
 
 ## Verify after deploy
 1. Env vars (see `.env.example`): GA ID + API secret; nurture flags, `MAIL_POSTAL_ADDRESS`, `CRON_SECRET`, `EMAIL_FROM`, `EMAIL_REPLY_TO`; optional reviewer/social vars.
-2. Run `prisma migrate deploy` on staging first (migrations `…175000`, `…180000`, `…190000`).
+2. Run `prisma migrate deploy` on staging first (migrations `…175000`, `…180000`, `…190000`, `…200000`).
 3. Stripe test-mode purchase → webhook → access window (45 days for bundle) → GA `purchase`.
 4. Submit a demo lead; confirm `Subscriber`/`DemoLead` rows and the welcome email; click unsubscribe.
 5. Visually check header spacing on inner pages and the embed in an iframe.
