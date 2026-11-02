@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -26,6 +26,46 @@ export const metadata: Metadata = {
 };
 
 const POSTS = [
+  {
+    slug: "best-spi-study-materials-2026",
+    tag: "BUYER'S GUIDE",
+    title: "Best ARDMS SPI Study Materials in 2026: How to Choose",
+    desc: "An honest checklist for comparing books, courses, flashcards and timed practice—without made-up competitor prices.",
+    date: "November 2, 2026",
+    read: "9 min read",
+  },
+  {
+    slug: "is-sonoprep-worth-it-2026",
+    tag: "PRODUCT TRANSPARENCY",
+    title: "Is SonoPrep Worth It? An Honest 2026 Buyer's Guide",
+    desc: "A company-authored look at exact prices, question-bank overlap, refund conditions and who should skip SonoPrep.",
+    date: "November 2, 2026",
+    read: "8 min read",
+  },
+  {
+    slug: "free-spi-practice-test-guide-2026",
+    tag: "FREE PRACTICE",
+    title: "Free SPI Practice Test (2026): 10 Questions, Then What?",
+    desc: "Try the free sample, work through an original Doppler question and learn what ten answers can—and cannot—tell you.",
+    date: "November 2, 2026",
+    read: "7 min read",
+  },
+  {
+    slug: "what-happens-if-you-fail-spi-2026",
+    tag: "RETAKE STRATEGY",
+    title: "What Happens If You Fail the SPI Exam? A 2026 Retake Plan",
+    desc: "The actual fee and waiting period, an honest cost breakdown and a practical plan for fixing weak domains.",
+    date: "November 2, 2026",
+    read: "7 min read",
+  },
+  {
+    slug: "four-week-spi-study-plan-2026",
+    tag: "STUDY STRATEGY",
+    title: "4-Week SPI Exam Study Plan (2026): A 28-Day Schedule",
+    desc: "A compressed, domain-weighted calendar with two timed practice days and a realistic 40-hour budget.",
+    date: "November 2, 2026",
+    read: "9 min read",
+  },
   {
     slug: "spi-study-plan-30-45-days",
     tag: "STUDY STRATEGY",
