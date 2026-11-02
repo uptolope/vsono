@@ -97,14 +97,14 @@ try {
     "src/lib/content/flashcard-data.ts",
     "src/lib/demo/flashcard-data.ts",
   ]);
-  // Only flag files that define multiple literal `question:` entries
-  // (an actual embedded bank) — not files that merely reference the
-  // field name (type defs, grading routes, UI components).
+  // Flag files that define multiple exam items with both question text and
+  // answer indices. Editorial FAQ arrays also use `question:` strings but do
+  // not supply questions to the exam/demo features.
   const unexpected = files.filter((f) => {
     if (allowed.has(f)) return false;
     const body = fs.readFileSync(f, "utf8");
     const literalQuestionCount = (body.match(/question:\s*[`"]/g) || []).length;
-    return literalQuestionCount >= 3;
+    return literalQuestionCount >= 3 && /\bcorrectAnswer\s*:/.test(body);
   });
   if (unexpected.length) {
     fail(

@@ -2,6 +2,11 @@ import type { MetadataRoute } from "next";
 import { SITE_URL as SITE } from "@/lib/site-config";
 
 const BLOG_POSTS = [
+  { slug: "best-spi-study-materials-2026", updated: "2026-11-02" },
+  { slug: "is-sonoprep-worth-it-2026", updated: "2026-11-02" },
+  { slug: "free-spi-practice-test-guide-2026", updated: "2026-11-02" },
+  { slug: "what-happens-if-you-fail-spi-2026", updated: "2026-11-02" },
+  { slug: "four-week-spi-study-plan-2026", updated: "2026-11-02" },
   { slug: "spi-study-plan-30-45-days", updated: "2026-09-29" },
   { slug: "ardms-spi-exam-cost-scheduling-retakes", updated: "2026-09-29" },
   { slug: "complete-spi-exam-guide", updated: "2026-06-15" },

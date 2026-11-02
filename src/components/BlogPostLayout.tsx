@@ -125,6 +125,10 @@ export default function BlogPostLayout({
             </div>
           </div>
 
+          <p className="mt-10 text-xs leading-relaxed text-[#a89f96] border-t border-white/10 pt-6">
+            <em>SonoPrep is not affiliated with, endorsed by, or connected to ARDMS® or Inteleos. SPI® is a registered trademark of ARDMS. All practice questions on this site are independently written and are not official ARDMS exam questions. SonoPrep does not predict official exam results. Always confirm current eligibility, fees, and rules at ardms.org.</em>
+          </p>
+
           <nav
             aria-label="Free SPI study tools"
             className="mt-12 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#8a8279]"
