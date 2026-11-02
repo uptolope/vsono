@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import EditorialFAQ from "@/components/EditorialFAQ";
+import Link from "next/link";
 import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint",
+    "How to Prepare for the SPI First Attempt: 6-Week Blueprint (2026)",
   description:
     "A week-by-week study schedule built around the ARDMS SPI content outline, designed to get you exam-ready in six weeks.",
   keywords: [
@@ -20,14 +22,25 @@ export default function Page() {
   return (
     <BlogPostLayout
       tag="STUDY STRATEGY"
-      title="How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint"
+      title="How to Prepare for the SPI First Attempt: 6-Week Blueprint (2026)"
       date="March 28, 2026"
       read="14 min read"
+      updated="November 2, 2026"
       url="https://www.sonoprep.com/blog/pass-spi-first-attempt"
       description="A week-by-week study schedule built around the ARDMS SPI content outline, designed to get first-time candidates to passing in six weeks."
     >
+      <div className={proseClasses.callout}>
+        <strong className="text-white">Quick answer:</strong> A six-week first-attempt plan should weight the five official domains, practice the approximately 110-question format and review misses by concept. The SPI costs $275 and requires a scaled 555 to pass; no schedule guarantees that result.
+      </div>
+      <h2 className={proseClasses.h2}>Key takeaways</h2>
+      <ul className={proseClasses.ul}>
+        <li>Use the published weights: Doppler and image optimization total 60% of the outline.</li>
+        <li>Review the reasoning behind wrong answers instead of repeating answer letters.</li>
+        <li>Rehearse the two-hour format and adjust your time budget to your baseline knowledge.</li>
+        <li>Try the <Link href="/demo" className="text-[#c85b3a]">free demo</Link> before buying additional tools.</li>
+      </ul>
       <p>
-        Six weeks is enough time to build real command of the SPI content
+        Six weeks can be enough time to build real command of the SPI content
         outline if your study time is structured around how the exam is actually
         weighted — not spread evenly across topics regardless of how often they
         appear. This plan follows the official domain weightings: 23% Perform
@@ -159,6 +172,18 @@ export default function Page() {
         </tbody>
       </table>
 
+      <h2 className={proseClasses.h2}>Which practice tool fits your gap?</h2>
+      <table className={proseClasses.table}>
+        <thead><tr><th className={proseClasses.th}>Need</th><th className={proseClasses.th}>Possible tool</th><th className={proseClasses.th}>Limit</th></tr></thead>
+        <tbody>
+          <tr><td className={proseClasses.td}>Recall</td><td className={proseClasses.td}>200 spaced-repetition flashcards ($24)</td><td className={proseClasses.td}>No exam-length pacing</td></tr>
+          <tr><td className={proseClasses.td}>Conceptual review</td><td className={proseClasses.td}>159-page notes ($34) or 50 pearls ($9)</td><td className={proseClasses.td}>Reading alone is not practice</td></tr>
+          <tr><td className={proseClasses.td}>Timed application</td><td className={proseClasses.td}>Simulator ($49.99): three attempts from 155-item bank</td><td className={proseClasses.td}>110 questions per attempt; overlap possible</td></tr>
+          <tr><td className={proseClasses.td}>All three</td><td className={proseClasses.td}>Bundle ($99), 45-day access</td><td className={proseClasses.td}>Digital-only; no pass guarantee</td></tr>
+        </tbody>
+      </table>
+      <p>Read <Link href="/blog/best-spi-study-materials-2026" className="text-[#c85b3a]">how to compare SPI materials</Link> before purchasing. Individual products have 30-day access. See the <Link href="/products" className="text-[#c85b3a]">current product details</Link> and 10-day refund terms.</p>
+
       <div className={proseClasses.callout}>
         <p className="text-white text-sm mb-0">
           <strong>If you're working with less than six weeks:</strong> don't try
@@ -170,6 +195,12 @@ export default function Page() {
           than a "complete" plan that shortchanges 60% of the test.
         </p>
       </div>
+      <EditorialFAQ slug="pass-spi-first-attempt" items={[
+        { question: "Can I guarantee a first-attempt SPI pass with six weeks of study?", answer: "No. Six weeks is a sample plan, not a guarantee; adjust it to your background and timed practice results." },
+        { question: "Which SPI domains should I study most?", answer: "Doppler and image optimization represent 34% and 26% of the V24.1 outline. Also review your own weak areas." },
+        { question: "How long is the SPI exam?", answer: "ARDMS lists approximately 110 multiple-choice questions in two hours." },
+        { question: "Does a practice score predict a 555 on the SPI?", answer: "No. ARDMS’s passing score is scaled, not a raw percentage, and third-party test scores do not convert to it." },
+      ]} />
     </BlogPostLayout>
   );
 }

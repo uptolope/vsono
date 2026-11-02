@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL as SITE } from "@/lib/site-config";
+import { guides } from "@/lib/editorial-guides";
 
 const BLOG_POSTS = [
+  ...guides.map(({ slug }) => ({ slug, updated: "2026-11-02" })),
   { slug: "best-spi-study-materials-2026", updated: "2026-11-02" },
   { slug: "is-sonoprep-worth-it-2026", updated: "2026-11-02" },
   { slug: "free-spi-practice-test-guide-2026", updated: "2026-11-02" },
@@ -9,15 +11,15 @@ const BLOG_POSTS = [
   { slug: "four-week-spi-study-plan-2026", updated: "2026-11-02" },
   { slug: "spi-study-plan-30-45-days", updated: "2026-09-29" },
   { slug: "ardms-spi-exam-cost-scheduling-retakes", updated: "2026-09-29" },
-  { slug: "complete-spi-exam-guide", updated: "2026-06-15" },
-  { slug: "ardms-exam-blueprint", updated: "2026-06-15" },
+  { slug: "complete-spi-exam-guide", updated: "2026-11-02" },
+  { slug: "ardms-exam-blueprint", updated: "2026-11-02" },
   { slug: "doppler-principles-spi-exam", updated: "2026-06-15" },
   { slug: "ultrasound-physics-spi", updated: "2026-06-15" },
   { slug: "spi-ultrasound-artifacts-guide", updated: "2026-06-15" },
-  { slug: "pass-spi-first-attempt", updated: "2026-06-15" },
+  { slug: "pass-spi-first-attempt", updated: "2026-11-02" },
   { slug: "spaced-repetition-spi-exam", updated: "2026-06-15" },
   { slug: "test-taking-strategies-spi", updated: "2026-06-15" },
-  { slug: "ardms-specialties-comparison", updated: "2026-06-15" },
+  { slug: "ardms-specialties-comparison", updated: "2026-11-02" },
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

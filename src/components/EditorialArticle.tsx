@@ -13,6 +13,7 @@ type Props = {
   takeaways: string[];
   faqs: FAQ[];
   children: ReactNode;
+  howToSteps?: string[];
 };
 
 const published = "2026-11-02";
@@ -45,11 +46,9 @@ export function Internal({ href, children }: { href: string; children: ReactNode
   return <Link className="text-[#ef9d82] underline underline-offset-4 hover:text-white" href={href}>{children}</Link>;
 }
 
-export default function EditorialArticle({ slug, title, description, label, answer, takeaways, faqs, children }: Props) {
+export default function EditorialArticle({ slug, title, description, label, answer, takeaways, faqs, children, howToSteps }: Props) {
   const url = absoluteUrl(`/blog/${slug}`);
-  const schema = {
-    "@context": "https://schema.org",
-    "@graph": [
+  const graph: Record<string, unknown>[] = [
       {
         "@type": "Article", "@id": `${url}#article`, headline: title, description, url,
         datePublished: published, dateModified: published, inLanguage: "en-US",
@@ -64,8 +63,12 @@ export default function EditorialArticle({ slug, title, description, label, answ
         { "@type": "ListItem", position: 3, name: title, item: url },
       ] },
       { "@type": "FAQPage", "@id": `${url}#faq`, mainEntity: faqs.map(f => ({ "@type": "Question", name: f.question, acceptedAnswer: { "@type": "Answer", text: f.answer } })) },
-    ],
-  };
+    ];
+  if (howToSteps?.length) graph.push({
+    "@type": "HowTo", "@id": `${url}#howto`, name: title,
+    step: howToSteps.map((text, i) => ({ "@type": "HowToStep", position: i + 1, text })),
+  });
+  const schema = { "@context": "https://schema.org", "@graph": graph };
   return (
     <main className="min-h-screen pt-32 pb-20 px-6">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />

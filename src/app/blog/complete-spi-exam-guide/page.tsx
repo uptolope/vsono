@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import EditorialFAQ from "@/components/EditorialFAQ";
 import Link from "next/link";
 import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 
 export const metadata: Metadata = {
   title:
-    "The Complete ARDMS SPI Exam Guide: Everything You Need to Pass",
+    "ARDMS SPI Exam Explained: Format, Domains & Preparation (2026)",
   description:
-    "Domain weightings, a proven 6-week study plan, common mistakes, and how to pass the ARDMS SPI exam on your first attempt.",
+    "Domain weightings, a practical 6-week study plan, common mistakes, and how to prepare for the ARDMS SPI exam.",
   keywords: [
     "SPI exam guide",
     "ARDMS SPI exam",
@@ -22,15 +23,26 @@ export default function Page() {
   return (
     <BlogPostLayout
       tag="COMPLETE GUIDE"
-      title="The Complete ARDMS SPI Exam Guide: Everything You Need to Pass"
+      title="ARDMS SPI Exam Explained: Format, Domains & Preparation (2026)"
       date="May 12, 2026"
       read="25 min read"
+      updated="November 2, 2026"
       url="https://www.sonoprep.com/blog/complete-spi-exam-guide"
-      description="Domain weightings, a proven 6-week study plan, common mistakes, and how to pass the ARDMS SPI exam on your first attempt."
+      description="Domain weightings, a practical 6-week study plan, common mistakes, and how to prepare for the ARDMS SPI exam."
     >
+      <div className={proseClasses.callout}>
+        <strong className="text-white">Quick answer:</strong> The SPI tests five published physics and instrumentation domains in approximately 110 questions over two hours. As of 2026 the published fee is $275 and 555 is the passing score on a 300–700 scale. SPI and a corresponding specialty exam can be passed within five years of each other in either order.
+      </div>
+      <h2 className={proseClasses.h2}>Key takeaways</h2>
+      <ul className={proseClasses.ul}>
+        <li>Start with the official five-domain outline, then allocate study time by weight and personal weakness.</li>
+        <li>SPI is required for an ARDMS credential, but does not always have to be scheduled before the specialty exam.</li>
+        <li>A practice percentage cannot be converted to the 555 scaled score.</li>
+        <li>Use the <Link href="/blog/spi-vs-specialty-exam-order-2026" className="text-[#c85b3a]">exam-order guide</Link> to plan your sequence.</li>
+      </ul>
       <p>
-        The Sonography Principles &amp; Instrumentation (SPI) exam is the shared
-        first hurdle for every ARDMS credential — RDMS, RDCS, RVT, and RMSKS all
+        The Sonography Principles &amp; Instrumentation (SPI) exam is a shared
+        requirement for every ARDMS credential — RDMS, RDCS, RVT, and RMSKS all
         require it, alongside at least one specialty exam. This guide covers
         what the exam actually is, how it's structured, what to study and in
         what order, and the mistakes that most often trip up first-time
@@ -53,20 +65,19 @@ export default function Page() {
         <li>
           <strong className="text-white">approximately 110 multiple-choice questions</strong>,
           administered over a <strong className="text-white">two-hour</strong>{" "}
-          session that includes a short tutorial and a brief post-exam survey.
+          session, plus a five-minute survey.
         </li>
         <li>
           Scores are reported on a scaled range, with a passing score of
-          approximately <strong className="text-white">555 out of 700</strong>.
+          <strong className="text-white">555 on a 300–700 scale</strong>.
         </li>
         <li>
-          The exam is administered at Pearson VUE testing centers, with online
-          proctoring available for candidates who meet the technical and
-          environmental requirements.
+          Confirm the available testing location and scheduling options with
+          ARDMS when applying; availability and rules can change.
         </li>
         <li>
-          A basic on-screen calculator is provided — you cannot bring your own
-          calculator into the testing room.
+          Check ARDMS and the testing provider for current rules on calculators,
+          identification and permitted items before your appointment.
         </li>
       </ul>
       <p className="text-sm text-[#8a8279]">
@@ -76,6 +87,15 @@ export default function Page() {
         be updated.
       </p>
 
+      <table className={proseClasses.table}>
+        <thead><tr><th className={proseClasses.th}>Exam fact</th><th className={proseClasses.th}>Published or planning value</th></tr></thead>
+        <tbody>
+          <tr><td className={proseClasses.td}>Exam fee</td><td className={proseClasses.td}>$275 (verify before applying)</td></tr>
+          <tr><td className={proseClasses.td}>Question format</td><td className={proseClasses.td}>Approximately 110 questions in two hours</td></tr>
+          <tr><td className={proseClasses.td}>Passing score</td><td className={proseClasses.td}>555 on a scaled 300–700 range; not a percentage</td></tr>
+          <tr><td className={proseClasses.td}>Required for</td><td className={proseClasses.td}>RDMS, RDCS, RVT, RMSKS and other ARDMS credentials with corresponding specialty exam</td></tr>
+        </tbody>
+      </table>
       <h2 className={proseClasses.h2}>The five domains and why they matter</h2>
       <p>
         ARDMS publishes a content outline that breaks the exam into five
@@ -365,6 +385,12 @@ export default function Page() {
           exam is actually built.
         </p>
       </div>
+      <EditorialFAQ slug="complete-spi-exam-guide" items={[
+        { question: "What is on the ARDMS SPI exam?", answer: "The SPI covers five published domains: examinations, transducers, image optimization, Doppler, and safety and quality assurance." },
+        { question: "How much does the SPI exam cost in 2026?", answer: "The published SPI fee is $275 per attempt. Confirm current charges with ARDMS before paying." },
+        { question: "What score passes the SPI exam?", answer: "555 or better on ARDMS’s scaled 300–700 range passes. It is not a percentage." },
+        { question: "Must I take SPI before a specialty exam?", answer: "No. ARDMS permits SPI and the corresponding specialty exam in either order within five years of each other, subject to eligibility." },
+      ]} />
     </BlogPostLayout>
   );
 }
