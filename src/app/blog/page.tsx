@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { guides } from "@/lib/editorial-guides";
 
 export const metadata: Metadata = {
   title: "SonoPrep Blog — SPI Exam Study Tips, Physics & ARDMS Guides",
@@ -66,6 +67,14 @@ const POSTS = [
     date: "November 2, 2026",
     read: "9 min read",
   },
+  ...guides.map((guide) => ({
+    slug: guide.slug,
+    tag: guide.label,
+    title: guide.title,
+    desc: guide.description,
+    date: "November 2, 2026",
+    read: "5 min read",
+  })),
   {
     slug: "spi-study-plan-30-45-days",
     tag: "STUDY STRATEGY",
@@ -86,15 +95,15 @@ const POSTS = [
   {
     slug: "complete-spi-exam-guide",
     tag: "COMPLETE GUIDE",
-    title: "The Complete ARDMS SPI Exam Guide: Everything You Need to Pass",
-    desc: "Domain weightings, a proven six-week study plan, common mistakes, and practical ways to prepare with confidence.",
+    title: "ARDMS SPI Exam Explained: Format, Domains & Preparation (2026)",
+    desc: "Domain weightings, a practical six-week study plan, common mistakes, and practical ways to prepare with confidence.",
     date: "May 12, 2026",
     read: "25 min read",
   },
   {
     slug: "ardms-exam-blueprint",
     tag: "EXAM BLUEPRINT",
-    title: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained",
+    title: "ARDMS SPI Exam Domains: V24.1 Weightings (2026)",
     desc: "A breakdown of the official ARDMS content outline — how the exam's domain weightings can guide your study-time allocation.",
     date: "April 26, 2026",
     read: "17 min read",
@@ -128,7 +137,7 @@ const POSTS = [
   {
     slug: "pass-spi-first-attempt",
     tag: "STUDY STRATEGY",
-    title: "How to Pass the SPI Exam on Your First Attempt: A 6-Week Blueprint",
+    title: "How to Prepare for the SPI First Attempt: 6-Week Blueprint (2026)",
     desc: "A week-by-week schedule built around the ARDMS blueprint, designed to get you exam-ready in 42 days.",
     date: "March 28, 2026",
     read: "14 min read",
@@ -155,7 +164,7 @@ const POSTS = [
     slug: "ardms-specialties-comparison",
     tag: "CREDENTIAL GUIDE",
     title:
-      "RDMS vs RDCS vs RVT vs RMSKS: Which ARDMS Specialty Is Right for You?",
+      "RDMS vs RDCS vs RVT vs RMSKS: Choosing in 2026",
     desc: "A practical comparison of the four ARDMS specialty credentials — clinical requirements, exam structure, job market, and how to choose your path.",
     date: "March 6, 2026",
     read: "13 min read",

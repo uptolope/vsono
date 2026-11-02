@@ -81,6 +81,13 @@ if (!/export const DEMO_QUESTIONS_PER_ATTEMPT = 10;/.test(demoSrc)) {
   fail("DEMO_QUESTIONS_PER_ATTEMPT must equal 10");
 }
 
+// Editorial guide FAQ questions are not exam items. If that file ever grows
+// answer-key fields, treat it as a possible unauthorized question source.
+const editorialSrc = fs.readFileSync("src/lib/editorial-guides.ts", "utf8");
+if (/\bcorrectAnswer\s*:|\bEXAM_QUESTIONS\b/.test(editorialSrc)) {
+  fail("Editorial guides must not define an exam question bank");
+}
+
 // ---- Unauthorized-source audit: nothing outside the two known banks may
 // supply questions to the exam/demo features ----
 try {
@@ -96,15 +103,17 @@ try {
     // not part of the exam-question feature this audit governs.
     "src/lib/content/flashcard-data.ts",
     "src/lib/demo/flashcard-data.ts",
+    // Static editorial FAQ copy, not imported by either exam question bank.
+    "src/lib/editorial-guides.ts",
   ]);
-  // Flag files that define multiple exam items with both question text and
-  // answer indices. Editorial FAQ arrays also use `question:` strings but do
-  // not supply questions to the exam/demo features.
+  // Blog FAQs are editorial copy, not a source for the exam/demo features.
+  // Keep the original broad check elsewhere: new banks may use a different
+  // answer-field name and must still trigger manual review.
   const unexpected = files.filter((f) => {
-    if (allowed.has(f)) return false;
+    if (allowed.has(f) || f.startsWith("src/app/blog/")) return false;
     const body = fs.readFileSync(f, "utf8");
     const literalQuestionCount = (body.match(/question:\s*[`"]/g) || []).length;
-    return literalQuestionCount >= 3 && /\bcorrectAnswer\s*:/.test(body);
+    return literalQuestionCount >= 3;
   });
   if (unexpected.length) {
     fail(

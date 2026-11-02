@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
+import EditorialFAQ from "@/components/EditorialFAQ";
+import Link from "next/link";
 import BlogPostLayout, { proseClasses } from "@/components/BlogPostLayout";
 import BlogCTA from "@/components/marketing/BlogCTA";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
 export const metadata: Metadata = {
-  title: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained",
+  title: "ARDMS SPI Exam Domains: V24.1 Weightings (2026)",
   description:
     "A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation.",
   keywords: [
@@ -21,7 +23,7 @@ function BlogPostingSchema() {
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: "ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained",
+    headline: "ARDMS SPI Exam Domains: V24.1 Weightings (2026)",
     description:
       "A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation.",
     url: "https://www.sonoprep.com/blog/ardms-exam-blueprint",
@@ -73,12 +75,23 @@ export default function Page() {
 
       <BlogPostLayout
         tag="EXAM BLUEPRINT"
-        title="ARDMS SPI Exam Content Outline V24.1: Domain Weightings Explained"
+        title="ARDMS SPI Exam Domains: V24.1 Weightings (2026)"
         date="April 26, 2026"
         read="17 min read"
+        updated="November 2, 2026"
         url="https://www.sonoprep.com/blog/ardms-exam-blueprint"
         description="A breakdown of the official ARDMS SPI content outline — how the exam's domain weightings can guide your study-time allocation, and how to weight your study time accordingly."
       >
+        <div className={proseClasses.callout}>
+          <strong className="text-white">Quick answer:</strong> The published SPI outline has five domains, led by Doppler (34%) and image optimization (26%). Together they account for 60% of the content blueprint. The exam is approximately 110 questions, costs $275 and requires a scaled 555 to pass; the outline is a study guide, not a personal score predictor.
+        </div>
+        <h2 className={proseClasses.h2}>Key takeaways</h2>
+        <ul className={proseClasses.ul}>
+          <li>Weight initial study hours by the official outline, then adjust for your weak areas.</li>
+          <li>Do not skip the smaller safety or transducer domains.</li>
+          <li>The published weights describe the official exam, not SonoPrep's random-draw question bank.</li>
+          <li>Try the <Link href="/demo" className="text-[#c85b3a]">free demo</Link> for a small sample, not a readiness prediction.</li>
+        </ul>
         <p>
           Every SPI exam question comes from one of five domains in the official
           ARDMS content outline. ARDMS publishes this outline so candidates know
@@ -267,14 +280,33 @@ export default function Page() {
         </p>
 
         <p>
-          It also means your practice exams should mirror this distribution. If
-          a practice test gives every domain equal weight, your score on it won't
-          accurately predict your real exam score — you could do well on a
-          practice test that underweights Doppler and still walk into the real
-          exam underprepared for over a third of the questions.
+          A third-party practice test need not replicate the official distribution
+          exactly to help you find mistakes. SonoPrep's simulator draws 110 items
+          randomly from a 155-item bank; its distribution can differ from these
+          official weights. Use its explanations and domain report to guide review,
+          not to predict an official exam score.
         </p>
 
+        <h2 className={proseClasses.h2}>How would you allocate 40 study hours?</h2>
+        <table className={proseClasses.table}>
+          <thead><tr><th className={proseClasses.th}>Domain</th><th className={proseClasses.th}>Published weight</th><th className={proseClasses.th}>Example hours (rounded)</th></tr></thead>
+          <tbody>
+            <tr><td className={proseClasses.td}>Examinations</td><td className={proseClasses.td}>23%</td><td className={proseClasses.td}>9</td></tr>
+            <tr><td className={proseClasses.td}>Transducers</td><td className={proseClasses.td}>7%</td><td className={proseClasses.td}>3</td></tr>
+            <tr><td className={proseClasses.td}>Image optimization</td><td className={proseClasses.td}>26%</td><td className={proseClasses.td}>10</td></tr>
+            <tr><td className={proseClasses.td}>Doppler</td><td className={proseClasses.td}>34%</td><td className={proseClasses.td}>14</td></tr>
+            <tr><td className={proseClasses.td}>Safety and QA</td><td className={proseClasses.td}>10%</td><td className={proseClasses.td}>4</td></tr>
+          </tbody>
+        </table>
+        <p>These example hours sum to 40; personal weaknesses should override a mechanical formula. The <Link href="/blog/four-week-spi-study-plan-2026" className="text-[#c85b3a]">28-day study plan</Link> offers practice days, while the <Link href="/blog/ultrasound-physics-formulas-spi-2026" className="text-[#c85b3a]">formula reference</Link> helps with cross-domain relationships.</p>
+
         <BlogCTA topic="the ARDMS SPI exam blueprint" />
+        <EditorialFAQ slug="ardms-exam-blueprint" items={[
+          { question: "What are the five SPI exam domains?", answer: "Perform Ultrasound Examinations, Manage Ultrasound Transducers, Optimize Sonographic Images, Apply Doppler Concepts, and Clinical Safety and Quality Assurance." },
+          { question: "Which SPI domain has the highest weight?", answer: "Apply Doppler Concepts has a published V24.1 weight of 34%, followed by Optimize Sonographic Images at 26%." },
+          { question: "Does the SonoPrep simulator exactly match domain weights?", answer: "No. Its 110-question attempts draw randomly from a 155-item bank and may differ from official outline proportions." },
+          { question: "How should I allocate SPI study hours?", answer: "Start with official weights and add time where your own errors show gaps. Do not skip the smaller domains." },
+        ]} />
       </BlogPostLayout>
     </>
   );
