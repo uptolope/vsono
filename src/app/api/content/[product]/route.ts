@@ -9,15 +9,13 @@ import {
   PHYSICS_PEARLS,
   STUDY_SECTIONS,
   toClientQuestions,
-  shuffleQuestions,
   QUESTIONS_PER_ATTEMPT,
   type ProductContentKey,
 } from "@/lib/content";
 import {
-  EXAM_ATTEMPT_COOKIE,
-  EXAM_ATTEMPT_COOKIE_MAX_AGE_SECONDS,
-  parseExamAttemptCookie,
-} from "@/lib/content/exam-attempt-cookie";
+  LEGACY_EXAM_ATTEMPT_COOKIE,
+  startOrResumeAttempt,
+} from "@/lib/exam/attempts";
 
 const VALID_PRODUCTS: ProductContentKey[] = [
   "FLASHCARDS",
@@ -105,51 +103,58 @@ export async function GET(
         );
       }
 
-      const validIds = new Set(EXAM_QUESTIONS.map((q) => q.id));
-      const existing = parseExamAttemptCookie(
-        req.cookies.get(EXAM_ATTEMPT_COOKIE)?.value,
-        validIds,
-        QUESTIONS_PER_ATTEMPT
-      );
+      // Attempts live in the database (ExamSession), not in a cookie. This
+      // either resumes the user's in-progress attempt with its original
+      // question order, or starts a new one and uses one of their attempts.
+      // See src/lib/exam/attempts.ts for the rules.
+      const attempt = await startOrResumeAttempt(userId);
 
-      let orderedQuestions;
-      let cookieToSet: string | null = null;
+      if (attempt.kind === "no_access") {
+        return NextResponse.json(
+          { error: "Access denied", reason: "No active purchase for this product" },
+          { status: 403 }
+        );
+      }
 
-      if (existing) {
-        // Active attempt already in progress — reuse its exact order so a
-        // refresh, navigation, or review never reshuffles or drops progress.
-        const byId = new Map(EXAM_QUESTIONS.map((q) => [q.id, q]));
-        orderedQuestions = existing.orderedIds
-          .map((id) => byId.get(id))
-          .filter((q): q is (typeof EXAM_QUESTIONS)[number] => Boolean(q));
-      } else {
-        // No active attempt (first load, or the previous one was just
-        // submitted and its cookie cleared) — start a fresh randomized one.
-        orderedQuestions = shuffleQuestions(EXAM_QUESTIONS).slice(0, QUESTIONS_PER_ATTEMPT);
-        cookieToSet = JSON.stringify({
-          orderedIds: orderedQuestions.map((q) => q.id),
-          startedAt: Date.now(),
-        });
+      if (attempt.kind === "limit_reached") {
+        console.info(`[content] Exam attempt limit reached for user ${userId}`);
+        return NextResponse.json(
+          {
+            error: "Attempt limit reached",
+            reason: "attempt_limit",
+            attempts: {
+              limit: attempt.limit,
+              used: attempt.used,
+              remaining: attempt.remaining,
+            },
+          },
+          { status: 403 }
+        );
       }
 
       // correctAnswer and explanation MUST NOT reach the client before
       // submission — toClientQuestions() strips them. Do not bypass
       // this by returning EXAM_QUESTIONS directly.
       console.info(
-        `[content] Serving EXAM_SIMULATOR (${QUESTIONS_PER_ATTEMPT} of ${EXAM_QUESTIONS.length} questions) to user ${userId}`
+        `[content] EXAM_SIMULATOR attempt ${attempt.kind} (${attempt.questions.length} questions) for user ${userId}`
       );
-      const response = NextResponse.json({
-        questions: toClientQuestions(orderedQuestions),
-        expiresAt: access.expiresAt,
-      });
-      if (cookieToSet) {
-        response.cookies.set(EXAM_ATTEMPT_COOKIE, cookieToSet, {
-          httpOnly: true,
-          sameSite: "lax",
-          secure: process.env.NODE_ENV === "production",
-          path: "/",
-          maxAge: EXAM_ATTEMPT_COOKIE_MAX_AGE_SECONDS,
-        });
+      const response = NextResponse.json(
+        {
+          questions: toClientQuestions(attempt.questions),
+          expiresAt: access.expiresAt,
+          attempt: {
+            number: attempt.attemptNumber,
+            resumed: attempt.kind === "resumed",
+            startedAt: attempt.startedAt,
+            limit: attempt.limit,
+            used: attempt.used,
+            remaining: attempt.remaining,
+          },
+        },
+        { headers: { "Cache-Control": "no-store" } }
+      );
+      if (req.cookies.has(LEGACY_EXAM_ATTEMPT_COOKIE)) {
+        response.cookies.delete(LEGACY_EXAM_ATTEMPT_COOKIE);
       }
       return response;
     }

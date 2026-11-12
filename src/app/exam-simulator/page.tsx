@@ -10,6 +10,14 @@ import type { ClientExamQuestion } from '@/lib/content/exam-types';
 interface ExamContentResponse {
   questions: ClientExamQuestion[];
   expiresAt: string | null;
+  attempt?: {
+    number: number | null;
+    resumed: boolean;
+    startedAt: string;
+    limit: number;
+    used: number;
+    remaining: number;
+  };
 }
 
 interface ExamSubmitResult {
@@ -18,6 +26,18 @@ interface ExamSubmitResult {
   total: number;
   score: number;
   perDomain: Record<string, { correct: number; total: number }>;
+  limit?: number;
+  used?: number;
+  remaining?: number;
+}
+
+/** GET /api/exam/attempts — read-only, never starts an attempt. */
+interface AttemptStatus {
+  hasAccess: boolean;
+  limit: number;
+  used: number;
+  remaining: number;
+  active: { attemptNumber: number | null } | null;
 }
 
 function formatElapsed(totalSeconds: number): string {
@@ -111,6 +131,9 @@ export default function ExamSimulatorPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [result, setResult] = useState<ExamSubmitResult | null>(null);
+  const [attemptStatus, setAttemptStatus] = useState<AttemptStatus | null>(
+    null,
+  );
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -148,13 +171,20 @@ useEffect(() => {
       ),
     );
   } else {
-    const startedAt = Date.now();
+    // The attempt's clock started on the server; use that so the timer is
+    // right after a refresh on another device too.
+    const serverStartedAt = Date.parse(state.data.attempt?.startedAt ?? '');
+    const startedAt = Number.isFinite(serverStartedAt)
+      ? serverStartedAt
+      : Date.now();
 
     setAnswers({});
     setTimeSpentByQuestion({});
     setCurrentIndex(0);
     setExamStartedAt(startedAt);
-    setElapsedSeconds(0);
+    setElapsedSeconds(
+      Math.max(0, Math.round((Date.now() - startedAt) / 1000)),
+    );
 
     saveStoredProgress({
       idsKey: questionIdsKey,
@@ -216,6 +246,26 @@ useEffect(() => {
     };
   }, [state.status, result, hydratedFromStorage, examStartedAt]);
 
+  // Load the attempt allowance whenever the readiness dialog is showing.
+  useEffect(() => {
+    if (sessionStatus !== 'authenticated' || hasConfirmedExamStart) return;
+
+    let cancelled = false;
+
+    fetch('/api/exam/attempts')
+      .then((res) => (res.ok ? (res.json() as Promise<AttemptStatus>) : null))
+      .then((data) => {
+        if (!cancelled) setAttemptStatus(data);
+      })
+      .catch(() => {
+        // The dialog still works without the count; the server enforces it.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionStatus, hasConfirmedExamStart]);
+
   if (sessionStatus === 'loading') {
     return (
       <Centered>
@@ -253,6 +303,7 @@ useEffect(() => {
   ) {
     return (
       <ExamReadinessDialog
+        attemptStatus={attemptStatus}
         acknowledged={acknowledgedExamWarning}
         onAcknowledgedChange={setAcknowledgedExamWarning}
         onStart={() => setHasConfirmedExamStart(true)}
@@ -268,6 +319,13 @@ useEffect(() => {
         </p>
       </Centered>
     );
+  }
+
+  if (
+    state.status === 'unauthorized' &&
+    state.reason === 'attempt_limit'
+  ) {
+    return <NoAttemptsLeft />;
   }
 
   if (state.status === 'unauthorized') {
@@ -386,10 +444,20 @@ useEffect(() => {
             )}
           </div>
 
+          <p className="body-readable text-[#8a8279] text-sm text-center mt-10">
+            {typeof result.remaining === 'number'
+              ? result.remaining > 0
+                ? `${result.remaining} of ${result.limit} attempts remaining.`
+                : 'You have used all of your attempts.'
+              : null}
+          </p>
+
+          {result.remaining !== 0 && (
           <button
             onClick={() => {
               clearStoredProgress();
 
+              setAttemptStatus(null);
               setResult(null);
               setCurrentIndex(0);
               setAnswers({});
@@ -401,10 +469,11 @@ useEffect(() => {
               setAcknowledgedExamWarning(false);
               setHasConfirmedExamStart(false);
             }}
-            className="btn-industrial w-full py-3 text-[11px] mt-10"
+            className="btn-industrial w-full py-3 text-[11px] mt-4"
           >
             RETAKE EXAM
           </button>
+          )}
         </div>
       </div>
     );
@@ -490,6 +559,13 @@ useEffect(() => {
       if (res.status === 403) {
         setSubmitError(
           'Access denied. Your purchase may have expired.',
+        );
+        return;
+      }
+
+      if (res.status === 409) {
+        setSubmitError(
+          'This attempt is no longer open. It was already submitted or it timed out.',
         );
         return;
       }
@@ -651,15 +727,51 @@ useEffect(() => {
   );
 }
 
+function NoAttemptsLeft() {
+  return (
+    <Centered>
+      <h1 className="display-serif text-3xl sm:text-4xl text-white mt-3 font-semibold mb-4">
+        No attempts remaining
+      </h1>
+
+      <p className="body-readable text-[#8a8279] text-sm mb-8">
+        You have used all of the exam attempts included with your
+        purchase. Your past results are saved to your account.
+      </p>
+
+      <Link
+        href="/account"
+        className="btn-industrial px-6 py-3 text-[10px]"
+      >
+        BACK TO ACCOUNT
+      </Link>
+    </Centered>
+  );
+}
+
 function ExamReadinessDialog({
+  attemptStatus,
   acknowledged,
   onAcknowledgedChange,
   onStart,
 }: {
+  attemptStatus: AttemptStatus | null;
   acknowledged: boolean;
   onAcknowledgedChange: (value: boolean) => void;
   onStart: () => void;
 }) {
+  // With access but nothing left and nothing in progress, there is nothing
+  // to start. (No access at all falls through to the purchase prompt.)
+  if (
+    attemptStatus?.hasAccess &&
+    attemptStatus.remaining === 0 &&
+    !attemptStatus.active
+  ) {
+    return <NoAttemptsLeft />;
+  }
+
+  const resuming = Boolean(attemptStatus?.active);
+
   return (
     <div className="min-h-screen pt-28 px-6 pb-24">
       <div
@@ -701,11 +813,29 @@ function ExamReadinessDialog({
               . Your questions will be different each time.
             </p>
 
-            <p className="text-[#e0d8ce]">
-              Starting the exam uses one of your attempts, even if
-              you leave before finishing. Continue only when you are
-              fully ready.
-            </p>
+            {resuming ? (
+              <p className="text-[#e0d8ce]">
+                You have an attempt in progress. Continuing resumes it
+                with the same questions and does not use another
+                attempt.
+              </p>
+            ) : (
+              <p className="text-[#e0d8ce]">
+                Starting the exam uses one of your attempts, even if
+                you leave before finishing. Continue only when you are
+                fully ready.
+              </p>
+            )}
+
+            {attemptStatus?.hasAccess && (
+              <p className="text-[#e0d8ce]" data-testid="attempts-remaining">
+                Attempts used:{' '}
+                <strong className="text-white">
+                  {attemptStatus.used} of {attemptStatus.limit}
+                </strong>
+                .
+              </p>
+            )}
           </div>
 
           <label className="mt-6 flex cursor-pointer items-start gap-3 text-sm text-[#c2bab0]">
@@ -719,8 +849,9 @@ function ExamReadinessDialog({
             />
 
             <span>
-              I understand that starting this exam uses one of my
-              3 attempts.
+              {resuming
+                ? 'I understand that the timer for this attempt has kept running.'
+                : 'I understand that starting this exam uses one of my 3 attempts.'}
             </span>
           </label>
 
@@ -738,7 +869,7 @@ function ExamReadinessDialog({
               onClick={onStart}
               className="btn-industrial px-6 py-3 text-[10px] disabled:cursor-not-allowed disabled:opacity-40"
             >
-              I'M READY START EXAM
+              {resuming ? 'RESUME EXAM' : "I'M READY START EXAM"}
             </button>
           </div>
         </div>

@@ -13,18 +13,25 @@ export const metadata = {
 };
 
 export default async function ReviewsPage() {
+  // A database problem must not take the whole page down: show the page
+  // without the list and say so, and leave the details in the server log.
   const [reviews, session] = await Promise.all([
-    prisma.review.findMany({
-      where: { status: "APPROVED" },
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        rating: true,
-        body: true,
-        displayName: true,
-        createdAt: true,
-      },
-    }),
+    prisma.review
+      .findMany({
+        where: { status: "APPROVED" },
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          rating: true,
+          body: true,
+          displayName: true,
+          createdAt: true,
+        },
+      })
+      .catch((error: unknown) => {
+        console.error("[reviews] failed to load reviews:", error);
+        return null;
+      }),
     getServerSession(authOptions),
   ]);
 
@@ -46,7 +53,15 @@ export default async function ReviewsPage() {
           </p>
         </div>
 
-        {reviews.length === 0 ? (
+        {reviews === null ? (
+          <div
+            role="alert"
+            className="mb-12 border border-dashed border-[#cfc7bb] p-8 text-[#6e675f]"
+          >
+            Reviews can&apos;t be loaded right now. Please try again in a few
+            minutes.
+          </div>
+        ) : reviews.length === 0 ? (
           <div className="mb-12 border border-dashed border-[#cfc7bb] p-8 text-[#6e675f]">
             No approved reviews yet. Be the first to share your experience.
           </div>

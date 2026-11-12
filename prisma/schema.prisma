@@ -106,6 +106,8 @@ model Purchase {
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
 
+  examSessions ExamSession[]
+
   @@index([userId])
   @@index([productId])
   @@index([userId, status])
@@ -173,11 +175,25 @@ model ExamSession {
   startedAt         DateTime  @default(now())
   completedAt       DateTime?
 
+  // Attempt tracking (see src/lib/exam/attempts.ts). An attempt is created
+  // when the exam is STARTED and charged to the purchase that granted access.
+  // attemptNumber is 1..3 and unique per purchase; the database also enforces
+  // the range with a CHECK constraint (ExamSession_attemptNumber_range), which
+  // Prisma cannot express here.
+  purchaseId    String?
+  attemptNumber Int?
+  // The questions drawn for this attempt, in order. Grading uses this list,
+  // never anything the browser sends.
+  questionIds   Int[]   @default([])
+
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purchase    Purchase?    @relation(fields: [purchaseId], references: [id], onDelete: SetNull)
   examAnswers ExamAnswer[]
 
+  @@unique([purchaseId, attemptNumber])
   @@index([userId, completed])
   @@index([userId, examType])
+  @@index([userId, startedAt])
 }
 
 model ExamAnswer {
@@ -192,6 +208,7 @@ model ExamAnswer {
   examSession ExamSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([sessionId, questionId])
   @@index([sessionId])
   @@index([userId])
 }

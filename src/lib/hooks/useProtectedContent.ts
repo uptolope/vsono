@@ -7,7 +7,7 @@ export type ContentState<T> =
   | { status: 'idle' }
   | { status: 'loading' }
   | { status: 'unauthenticated' }
-  | { status: 'unauthorized' }
+  | { status: 'unauthorized'; reason?: string }
   | { status: 'error'; message: string }
   | { status: 'success'; data: T };
 
@@ -36,7 +36,17 @@ export function useProtectedContent<T>(
       }
 
       if (res.status === 403) {
-        setState({ status: 'unauthorized' });
+        // `reason` lets a page tell "no purchase" apart from other denials
+        // (e.g. the exam simulator's "attempt_limit").
+        const body = (await res.json().catch(() => null)) as
+          | { reason?: unknown }
+          | null;
+
+        setState({
+          status: 'unauthorized',
+          reason:
+            typeof body?.reason === 'string' ? body.reason : undefined,
+        });
         return;
       }
 

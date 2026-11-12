@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -73,7 +74,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const body = await request.json();
+  const body = await request.json().catch(() => null);
   const parsed = reviewSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -86,19 +87,37 @@ export async function POST(request: Request) {
     );
   }
 
-  const review = await prisma.review.create({
-    data: {
-      userId,
-      rating: parsed.data.rating,
-      body: parsed.data.body,
-      displayName: parsed.data.displayName || null,
-      status: "PENDING",
-    },
-    select: {
-      id: true,
-      status: true,
-    },
-  });
+  let review;
+
+  try {
+    review = await prisma.review.create({
+      data: {
+        userId,
+        rating: parsed.data.rating,
+        body: parsed.data.body,
+        displayName: parsed.data.displayName || null,
+        status: "PENDING",
+      },
+      select: {
+        id: true,
+        status: true,
+      },
+    });
+  } catch (error) {
+    // Two submissions racing past the findUnique above: the unique index on
+    // userId stops the second one. Report it as a duplicate, not a 500.
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return NextResponse.json(
+        { error: "You have already submitted a review." },
+        { status: 409 },
+      );
+    }
+
+    throw error;
+  }
 
   return NextResponse.json(
     {

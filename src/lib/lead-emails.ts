@@ -42,6 +42,59 @@ export function isNurtureEnabled(): boolean {
   );
 }
 
+export interface LeadEmailConfig {
+  /** RESEND_API_KEY is set — without it nothing can be sent at all. */
+  resendApiKey: boolean;
+  /** MAIL_POSTAL_ADDRESS is set — required on every lead email (CAN-SPAM). */
+  postalAddress: boolean;
+  /** LEAD_NURTURE_ENABLED=true — follow-ups after the welcome email. */
+  nurtureEnabled: boolean;
+  /** EMAIL_FROM is set (otherwise the built-in default sender is used). */
+  customFrom: boolean;
+  /** EMAIL_REPLY_TO is set (otherwise replies go nowhere). */
+  replyTo: boolean;
+  /** Double opt-in confirmation + welcome emails will be sent. */
+  canSendConfirmation: boolean;
+  /** The daily cron will send follow-ups. */
+  canSendFollowUps: boolean;
+  /** Human-readable reasons something will not send. Never contains values. */
+  problems: string[];
+}
+
+/**
+ * What the lead-email settings currently allow. Booleans only — safe to log
+ * and to return from the (authenticated) cron route.
+ */
+export function leadEmailConfig(): LeadEmailConfig {
+  const resendApiKey = Boolean(process.env.RESEND_API_KEY?.trim());
+  const postalAddress = Boolean(process.env.MAIL_POSTAL_ADDRESS?.trim());
+  const nurtureEnabled = process.env.LEAD_NURTURE_ENABLED === "true";
+  const canSendConfirmation = resendApiKey && postalAddress;
+
+  const problems: string[] = [];
+
+  if (!resendApiKey) problems.push("RESEND_API_KEY is not set: no email can be sent");
+  if (!postalAddress) {
+    problems.push(
+      "MAIL_POSTAL_ADDRESS is not set: leads are stored but the confirmation email is never sent, so nobody can opt in",
+    );
+  }
+  if (!nurtureEnabled) {
+    problems.push("LEAD_NURTURE_ENABLED is not \"true\": follow-up emails are off");
+  }
+
+  return {
+    resendApiKey,
+    postalAddress,
+    nurtureEnabled,
+    customFrom: Boolean(process.env.EMAIL_FROM?.trim()),
+    replyTo: Boolean(process.env.EMAIL_REPLY_TO?.trim()),
+    canSendConfirmation,
+    canSendFollowUps: canSendConfirmation && nurtureEnabled,
+    problems,
+  };
+}
+
 function esc(value: string): string {
   return value
     .replaceAll("&", "&amp;")
