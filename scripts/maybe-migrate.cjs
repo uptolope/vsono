@@ -46,3 +46,13 @@ try {
   );
   process.exit(1);
 }
+
+// `migrate deploy` only consults its own ledger. Confirm the tables and
+// columns the app needs really exist (see scripts/verify-schema.cjs for the
+// incident this guards against). Read-only.
+try {
+  execSync("node scripts/verify-schema.cjs", { stdio: "inherit" });
+} catch (err) {
+  console.error("[maybe-migrate] schema verification FAILED — stopping the build.");
+  process.exit(1);
+}

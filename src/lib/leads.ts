@@ -37,7 +37,14 @@ function hasPostalAddress(): boolean {
 async function trySendConfirmation(email: string): Promise<boolean> {
   // Needs the postal address (CAN-SPAM); without it, store the lead but send
   // nothing rather than send a non-compliant message.
-  if (!hasPostalAddress()) return false;
+  if (!hasPostalAddress()) {
+    // Not an error path, so without this line the lead form "works" forever
+    // while no one ever receives the confirmation link. No address is logged.
+    console.warn(
+      "[leads] lead stored but confirmation email NOT sent: MAIL_POSTAL_ADDRESS is not set",
+    );
+    return false;
+  }
 
   try {
     await sendConfirmationEmail(email);

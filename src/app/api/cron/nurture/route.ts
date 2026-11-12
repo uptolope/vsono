@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import {
   FOLLOW_UPS,
   isNurtureEnabled,
+  leadEmailConfig,
   sendLeadEmail,
 } from "@/lib/lead-emails";
 
@@ -76,9 +77,18 @@ export async function GET(req: NextRequest) {
   // Privacy hygiene: drop addresses that were asked to confirm and never did.
   const purged = await purgeUnconfirmed();
 
-  if (!isNurtureEnabled()) {
+  const config = leadEmailConfig();
+
+  if (!isNurtureEnabled() || !config.canSendFollowUps) {
+    // Say exactly which setting is missing, so "the cron ran" is never
+    // mistaken for "emails are going out".
+    for (const problem of config.problems) {
+      console.warn(`[nurture] ${problem}`);
+    }
+
     return NextResponse.json({
       skipped: "nurture disabled or MAIL_POSTAL_ADDRESS missing",
+      problems: config.problems,
       purged,
     });
   }
