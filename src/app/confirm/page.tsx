@@ -48,16 +48,16 @@ export default async function ConfirmPage({
     content = (
       <Message
         title="You're confirmed"
-        body="Thanks. We've sent your free diagnostic link to your inbox, and you can start it now."
-        cta={{ href: "/demo", label: "START THE FREE DIAGNOSTIC" }}
+        body="Thanks. We've sent the link to your 10 free SPI practice questions, and you can start right now."
+        cta={{ href: "/demo", label: "START THE 10 FREE SPI PRACTICE QUESTIONS" }}
       />
     );
   } else if (status === "unsubscribed") {
     content = (
       <Message
         title="You're unsubscribed"
-        body="This address previously unsubscribed from SonoPrep emails, so we won't email it. The free diagnostic is still available on the site."
-        cta={{ href: "/demo", label: "OPEN THE FREE DIAGNOSTIC" }}
+        body="This address previously unsubscribed from SonoPrep emails, so we won't email it. The 10 free SPI practice questions are still available on the site."
+        cta={{ href: "/demo", label: "OPEN THE 10 FREE SPI PRACTICE QUESTIONS" }}
       />
     );
   } else if (status === "expired" || (!status && check.valid && check.expired)) {
@@ -65,7 +65,7 @@ export default async function ConfirmPage({
       <Message
         title="This confirmation link has expired"
         body="Confirmation links last 7 days. Enter your email again on the site and we'll send a new one."
-        cta={{ href: "/demo", label: "GO TO THE FREE DIAGNOSTIC" }}
+        cta={{ href: "/demo", label: "GO TO THE 10 FREE SPI PRACTICE QUESTIONS" }}
       />
     );
   } else if (status === "error") {
@@ -82,9 +82,9 @@ export default async function ConfirmPage({
           Confirm your email
         </h1>
         <p className="body-readable mb-8 text-sm text-[#8a8279]">
-          Confirm that {email} should receive the free SonoPrep SPI diagnostic
-          link and up to 3 follow-up study-tip emails over about two weeks. You
-          can unsubscribe from any email.
+          Confirm that {email} should receive the link to 10 free SonoPrep SPI
+          practice questions and up to 3 follow-up study-tip emails over about
+          two weeks. You can unsubscribe from any email.
         </p>
         <form action="/api/confirm" method="post">
           <input type="hidden" name="e" value={email} />

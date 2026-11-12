@@ -7,7 +7,7 @@
 // no-op when the tag is not present, so calling them never throws.
 //
 // Conversion events:
-//   generate_lead   free-diagnostic email capture (home / demo / get-started)
+//   generate_lead   free-practice-questions email capture (home / demo / get-started)
 //   sign_up         real account creation
 //   begin_checkout  click on a buy button
 //   purchase        sent SERVER-SIDE from the verified Stripe webhook

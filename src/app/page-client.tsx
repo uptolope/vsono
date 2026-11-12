@@ -514,8 +514,8 @@ function DemoSection() {
               See your SPI weak spots before exam day.
             </h3>
             <p className="t-body text-sm mb-8">
-              Get the free diagnostic link plus a few SPI study tips by email. No
-              spam. Unsubscribe anytime.
+              Get the 10 free SPI practice questions plus a few study tips by
+              email. No spam. Unsubscribe anytime.
             </p>
             <form
               onSubmit={handleEmailSubmit}
@@ -533,13 +533,13 @@ function DemoSection() {
                 type="submit"
                 className="premium-cta px-8 py-4 whitespace-nowrap text-sm"
               >
-                SEND ME THE FREE DIAGNOSTIC →
+                GET 10 FREE SPI QUESTIONS →
               </button>
             </form>
             <p className="meta text-[9px] text-[#4a453f] mt-3">
               We&apos;ll email a confirmation link first. Once you confirm,
-              you&apos;ll get your diagnostic link and up to 3 follow-up study
-              tips over about two weeks. One-click unsubscribe in every email.{" "}
+              you&apos;ll get the practice-question link and up to 3 follow-up
+              study tips over about two weeks. One-click unsubscribe in every email.{" "}
               <Link href="/privacy" className="underline">Privacy Policy</Link>
             </p>
           </motion.div>
@@ -556,8 +556,8 @@ function DemoSection() {
             </h3>
             <p className="t-body text-sm mb-8">
               We&apos;ve sent you a confirmation link. Click it and we&apos;ll
-              send your free diagnostic link (check spam if you don&apos;t see
-              it).
+              send the link to the 10 free SPI practice questions (check spam
+              if you don&apos;t see it).
             </p>
             <Link href="/products" className="premium-cta px-8 py-4 text-sm">
               GET FULL ACCESS →

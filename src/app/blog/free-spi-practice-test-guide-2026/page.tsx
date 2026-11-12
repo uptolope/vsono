@@ -4,12 +4,12 @@ import { absoluteUrl } from "@/lib/site-config";
 
 const slug = "free-spi-practice-test-guide-2026";
 const title = "Free SPI Practice Test (2026): 10 Questions, Then What?";
-const description = "Try 10 free SPI practice questions with explanations and no signup. Learn what a short diagnostic can—and cannot—tell you about exam readiness.";
+const description = "Try 10 free SPI practice questions with explanations and no signup. Learn what a short practice set can—and cannot—tell you about exam readiness.";
 export const metadata: Metadata = { title: { absolute: 'Free SPI Practice Test 2026: 10 Questions | SonoPrep' }, description, alternates: { canonical: absoluteUrl(`/blog/${slug}`) }, openGraph: { title, description, url: absoluteUrl(`/blog/${slug}`), type: "article" } };
 const faqs: FAQ[] = [
   { question: "Where can I take a free SPI practice test without signing up?", answer: "SonoPrep's free 10-question SPI practice test runs in your browser without an account. It includes immediate explanations and a summary at the end." },
   { question: "Does the free SPI test predict whether I will pass?", answer: "No. Ten items cannot measure the full five-domain exam or convert to ARDMS's scaled 300–700 score. Use missed questions as prompts for further study." },
-  { question: "Does the free diagnostic show my weakest SPI domain?", answer: "No. The current free sample uses a single broad topic label for all ten questions. For true five-domain feedback, use a larger domain-mapped practice exam or track errors against the official outline yourself." },
+  { question: "Do the 10 free SPI practice questions show my weakest SPI domain?", answer: "No. The current free sample uses a single broad topic label for all ten questions. For true five-domain feedback, use a larger domain-mapped practice exam or track errors against the official outline yourself." },
   { question: "Are these free questions taken from the real ARDMS SPI exam?", answer: "No. All SonoPrep questions are independently written practice items and are not official ARDMS exam questions." },
   { question: "What is the difference between the free test and the paid simulator?", answer: "The free test has ten separate sample questions. The $49.99 simulator offers three two-hour, 110-question attempts drawn from a 155-question bank, with rationales and results broken down by domain. Attempts can overlap." },
 ];

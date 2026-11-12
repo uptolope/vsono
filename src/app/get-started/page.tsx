@@ -5,14 +5,14 @@ import GetStartedClient from "./GetStartedClient";
 export const metadata: Metadata = {
   title: "Claim Free Instant Access — ARDMS SPI Prep",
   description:
-    "Enter your email to unlock instant diagnostic access to a free ARDMS SPI practice exam, ultrasound formula sheet, and study resources.",
+    "Enter your email to unlock 10 free ARDMS SPI practice questions, an ultrasound formula sheet, and study resources.",
   alternates: {
     canonical: "https://www.sonoprep.com/get-started",
   },
   openGraph: {
     title: "Claim Free Instant Access | SonoPrep",
     description:
-      "Unlock a free ARDMS SPI diagnostic test and ultrasound physics study resources.",
+      "Unlock 10 free ARDMS SPI practice questions and ultrasound physics study resources.",
     url: "https://www.sonoprep.com/get-started",
     siteName: "SonoPrep",
     type: "website",
@@ -23,9 +23,9 @@ export default function GetStartedPage() {
   const leadSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "SonoPrep Free Diagnostic Study Access",
+    name: "SonoPrep 10 Free SPI Practice Questions",
     description:
-      "Free ARDMS SPI diagnostic practice test and ultrasound physics study resources.",
+      "10 free ARDMS SPI practice questions and ultrasound physics study resources.",
     url: "https://www.sonoprep.com/get-started",
     publisher: {
       "@type": "Organization",

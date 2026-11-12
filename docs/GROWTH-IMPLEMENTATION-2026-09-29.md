@@ -22,7 +22,7 @@ provider or GA4 — only `tsc`, `eslint`, `npm run check:invariants` and a
 | | |
 |---|---|
 | Evidence | `/api/demo/capture` never stored the lead; its rate-limit key was the literal string `\${ip}`, so all visitors shared one 5/hour bucket; the welcome email showed invented per-domain scores to everyone; forms promised a "domain breakdown" that never existed. |
-| Change | `captureLead()` persists `Subscriber`/`DemoLead`; **double opt-in** (see below); 3-email sequence (+2d plan, +5d options, +7d last) via `/api/cron/nurture` (daily, `vercel.json`); one-click unsubscribe (RFC 8058 header + `/unsubscribe` confirm page, signed tokens); never re-enrols an unsubscribed address; skips purchasers; honest copy (free diagnostic link + study tips). Migration `20260929190000` marks existing subscribers as already through the sequence. |
+| Change | `captureLead()` persists `Subscriber`/`DemoLead`; **double opt-in** (see below); 3-email sequence (+2d plan, +5d options, +7d last) via `/api/cron/nurture` (daily, `vercel.json`); one-click unsubscribe (RFC 8058 header + `/unsubscribe` confirm page, signed tokens); never re-enrols an unsubscribed address; skips purchasers; honest copy (free practice-question link + study tips). Migration `20260929190000` marks existing subscribers as already through the sequence. |
 | Impact | Converts otherwise-lost demo leads; expected effect unknown until measured. |
 | Effort / Risk | L / Medium (email compliance). Ships **dark**: needs `LEAD_NURTURE_ENABLED=true`, `MAIL_POSTAL_ADDRESS`, `CRON_SECRET`, verified sender domain. |
 | Approval | Owner reviews email copy and legal basis. |

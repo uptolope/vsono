@@ -123,13 +123,13 @@ function contentFor(step: LeadEmailStep): Content {
   switch (step) {
     case "welcome":
       return {
-        subject: "You're confirmed — your free SPI diagnostic is ready",
+        subject: "You're confirmed — your 10 free SPI practice questions are ready",
         preheader: "10 questions, instant explanations, no card required.",
         paragraphs: [
-          "Thanks for confirming your email. The free SonoPrep SPI diagnostic takes a few minutes: 10 ARDMS SPI-style questions with an explanation after each one.",
-          "How to get the most from it: note which topics you miss (not just your score) and review those first. A diagnostic is only useful if it changes what you study next.",
+          "Thanks for confirming your email. The 10 free SonoPrep SPI practice questions take a few minutes: ARDMS SPI-style items with an explanation after each one.",
+          "How to get the most from it: note which topics you miss (not just your score) and review those first. A short practice set is only useful if it changes what you study next.",
         ],
-        cta: { label: "Start the free diagnostic", url: link("/demo", step) },
+        cta: { label: "Start the 10 free practice questions", url: link("/demo", step) },
         secondary: [
           { label: "SPI physics formula sheet", url: link("/spi-physics-formula-sheet", step) },
           { label: "SPI ultrasound glossary", url: link("/spi-ultrasound-glossary", step) },
@@ -144,7 +144,7 @@ function contentFor(step: LeadEmailStep): Content {
           "Most SPI candidates don't fail for lack of effort — they spread their time evenly instead of targeting weak areas. A structure that works for many students:",
         ],
         bullets: [
-          "Week 1: take a diagnostic and list the topics you missed.",
+          "Week 1: take the 10 free practice questions and list the topics you missed.",
           "Weeks 2–4: study weakest areas first; use spaced repetition (short daily flashcard sessions) so facts stick.",
           "Final stretch: take timed, full-length practice exams and review every explanation — including the ones you got right.",
         ],
@@ -158,7 +158,7 @@ function contentFor(step: LeadEmailStep): Content {
         subject: "What you actually need for the SPI (and what it costs)",
         preheader: "One-time payment, no subscription. Access starts at purchase.",
         paragraphs: [
-          "If you want guided practice beyond the free diagnostic, here is exactly how SonoPrep works:",
+          "If you want guided practice beyond the 10 free practice questions, here is exactly how SonoPrep works:",
         ],
         bullets: [
           "Individual products (flashcards, exam simulator, Physics Pearls, study notes) start at $9 and include 30 days of access.",
@@ -175,14 +175,14 @@ function contentFor(step: LeadEmailStep): Content {
         subject: "One last note from SonoPrep",
         preheader: "The free tools stay free.",
         paragraphs: [
-          "This is the last follow-up we'll send. The free diagnostic, formula sheet, glossary and calculators stay available whenever you need them.",
+          "This is the last follow-up we'll send. The practice questions, formula sheet, glossary and calculators stay available whenever you need them.",
           ...(process.env.EMAIL_REPLY_TO?.trim()
             ? [
                 "If you have a question about which materials fit your exam date, just reply to this email.",
               ]
             : []),
         ],
-        cta: { label: "Open the free diagnostic", url: link("/demo", step) },
+        cta: { label: "Open the 10 free practice questions", url: link("/demo", step) },
         secondary: [{ label: "View products", url: link("/products", step) }],
       };
   }
@@ -212,7 +212,7 @@ export function renderLeadEmail(
   <p style="margin:24px 0;"><a href="${esc(c.cta.url)}" style="display:inline-block;background:#c85b3a;color:#fff;padding:12px 22px;text-decoration:none;border-radius:4px;font-weight:bold;">${esc(c.cta.label)} →</a></p>
   ${c.secondary ? `<p style="font-size:14px;line-height:1.8;margin:0 0 16px;">${c.secondary.map((l) => `<a href="${esc(l.url)}" style="color:#c85b3a;">${esc(l.label)}</a>`).join("<br>")}</p>` : ""}
   <hr style="border:none;border-top:1px solid #eee;margin:28px 0 16px;">
-  <p style="font-size:12px;line-height:1.6;color:#777;margin:0 0 8px;">You're receiving this because you confirmed ${esc(email)} on sonoprep.com to get the free SPI diagnostic and study tips. <a href="${esc(unsub)}" style="color:#777;">Unsubscribe</a>.</p>
+  <p style="font-size:12px;line-height:1.6;color:#777;margin:0 0 8px;">You're receiving this because you confirmed ${esc(email)} on sonoprep.com to get 10 free SPI practice questions and study tips. <a href="${esc(unsub)}" style="color:#777;">Unsubscribe</a>.</p>
   <p style="font-size:12px;line-height:1.6;color:#777;margin:0 0 8px;">SonoPrep · ${esc(postalAddress)}</p>
   <p style="font-size:12px;line-height:1.6;color:#777;margin:0;">SonoPrep is an independent study resource, not affiliated with or endorsed by ARDMS or Inteleos. ARDMS® is a registered trademark of Inteleos.</p>
 </div></body></html>`;
@@ -226,7 +226,7 @@ export function renderLeadEmail(
     ...(c.secondary ? ["", ...c.secondary.map((l) => `${l.label}: ${l.url}`)] : []),
     "",
     "--",
-    `You're receiving this because you confirmed ${email} on sonoprep.com to get the free SPI diagnostic and study tips.`,
+    `You're receiving this because you confirmed ${email} on sonoprep.com to get 10 free SPI practice questions and study tips.`,
     `Unsubscribe: ${unsub}`,
     `SonoPrep · ${postalAddress}`,
     "SonoPrep is an independent study resource, not affiliated with or endorsed by ARDMS or Inteleos. ARDMS® is a registered trademark of Inteleos.",
@@ -279,13 +279,13 @@ export function renderConfirmationEmail(
   postalAddress: string,
 ): RenderedEmail {
   const url = confirmPageUrl(email);
-  const subject = "Confirm your email to get the free SPI diagnostic";
+  const subject = "Confirm your email to get 10 free SPI practice questions";
 
   const html = `<!doctype html>
 <html><body style="margin:0;padding:0;background:#ffffff;">
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#222;">
   <h2 style="color:#c85b3a;margin:0 0 16px;">${esc(subject)}</h2>
-  <p style="font-size:16px;line-height:1.6;margin:0 0 16px;">Someone (hopefully you) entered ${esc(email)} on sonoprep.com to get the free SPI diagnostic and a few study-tip emails over about two weeks.</p>
+  <p style="font-size:16px;line-height:1.6;margin:0 0 16px;">Someone (hopefully you) entered ${esc(email)} on sonoprep.com to get 10 free SPI practice questions and a few study-tip emails over about two weeks.</p>
   <p style="font-size:16px;line-height:1.6;margin:0 0 16px;">Click the button to confirm. Until you do, we won't send you anything else.</p>
   <p style="margin:24px 0;"><a href="${esc(url)}" style="display:inline-block;background:#c85b3a;color:#fff;padding:12px 22px;text-decoration:none;border-radius:4px;font-weight:bold;">Confirm my email →</a></p>
   <p style="font-size:14px;line-height:1.6;color:#555;margin:0 0 16px;">The link works for 7 days. If you didn't request this, ignore this email — you won't hear from us again and your address will be deleted.</p>
@@ -297,7 +297,7 @@ export function renderConfirmationEmail(
   const text = [
     subject,
     "",
-    `Someone (hopefully you) entered ${email} on sonoprep.com to get the free SPI diagnostic and a few study-tip emails over about two weeks.`,
+    `Someone (hopefully you) entered ${email} on sonoprep.com to get 10 free SPI practice questions and a few study-tip emails over about two weeks.`,
     "",
     "Confirm here. Until you do, we won't send you anything else:",
     url,

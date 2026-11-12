@@ -11,7 +11,7 @@ export default function BlogCTA({
     <aside className="mt-12 rounded-2xl border border-slate-700 bg-gradient-to-br from-slate-900 to-slate-800 p-8 text-white shadow-lg">
       <div className="max-w-2xl">
         <span className="text-sm font-semibold uppercase tracking-wider text-sky-400">
-          Free Diagnostic Practice
+          10 Free SPI Practice Questions
         </span>
 
         <h3 className="mt-1 mb-3 text-2xl font-bold">

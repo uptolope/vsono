@@ -4,7 +4,7 @@ import { absoluteUrl } from "@/lib/site-config";
 
 const slug = "best-spi-study-materials-2026";
 const title = "Best ARDMS SPI Study Materials in 2026: How to Choose";
-const description = "Compare SPI study materials by practice format, explanations, domain feedback and cost. See honest trade-offs and try a free diagnostic.";
+const description = "Compare SPI study materials by practice format, explanations, domain feedback and cost. See honest trade-offs and try 10 free SPI practice questions.";
 export const metadata: Metadata = { title: { absolute: 'Best SPI Study Materials 2026: Buyer’s Guide | SonoPrep' }, description, alternates: { canonical: absoluteUrl(`/blog/${slug}`) }, openGraph: { title, description, url: absoluteUrl(`/blog/${slug}`), type: "article" } };
 const faqs: FAQ[] = [
   { question: "What are the best SPI study materials if I have only one month?", answer: "Prioritize an up-to-date content outline, a concise reference for weak concepts, and timed practice with explanations. If you already know the content, spend more of the month reviewing missed questions than rereading entire chapters." },
