@@ -7,7 +7,7 @@ The user chose **cover all 20 briefs** rather than publish 20 additional pages o
 | 1 | First-attempt system | `/blog/pass-spi-first-attempt` | Updated 2026 first-attempt blueprint; linked comparison tools and FAQ. |
 | 2 | What is SPI? | `/blog/complete-spi-exam-guide` | Expanded existing pillar with 2026 format, facts table and FAQ. |
 | 3 | Four-week study plan | `/blog/four-week-spi-study-plan-2026` | Previously published 28-day plan. |
-| 4 | Free practice diagnostic | `/blog/free-spi-practice-test-guide-2026` | Previously published; links real `/free-spi-practice-test`. |
+| 4 | 10 free SPI practice questions | `/blog/free-spi-practice-test-guide-2026` | Previously published; links real `/free-spi-practice-test`. |
 | 5 | Failing and retaking | `/blog/what-happens-if-you-fail-spi-2026` | Previously published retake strategy. |
 | 6 | Pass rates | `/blog/spi-exam-pass-rates-2026` | New; sourced 2019–2023 ARDMS data, not invented 2026 rates. |
 | 7 | Physics formulas | `/blog/ultrasound-physics-formulas-spi-2026` | New applied guide; links free formula sheet. |

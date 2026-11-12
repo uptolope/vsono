@@ -130,8 +130,8 @@ export default function DemoPage() {
               See your SPI weak spots before exam day.
             </p>
             <p className="body-readable text-[#c2bab0] text-sm mb-6 leading-relaxed">
-              Get the free diagnostic link plus a few SPI study tips by email. No
-              spam. Unsubscribe any time.
+              Get the 10 free SPI practice questions plus a few study tips by
+              email. No spam. Unsubscribe any time.
             </p>
             <form
               onSubmit={handleEmailSubmit}
@@ -154,8 +154,8 @@ export default function DemoPage() {
             </form>
             <p className="meta text-[9px] text-[#4a453f] mt-3">
               We&apos;ll email a confirmation link first. Once you confirm,
-              you&apos;ll get your diagnostic link and up to 3 follow-up study
-              tips over about two weeks. One-click unsubscribe in every email.{" "}
+              you&apos;ll get the practice-question link and up to 3 follow-up
+              study tips over about two weeks. One-click unsubscribe in every email.{" "}
               <Link href="/privacy" className="underline">Privacy Policy</Link>
             </p>
             <p className="meta text-[9px] text-[#3a3530] mt-3">
@@ -178,7 +178,8 @@ export default function DemoPage() {
             </p>
             <p className="body-small text-[#8a8279] text-sm mb-6">
               We&apos;ve sent a confirmation link. Click it and we&apos;ll send
-              your free diagnostic link (check spam if you don&apos;t see it).
+              the link to the 10 free SPI practice questions (check spam if you
+              don&apos;t see it).
               When you&apos;re ready for the full prep system:
             </p>
             <Link

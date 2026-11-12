@@ -62,7 +62,7 @@ export default function GetStartedClient() {
   return (
     <div className="w-full max-w-2xl text-center">
       <p className="meta text-[9px] text-[#c85b3a] mb-4">
-        FREE SPI DIAGNOSTIC ACCESS
+        10 FREE SPI PRACTICE QUESTIONS
       </p>
 
       <h1 className="display-serif text-4xl sm:text-6xl text-white font-semibold leading-tight">
@@ -72,8 +72,8 @@ export default function GetStartedClient() {
       </h1>
 
       <p className="body-readable text-[#8a8279] text-base sm:text-lg leading-relaxed max-w-xl mx-auto mt-5 mb-10">
-        Unlock a free 10-question ARDMS SPI diagnostic test with instant
-        explanations and domain feedback. No credit card required.
+        Unlock 10 free ARDMS SPI practice questions with instant explanations
+        and domain feedback. No credit card required.
       </p>
 
       <div className="depth-border corner-arch max-w-md mx-auto p-7 bg-white/[0.02]">
@@ -91,7 +91,7 @@ export default function GetStartedClient() {
               href="/demo"
               className="btn-industrial block w-full px-6 py-4"
             >
-              LAUNCH DIAGNOSTIC TEST →
+              START THE 10 FREE QUESTIONS →
             </Link>
 
             <Link

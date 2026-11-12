@@ -82,9 +82,10 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong className="text-white">Marketing contact data:</strong>{" "}
-                if you request the free diagnostic, your email address, the page
-                you submitted it from, whether and when you confirmed it, and
-                where you are in our follow-up email sequence.
+                if you request the 10 free SPI practice questions, your email
+                address, the page you submitted it from, whether and when you
+                confirmed it, and where you are in our follow-up email
+                sequence.
               </li>
               <li>
                 <strong className="text-white">Support data:</strong> any
@@ -107,11 +108,11 @@ export default function PrivacyPage() {
               </li>
               <li>To respond to support requests</li>
               <li>
-                If you requested the free diagnostic: we first email you a
-                confirmation link. Only if you click it do we send the
-                diagnostic link and up to three follow-up study-tip emails over
-                about two weeks. If you never confirm, we send nothing further
-                and delete the address after 30 days. Every email has a
+                If you requested the 10 free SPI practice questions: we first
+                email you a confirmation link. Only if you click it do we send
+                the practice-question link and up to three follow-up study-tip
+                emails over about two weeks. If you never confirm, we send
+                nothing further and delete the address after 30 days. Every email has a
                 one-click unsubscribe link, and we stop immediately when you
                 unsubscribe or purchase.
               </li>
